@@ -2,6 +2,22 @@
 # CHANGELOG
 # =============================================================================
 #
+# v1.1.0 (2026-06-07):
+#   - CRITICAL FIX: A red (or no-tests) baseline now BLOCKS structural reduction.
+#     * ROOT CAUSE (logic): The whole safety argument is "green BEFORE and green
+#       AFTER ⇒ behavior preserved." green-BEFORE is load-bearing. Cutting from a
+#       red baseline makes "green on both sides" vacuous — you cannot detect the
+#       regression you cause, because the suite was already failing. The recipe
+#       previously surfaced a red baseline and then cut anyway.
+#     * ROOT CAUSE (bug that made the premise unobservable): the baseline step ran
+#       `{{test_command}} ... || echo ...`, so on failure the trailing `echo`
+#       exited 0 and `baseline_exit_code` was ALWAYS "0". Any exit-code gate would
+#       have been a silent no-op. The baseline now preserves the real exit code.
+#     * FIX: Gate `machete-reduce` and `verify-final` on `baseline_exit_code == '0'`.
+#       On a non-zero baseline the recipe short-circuits to a terminal stop step
+#       (`baseline-red-stop`) and makes NO file edits.
+#     * RESULT: structural cuts are impossible from a red/no-tests baseline.
+#
 # v1.0.0 (2026-06-07):
 #   - NEW FEATURE: Initial single-target reduction recipe
 #     * Enforces a green test baseline before any cut (structural guardrail)
@@ -13,9 +29,10 @@
 name: "reduce-target"
 description: >-
   Single-target complexity reduction with enforced before/after test
-  verification. Records a green baseline, lets the Machete amputate accidental
-  complexity one reversible stroke at a time, then re-verifies tests.
-version: "1.0.0"
+  verification. Records a baseline and BLOCKS the cut unless it is green, then
+  lets the Machete amputate accidental complexity one reversible stroke at a
+  time, then re-verifies tests.
+version: "1.1.0"
 author: "Occam's Machete bundle"
 tags: ["reduction", "simplification", "occams-machete"]
 
@@ -33,25 +50,71 @@ context:
 
 steps:
   # ---------------------------------------------------------------------------
-  # Step 1: Record a GREEN BASELINE. Tolerant — surface the result, do not
-  # hard-fail the recipe if the suite errors (the Machete needs to know the
-  # starting state, even an imperfect one).
+  # Step 1: Record the BASELINE and capture its TRUE exit code.
+  #
+  # green-BEFORE is load-bearing for the whole safety argument, so the exit code
+  # must reflect reality. We deliberately do NOT mask the test command's exit
+  # status (no `|| echo`), and we `exit $baseline_ec` so `baseline_exit_code`
+  # carries the genuine result. `on_error: continue` keeps the recipe alive so
+  # the gate below — not a hard crash — decides what happens next.
   # ---------------------------------------------------------------------------
   - id: "record-baseline"
     type: "bash"
     command: |
-      echo "=== GREEN BASELINE: {{test_command}} ==="
-      {{test_command}} 2>&1 || echo "[baseline non-zero exit — surfaced, not fatal]"
+      echo "=== BASELINE: {{test_command}} ==="
+      {{test_command}} 2>&1
+      baseline_ec=$?
+      if [ "$baseline_ec" -eq 0 ]; then
+        echo "[baseline GREEN — exit 0]"
+      else
+        echo "[baseline NOT GREEN — exit $baseline_ec — structural cuts will be blocked]"
+      fi
+      exit $baseline_ec
     output: "baseline_tests"
     output_exit_code: "baseline_exit_code"
     on_error: "continue"
     timeout: 1800
 
   # ---------------------------------------------------------------------------
-  # Step 2: The cut. Hand the target and the baseline to the Machete and
-  # instruct it to apply its full contract.
+  # GATE (red path): if the baseline is non-zero (RED) or no tests were found
+  # (pytest exits 5 ⇒ non-zero), STOP here. No agent step that could edit files
+  # runs on this path. This step is the only thing that fires when red.
+  # ---------------------------------------------------------------------------
+  - id: "baseline-red-stop"
+    type: "bash"
+    condition: "{{baseline_exit_code}} != '0'"
+    command: |
+      cat <<'EOF'
+      ===========================================================
+      STRUCTURAL REDUCTION BLOCKED — RED BASELINE
+      ===========================================================
+
+      The safety net was not green before any cut (baseline exit
+      code: {{baseline_exit_code}}). The reduction contract depends
+      on "green BEFORE and green AFTER ⇒ behavior preserved." From a
+      red (or no-tests) baseline that proof is vacuous: a cut cannot
+      be shown to preserve behavior, because the suite cannot detect
+      the regression the cut might introduce.
+
+      No files were modified.
+
+      The only valid next moves are:
+        1. Characterize / repair the test suite to GREEN first, then
+           re-run this recipe, OR
+        2. Proceed MANUALLY, with a human owning the risk that the
+           safety net is not trustworthy.
+
+      Automated structural cuts are not permitted from a red baseline.
+      EOF
+      exit 0
+    on_error: "continue"
+    timeout: 60
+
+  # ---------------------------------------------------------------------------
+  # Step 2 (green path only): the cut. Runs ONLY when the baseline is green.
   # ---------------------------------------------------------------------------
   - id: "machete-reduce"
+    condition: "{{baseline_exit_code}} == '0'"
     agent: "occams-machete:occams-machete"
     prompt: |
       Reduce the complexity of: {{target_path}}
@@ -84,10 +147,12 @@ steps:
     timeout: 3600
 
   # ---------------------------------------------------------------------------
-  # Step 3: Post-condition. Re-run the suite so the recipe records that tests
-  # are green AFTER the reduction as well.
+  # Step 3 (green path only): post-condition. Re-run the suite so the recipe
+  # records that tests are green AFTER the reduction as well. Skipped on the red
+  # path (nothing was cut, so there is nothing to re-verify).
   # ---------------------------------------------------------------------------
   - id: "verify-final"
+    condition: "{{baseline_exit_code}} == '0'"
     type: "bash"
     command: |
       echo "=== POST-CONDITION: {{test_command}} ==="

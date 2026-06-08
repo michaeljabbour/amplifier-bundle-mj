@@ -2,6 +2,27 @@
 # CHANGELOG
 # =============================================================================
 #
+# v1.1.0 (2026-06-07):
+#   - CRITICAL FIX: The post-approval EXECUTE stage now BLOCKS on a red baseline.
+#     * ROOT CAUSE (logic): The safety argument is "green BEFORE and green AFTER
+#       ⇒ behavior preserved." green-BEFORE is load-bearing. Cutting from a red
+#       baseline makes "green on both sides" vacuous — the suite cannot detect the
+#       regression a cut might cause. The advisory REVIEW stage edits nothing and
+#       is safe on a red baseline (it may still run); the EXECUTE stage is not.
+#     * ROOT CAUSE (bug that made the premise unobservable): the baseline step ran
+#       `{{test_command}} ... || echo ...`, so on failure the trailing `echo`
+#       exited 0 and `baseline_exit_code` was ALWAYS "0". Any exit-code gate would
+#       have been a silent no-op. The baseline now preserves the real exit code.
+#     * FIX: Gate `execute-cuts` and `execute-verify-final` on
+#       `baseline_exit_code == '0'`. On a non-zero baseline the execute stage
+#       short-circuits to a terminal stop step (`execute-red-stop`) and makes NO
+#       file edits, EVEN IF the human approved the advisory plan.
+#     * FIX: The execute prompt now requires RE-VERIFYING static premises (caller
+#       counts, dynamic-reference greps) at execution time, per stroke — the plan
+#       is evidence, not proof, and the tree may have moved since review.
+#     * RESULT: no automated cut can land from a red baseline; the panel can still
+#       advise on a red baseline, but cutting requires green.
+#
 # v1.0.0 (2026-06-07):
 #   - NEW FEATURE: Initial flagship "panel pipeline" recipe
 #     * Stage A (review): advisory-only three-lens complexity review, no edits
@@ -16,8 +37,8 @@ description: >-
   "why exist?", the Crusty Old Engineer's "what will removal cost?", and the
   Machete's "what comes out, in what safe order, with what proof"), then a
   HUMAN APPROVAL GATE, then the cut. No irreversible edit lands until a human
-  has seen and approved the plan.
-version: "1.0.0"
+  has seen and approved the plan AND the baseline is green.
+version: "1.1.0"
 author: "Occam's Machete bundle"
 tags: ["reduction", "simplification", "occams-machete", "panel", "approval-gate"]
 
@@ -42,15 +63,27 @@ context:
 stages:
   # ===========================================================================
   # STAGE A — REVIEW (advisory only; MUST NOT modify any files)
+  #
+  # Reviewing is safe on ANY baseline, so this stage runs regardless of test
+  # status — the panel should be able to reason about (and call out) a thin or
+  # red safety net. Only the EXECUTE stage is gated on green.
   # ===========================================================================
   - name: "review"
     steps:
-      # Record a green baseline so the panel reasons about real coverage status.
+      # Record the baseline and capture its TRUE exit code (no `|| echo` masking,
+      # and `exit $baseline_ec`) so the gate in Stage B is real, not a no-op.
       - id: "review-baseline"
         type: "bash"
         command: |
-          echo "=== GREEN BASELINE: {{test_command}} ==="
-          {{test_command}} 2>&1 || echo "[baseline non-zero exit — surfaced, not fatal]"
+          echo "=== BASELINE: {{test_command}} ==="
+          {{test_command}} 2>&1
+          baseline_ec=$?
+          if [ "$baseline_ec" -eq 0 ]; then
+            echo "[baseline GREEN — exit 0]"
+          else
+            echo "[baseline NOT GREEN — exit $baseline_ec — the EXECUTE stage will refuse to cut]"
+          fi
+          exit $baseline_ec
         output: "baseline_tests"
         output_exit_code: "baseline_exit_code"
         on_error: "continue"
@@ -66,7 +99,9 @@ stages:
           Target under review: {{target_path}}
           Safety-net test command: {{test_command}}
 
-          Green baseline (exit code {{baseline_exit_code}}):
+          Baseline (exit code {{baseline_exit_code}} — non-zero means the safety
+          net is RED or found no tests; if so, say so plainly and treat every
+          proposed cut as unverifiable until the suite is green):
           ---
           {{baseline_tests}}
           ---
@@ -126,18 +161,90 @@ stages:
         Approve to let the Machete execute this plan one reversible stroke at
         a time (reverting any stroke that reddens the suite). Deny to stop —
         no files will be modified.
+
+        NOTE: If the baseline exit code above is NOT 0, the EXECUTE stage will
+        REFUSE to cut even if you approve here — structural cuts are not
+        permitted from a red (or no-tests) baseline. Re-establish a green
+        baseline first, or proceed manually.
       timeout: 0
       default: "deny"
 
   # ===========================================================================
-  # STAGE B — EXECUTE (runs only after the gate is approved)
+  # STAGE B — EXECUTE (runs only after the gate is approved AND the FRESH
+  # execute-time baseline is green — see execute-baseline below)
   # ===========================================================================
   - name: "execute"
     steps:
+      # FRESH EXECUTE-TIME BASELINE. A human may approve long after the review,
+      # and the tree may have moved since. "green-BEFORE" must be true NOW, at
+      # execution time — not at review time — or the whole safety argument is
+      # stale. We re-run the suite here and capture its TRUE exit code (no
+      # `|| echo` masking; `exit $ec`). All Stage B gates key on THIS code, not
+      # on the review-time {{baseline_exit_code}} (which is kept only as advisory
+      # provenance). on_error: continue keeps the recipe alive so the gate — not
+      # a crash — decides what happens next.
+      - id: "execute-baseline"
+        type: "bash"
+        command: |
+          echo "=== EXECUTE-TIME BASELINE (re-verified after approval): {{test_command}} ==="
+          {{test_command}} 2>&1
+          ec=$?
+          if [ "$ec" -eq 0 ]; then
+            echo "[execute-time baseline GREEN — exit 0]"
+          else
+            echo "[execute-time baseline NOT GREEN — exit $ec — the cut will be refused]"
+          fi
+          exit $ec
+        output: "execute_baseline_tests"
+        output_exit_code: "execute_baseline_exit_code"
+        on_error: "continue"
+        timeout: 1800
+
+      # GATE (red path): even with human approval, a non-zero FRESH baseline
+      # blocks the cut. This is the only editing-adjacent step that fires in
+      # Stage B when the execute-time baseline is red.
+      - id: "execute-red-stop"
+        type: "bash"
+        condition: "{{execute_baseline_exit_code}} != '0'"
+        command: |
+          cat <<'EOF'
+          ===========================================================
+          EXECUTE BLOCKED — RED BASELINE (approval notwithstanding)
+          ===========================================================
+
+          The advisory plan was approved, but the safety net is not green NOW,
+          at execution time (execute-time baseline exit code:
+          {{execute_baseline_exit_code}}; review-time was
+          {{baseline_exit_code}}). A human may have approved long after review,
+          and the tree may have moved since. The reduction contract depends on
+          "green BEFORE and green AFTER ⇒ behavior preserved," and green-BEFORE
+          must hold at execution time. From a red (or no-tests) baseline that
+          proof is vacuous: a cut cannot be shown to preserve behavior because
+          the suite cannot detect the regression it might introduce.
+
+          No files were modified.
+
+          The only valid next moves are:
+            1. Characterize / repair the test suite to GREEN, then re-run this
+               recipe, OR
+            2. Proceed MANUALLY, with a human owning the risk that the safety
+               net is not trustworthy.
+
+          Automated structural cuts are not permitted from a red baseline.
+          EOF
+          exit 0
+        on_error: "continue"
+        timeout: 60
+
+      # The approved cut — runs ONLY when the FRESH execute-time baseline is green.
       - id: "execute-cuts"
+        condition: "{{execute_baseline_exit_code}} == '0'"
         agent: "occams-machete:occams-machete"
         prompt: |
-          The cut plan below was reviewed and APPROVED by a human. Execute it.
+          The cut plan below was reviewed and APPROVED by a human, and the
+          safety net was re-verified GREEN at execution time (execute-time
+          baseline exit code {{execute_baseline_exit_code}}; review-time was
+          {{baseline_exit_code}}). Execute it.
 
           Target: {{target_path}}
           Safety-net test command: {{test_command}}
@@ -149,6 +256,13 @@ stages:
 
           Execute it faithfully:
             - One reversible stroke at a time, in the approved order.
+            - RE-VERIFY each stroke's static premises AT EXECUTION TIME, per
+              stroke, BEFORE you make that cut. Do NOT trust the plan's numbers:
+              re-run the caller-count and dynamic-reference checks yourself now
+              (grep for reflection, getattr, string dispatch, importlib, entry
+              points, registries, and exported/public-symbol consumers). The
+              tree may have changed since the review; the plan is evidence, not
+              proof. If a premise no longer holds, skip that stroke and record why.
             - Re-run {{test_command}} after EACH stroke.
             - Revert immediately any stroke that reddens the suite, and note it.
             - Do not invent new cuts beyond the approved plan; if you discover a
@@ -159,7 +273,9 @@ stages:
         output: "machete_report"
         timeout: 3600
 
+      # Post-condition — runs ONLY on the green path (nothing was cut otherwise).
       - id: "execute-verify-final"
+        condition: "{{execute_baseline_exit_code}} == '0'"
         type: "bash"
         command: |
           echo "=== POST-CONDITION: {{test_command}} ==="

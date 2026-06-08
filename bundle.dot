@@ -4,7 +4,7 @@
 // once amplifier_foundation.bundle_docs is available.
 digraph occams_machete {
   rankdir=TB;
-  graph [source_hash="9f41da4ffe68e2ec", fontname="Helvetica", labelloc="t",
+  graph [source_hash="db0feaab147d5134", fontname="Helvetica", labelloc="t",
          label="Occam's Machete — a code-and-prose reduction bundle\n(skill · agent · /machete mode · recipes)", fontsize=16, bgcolor="white"];
   node  [fontname="Helvetica", fontsize=11, style="filled", shape="box", color="#37474f"];
   edge  [fontname="Helvetica", fontsize=9, color="#546e7a"];

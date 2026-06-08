@@ -56,11 +56,16 @@ it does."
 
 2. **Inventory before you amputate.** Use `grep`/`glob`/`read_file` and, when
    available, LSP `findReferences` / `incomingCalls` to count real callers and
-   real implementations. An "interface" with one implementation and one caller is
-   cosplay — inline it. Trust the call graph over the comments.
+   real implementations. One implementation + one caller is *evidence* of cosplay,
+   not a verdict — before inlining, rule out the seams (test/mock injection, a
+   published extension point/SPI, an in-flight refactor, a framework mandate). The
+   call graph omits the very edges that hide those seams (dynamic and out-of-repo),
+   so corroborate it — don't trust it over the code.
 
-   **A zero-caller grep is necessary but NOT sufficient proof.** The call graph
-   does not contain dynamic edges. Before removing any named symbol, also rule out:
+   **A zero-caller grep is necessary but NOT sufficient proof** (treating "found
+   nothing" as "nothing exists" is the appeal to ignorance the Reasoning discipline
+   warns about). The call graph does not contain dynamic edges. Before removing any
+   named symbol, also rule out:
    - **Dynamic references.** Grep the *whole repo* for the symbol's name as a
      string: `getattr`/`setattr`, `importlib`/`__import__`, entry-point and
      plugin registries, framework name-based wiring (Django/Celery/pytest/ORM),
@@ -82,7 +87,11 @@ it does."
    - Pass-through wrappers / adapters that adapt A to A → collapse.
    - Speculative config/hooks/plugins with zero real users → delete.
    - Redundant state reconciled by hand → unify to one source.
-   - Each cut is its own coherent change. Keep them independently revertible.
+   - Each cut is its own coherent change, independently revertible — *except* a
+     causal chain (a cut made only because an earlier stroke emptied it): that
+     inherits the root's risk, so cite the root in its safety note and treat the
+     chain as one revert unit. Re-verify caller counts and dynamic-reference greps
+     *at the moment of each stroke*, not from a plan computed before you started.
 
 4. **Verify, don't assume.** After cutting, re-run the tests and (for Python)
    `python_check` on touched files. "Smaller" that fails the suite is not a cut —

@@ -1,0 +1,11 @@
+# Amplifier dev-session scaffolding (not part of the bundle)
+AGENTS.md
+project-context/
+
+# Recipe run state
+**/recipe-sessions/
+
+# Python / OS noise
+__pycache__/
+*.pyc
+.DS_Store
