@@ -43,7 +43,12 @@ tools:
     config:
       gate_policy: "warn"
   - module: tool-skills
-    source: git+https://github.com/microsoft/amplifier-module-tool-skills@main
+    # Source the core-compatible copy maintained inside amplifier-bundle-skills.
+    # The standalone amplifier-module-tool-skills@main lags amplifier-core 1.6.0:
+    # its SkillsVisibilityHook.__init__ lacks the `is_forked_session` argument the
+    # kernel now passes when forking a sub-session, so pinning it there fails module
+    # load with "got an unexpected keyword argument 'is_forked_session'".
+    source: git+https://github.com/microsoft/amplifier-bundle-skills@main#subdirectory=modules/tool-skills
     # Retained deliberately (keeps the behavior at 3 tools — an accepted exception):
     # recipes/panel-then-cut.yaml loads sibling lens skills via load_skill when they
     # are available. No bundle-local `skills:` entry on purpose — tool-skills resolves
