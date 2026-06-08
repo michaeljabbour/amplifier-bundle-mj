@@ -3,10 +3,10 @@ bundle:
   name: occams-machete
   version: 0.1.0
   description: >-
-    A decisive code-and-prose reducer. Sam and Crusty review; the Machete cuts —
-    safely, one reversible stroke at a time, tests green on both sides. Ships a
-    persona skill, an executioner agent, an MJ-lens reviewer ("what would MJ
-    think?"), and a /machete reduction mode.
+    A decisive code-and-prose reducer. Where most simplicity tools only advise, the
+    Machete cuts — safely, one reversible stroke at a time, tests green on both
+    sides. Ships a persona skill, an executioner agent, an MJ-lens reviewer ("what
+    would MJ think?"), and a /machete reduction mode.
 
 # Thin bundle: inherit foundation (filesystem, bash, grep, LSP, etc.), then add
 # our unique capability via the behavior. The behavior wires the skill, the
@@ -21,10 +21,10 @@ includes:
 The simplest explanation is usually right. The simplest code usually is too.
 This bundle is the blade that gets you there.
 
-Where **Cranky Old Sam** asks *"why does this exist at all?"* and the
-**Crusty Old Engineer** asks *"what will this cost you later?"*, the **Machete**
-does the thing neither of them will: it picks up the blade and **removes the
-thing** — safely, one reversible stroke at a time, tests green on both sides.
+Most simplicity tools only *advise* — they ask *"why does this exist?"* and *"what
+will it cost later?"* and hand you the verdict. The **Machete** does the thing they
+won't: it picks up the blade and **removes the thing** — safely, one reversible
+stroke at a time, tests green on both sides.
 
 It cuts code. It cuts plans. It cuts thought diarrhea — the rambling, hedging,
 restated, gold-plated sprawl that accumulates when smart people keep typing past

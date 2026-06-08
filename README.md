@@ -9,21 +9,21 @@ leaner, and more elegant**: reduce code, refactor toward simplicity, and stop
 **thought diarrhea** — the rambling, hedging, gold-plated sprawl that piles up
 when smart people keep typing past the point they were done.
 
-It is the third member of a panel:
+Most simplicity tools only *advise* — they hand you a verdict and a risk
+assessment, then leave the actual work to you:
 
-| Sibling | Asks | Produces |
-|---|---|---|
-| **Cranky Old Sam** | "Why does this exist at all?" | A simplicity verdict. |
-| **Crusty Old Engineer** | "What will this cost you later?" | A risk assessment. |
-| **Occam's Machete** *(this bundle)* | "Fine. It's out." | A **smaller codebase, tests green** — the actual cut. |
+| Asks | Produces |
+|---|---|
+| "Why does this exist?" | a simplicity verdict (advice) |
+| "What will it cost later?" | a risk assessment (advice) |
+| **"Fine. It's out."** *(this bundle)* | a **smaller codebase, tests green** — the actual cut |
 
-Sam and Crusty *review*. They were never going to touch your code. The Machete is
-the missing piece: the one that picks up the blade and **does the removing** —
-safely, one reversible stroke at a time, tests green on both sides.
+This bundle is the missing piece: the one that picks up the blade and **does the
+removing** — safely, one reversible stroke at a time, tests green on both sides.
 
 ## Why a bundle and not just another skill?
 
-Because the gap Sam and Crusty leave is **execution**. A skill can only advise the
+Because the gap advice leaves is **execution**. A skill can only advise the
 current session. This bundle ships three things so the persona can both *judge*
 and *act*:
 
@@ -49,7 +49,7 @@ amplifier-bundle-occams-machete/
 │   └── machete.md                 # /machete — reduction-only working posture
 ├── recipes/
 │   ├── reduce-target.yaml         # baseline → cut → verify (single target)
-│   └── panel-then-cut.yaml        # review → APPROVAL GATE → cut (the panel, wired)
+│   └── panel-then-cut.yaml        # multi-lens review → APPROVAL GATE → cut
 ├── context/
 │   └── machete-awareness.md       # thin routing for the root session
 ├── bundle.dot                     # composition diagram (v3 convention)
@@ -97,13 +97,13 @@ execute recipe occams-machete:recipes/panel-then-cut.yaml with target_path=src/r
 The agent already runs its own inventory → cut → verify loop, so reach for a
 recipe only when you want what plain delegation can't give you: a recorded
 before/after baseline, or a **human approval gate** before irreversible edits
-land. `panel-then-cut` is the three siblings wired into one auditable pipeline —
-Sam's "why exist?", Crusty's "what cost?", then the Machete's blade, with you
-holding the gate in between.
+land. `panel-then-cut` wires a multi-lens advisory review into one auditable
+pipeline — "why does it exist?", "what will it cost?", then the Machete's blade,
+with you holding the gate in between.
 
-## The panel, made real
+## The pipeline, made real
 
-The three siblings are not rivals; they're a pipeline (the table up top).
+Advice and action are not rivals; they're a pipeline (the table up top).
 `recipes/panel-then-cut.yaml` turns that table from a metaphor into a runnable,
 gated workflow. The composition is also drawn in `bundle.png` (source:
 `bundle.dot`, v3 convention).
@@ -123,7 +123,7 @@ tests green`. Numbers, not adjectives.
 
 ## What it will refuse to do
 
-- Design or add features. It removes; full stop. (That's Sam/Crusty/brainstorm.)
+- Design or add features. It removes; full stop. (That's brainstorming/design — a different job.)
 - Cut behavior. Smaller-that-does-less is a regression, not a win.
 - Remove something it can't prove it preserved. Boldness without evidence is just risk with good PR.
 - Trade ten readable lines for one cryptic one. It reduces *confusion*, not only line count.
@@ -182,6 +182,6 @@ call is "coarse — cut it," the blade does the cutting.
 
 ## Lineage
 
-Modeled after, and built to complete, the `cranky-old-sam` and
-`crusty-old-engineer` skills. Same grumpy-craftsman DNA, sharper edge, and —
-unlike its siblings — a willingness to actually pick up the tool.
+Cut from the same grumpy-craftsman cloth as the simplicity advisors that inspired
+it — same DNA, sharper edge, and, unlike a pure advisor, a willingness to actually
+pick up the tool.

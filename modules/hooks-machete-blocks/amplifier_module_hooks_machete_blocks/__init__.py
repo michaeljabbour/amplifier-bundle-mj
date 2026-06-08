@@ -56,7 +56,7 @@ Rules for the block:
 - **At most one block per response,** usually at the very end.
 - **Match the register to the user** — terse and in-character for engineers, plain
   and benefit-led for non-technical folks, outcome-first for leads, one breath when
-  they're in a hurry. (Mirror the proactive-offer guidance in machete-awareness.md.)
+  they're in a hurry.
 - **Attribute it to MJ and keep it to a sentence or two.** No throat-clearing, no
   flattery — the magenta bar is the whole frame.
 - **It recommends; it does not act.** Offer the mode or the blade; let the user
