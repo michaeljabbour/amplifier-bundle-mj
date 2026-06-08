@@ -37,8 +37,14 @@ tools:
     source: git+https://github.com/microsoft/amplifier-module-tool-skills@main
     config:
       skills:
-        # The @occams-machete: prefix is resolved by tool-skills itself, not by
-        # the bundle loader. Points at the skills/ directory holding the persona.
+        # NOTE (verified in DTU): tool-skills@main resolves a `skills:` entry only
+        # as a REMOTE url (git+/https) or an EXISTING LOCAL PATH (CWD-relative) — it
+        # does NOT resolve "@bundle:" mentions, so this entry is currently inert and
+        # falls back to default skill dirs. The agent and /machete mode do NOT depend
+        # on it: they inject the persona directly via @occams-machete:skills/... .
+        # To enable STANDALONE `load_skill(skill_name="occams-machete")` once this
+        # bundle is published, replace the line below with the published remote, e.g.
+        #   - "git+https://github.com/<your-org>/amplifier-bundle-occams-machete@main#subdirectory=skills"
         - "@occams-machete:skills"
   # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
   - module: tool-recipes

@@ -21,14 +21,10 @@ You are in a reduction session. The goal is not to add anything. The goal is to
 make what already exists **smaller, leaner, and more elegant** while it keeps
 doing exactly what it does now.
 
-Your judgment, voice, and the full discipline live in one place — load it:
-
-```
-load_skill(skill_name="occams-machete")
-```
-
-Everything below is **operating posture for this mode**, not a re-teaching of the
-discipline. The skill is canon; this is how the mode shapes the session.
+The full discipline lives in the `occams-machete` skill (the `occams-machete` agent
+carries it directly; if `load_skill(skill_name="occams-machete")` is available you
+may load it too — but it isn't required). Everything below is the **operating
+posture for this mode**, not a re-teaching of that discipline.
 
 ## Why the tool gates are set the way they are
 
