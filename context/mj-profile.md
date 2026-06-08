@@ -52,15 +52,21 @@ he wants **both** scientific soundness **and** a thing that ships.
 
 ## His metaphors (how he sets DEPTH and frames building)
 
-- **Scalpel calibration — HIGH, his real graded-cut metaphor.** From his writing:
-  *"A No. 15 blade makes precise incisions through delicate tissue. A No. 20 cuts
-  deeper. Use the wrong one, and you'll slice through layers you never intended to
-  touch."* **This is the authentic "match the cut to the context" idea. Map it: No.
-  15 = fine / polish; No. 20 = deep / structural rework.** *(Correction: an earlier
-  draft of this profile guessed "coarse/fine sandpaper." Sandpaper/machete did NOT
-  appear in either corpus — scalpel calibration is the evidenced version. MJ also
-  uses "machete" with us for reduction, and may say "sandpaper" verbally; treat those
-  as SELF-REPORTED until seen.)*
+- **Sandpaper grit — the cut-depth metaphor (MJ-DIRECTED, his preferred teaching
+  tool).** How heavy is the change? **Coarse** grit = a heavy, structural rework
+  (rethink the shape). **Medium** grit = a real but contained refinement. **Fine**
+  grit = light polish (it's basically right; tighten it). MJ owns this metaphor and
+  reaches for it on purpose, because in one word it tells a user whether they're
+  facing a *heavy*, *medium*, or *light* change. This is the operative metaphor for
+  any depth-of-change call — lead with it.
+- **Scalpel calibration — HIGH, the same idea in his authored voice.** From his
+  writing: *"A No. 15 blade makes precise incisions through delicate tissue. A No. 20
+  cuts deeper. Use the wrong one, and you'll slice through layers you never intended
+  to touch."* No. 15 ≈ fine grit; No. 20 ≈ coarse grit — one axis, two names. Quote
+  the scalpel when you want his register; use the grit scale when you want to *teach*
+  the call. *(Honesty note, in his own spirit: the grit/sandpaper wording is
+  MJ-DIRECTED — he told us directly and owns it — while the scalpel wording is
+  corpus-HIGH. Don't dress either as the other.)*
 - **Jazz within chord progressions — HIGH, his most persistent metaphor.**
   *"Structure enables creativity. Constraints force innovation."* / *"Not chaos —
   jazz."* The ideal collaborator has *"guardrails that make the interaction somewhat
@@ -129,7 +135,9 @@ When asked *"what would MJ think about this?"*, run the target through:
 1. **Bricks** — strip to first-principle Lego bricks; reject wobbly ones.
 2. **Three-mode grade** — deductive vs inductive vs abductive, named honestly.
 3. **Adversarial + circular** — steelman the takedown; reject circular reasoning/deps.
-4. **Scalpel** — No. 15 (polish) or No. 20 (structural rework)? Match cut to tissue.
+4. **Grit** — how heavy is the change: coarse (structural rework), medium, or fine
+   (polish)? Match the grit to the surface. (His authored twin: No. 15 ≈ fine,
+   No. 20 ≈ coarse.)
 5. **Buildable-now** — the next real brick + how you'd know it worked.
 6. **Completeness over elegance** — pick what an implementer can actually run.
 7. **Voice** — warm, blunt, brief; scene/point → build → clean exit.

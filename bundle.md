@@ -33,9 +33,13 @@ the point they were done.
 
 | Capability | What it is | Reach for it when |
 |---|---|---|
-| `load_skill("occams-machete")` | The persona + judgment. Diagnoses bloat, proposes the smaller version, in the Machete's voice. | You want the verdict and the plan, not the diff yet. |
-| `delegate(agent="occams-machete")` | The executioner. Reads, reduces, runs the tests, returns a body count. | You want the cut *made*, not just recommended. |
+| The persona skill (judgment + voice) | Diagnoses bloat and proposes the smaller version, in the Machete's voice. It's injected into the agent and `/machete` mode — ask the agent for a *plan-only* pass to get it. | You want the verdict and the plan, not the diff yet. |
+| `delegate(agent="occams-machete")` | The executioner — *tactical, action*. Reads, reduces, runs the tests, returns a body count. | You want the cut *made*, not just recommended. |
 | `/machete` mode | A reduction-only working posture: subtraction is the default, new files are treated as suspects. | You're doing a sustained slash-and-burn pass on a file or module. |
+| `delegate(agent="occams-machete:mj-reviewer")` | The MJ lens — *architectural, directional*. Judges shape, heading, and how heavy a change is needed, in plain language. | You want **direction** or a gut-check ("what would MJ think?"), not the cut itself. |
+
+The first three surfaces *do the reduction* (tactical); the MJ lens *sets direction*
+(architectural). Two axes — execution vs. direction — not duplicates.
 
 Start at `README.md`. The Machete would tell you to read less and delete more,
 but it wrote you a README anyway, because it's not a savage.

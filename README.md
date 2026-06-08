@@ -27,7 +27,7 @@ Because the gap Sam and Crusty leave is **execution**. A skill can only advise t
 current session. This bundle ships three things so the persona can both *judge*
 and *act*:
 
-- A **skill** — the judgment and voice (advice in the current session).
+- A **skill** — the judgment and voice (the substrate the agent and mode carry).
 - An **agent** — the executioner that reads, edits, runs tests, and returns a diff.
 - A **mode** — a sustained reduction posture for a whole working session.
 
@@ -63,10 +63,9 @@ before/after baseline, and a human approval gate before irreversible edits land)
 
 ## Usage
 
-**Get the verdict + plan (in-session):**
-```
-load_skill(skill_name="occams-machete")
-```
+**Get the verdict + plan (no diff yet):** enter `/machete`, or ask the
+`occams-machete` agent for a *plan-only* pass ("propose the cuts, don't edit"). The
+persona's judgment is injected into both — there is no separate skill to load.
 
 **Make the cut (delegate to the executioner):**
 ```
@@ -83,7 +82,9 @@ delegate(
 ```
 In machete mode, subtraction is the default move, new files are treated as
 suspects (`write_file` warns), shell is surfaced once (`bash` warns), and
-whole-file deletes ask first.
+whole-file deletes ask first. It **cuts aggressively but never recklessly** — the
+mode's tool policies and the discipline below are exactly the guardrails that make
+that phrase true rather than marketing.
 
 **Run a guarded reduction pass (recipes):**
 ```
@@ -102,14 +103,7 @@ holding the gate in between.
 
 ## The panel, made real
 
-The three siblings are not rivals; they're a pipeline:
-
-| | Question | Output |
-|---|---|---|
-| **Cranky Old Sam** | "Why does this exist at all?" | A simplicity verdict. |
-| **Crusty Old Engineer** | "What will this cost you later?" | A risk assessment. |
-| **Occam's Machete** *(this bundle)* | "Fine. It's out." | A smaller codebase, tests green. |
-
+The three siblings are not rivals; they're a pipeline (the table up top).
 `recipes/panel-then-cut.yaml` turns that table from a metaphor into a runnable,
 gated workflow. The composition is also drawn in `bundle.png` (source:
 `bundle.dot`, v3 convention).
@@ -158,11 +152,23 @@ think about this?"* (about an idea, design, plan, argument, or diff) and the
 across **305 of his own sessions**, graded by confidence, and honest about what's
 corroborated vs. self-reported (it won't fabricate corroboration — MJ would catch it).
 
-MJ's review runs seven moves: **first principles** → grade the claim across
-**deductive / inductive / abductive** inference → an **adversarial + anti-circular**
-pass → a **grit call** (coarse structural rework = the machete, vs fine polish) →
+The lens and the blade work on **different axes**, which is why both exist:
+
+- **`mj-reviewer` is architectural and directional** — it judges *shape*, *heading*,
+  and *how heavy a change is needed*, in plain language. It sets the direction.
+- **`occams-machete` is tactical and action** — it executes the concrete reduction
+  on a concrete target. It carries out the cut.
+
+Direction vs. execution — not two copies of the same thing.
+
+MJ's review runs seven moves, all in **plain language, no jargon**: **first
+principles** → a plain read of **how solid the claim is** (is it logically forced,
+backed by evidence, or just the best guess so far?) → an **adversarial +
+anti-circular** pass → a **grit call** (how heavy a change: **coarse** /
+**medium** / **fine** — heavy/medium/light; coarse hands off to the machete) →
 a **buildable-now** next step (*anything is buildable*) → **completeness over
-elegance** when they conflict → a verdict that's **warm, blunt, brief**.
+elegance** when they conflict → a closing that's **warm, blunt, brief, and
+pedagogical** — it teaches the *why*, not just the ruling.
 
 ```
 delegate(agent="occams-machete:mj-reviewer",

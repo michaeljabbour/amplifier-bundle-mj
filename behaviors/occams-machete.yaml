@@ -35,17 +35,14 @@ tools:
       gate_policy: "warn"
   - module: tool-skills
     source: git+https://github.com/microsoft/amplifier-module-tool-skills@main
-    config:
-      skills:
-        # Enables STANDALONE `load_skill(skill_name="occams-machete")` from the
-        # published repo. tool-skills@main resolves a `skills:` entry only as a
-        # REMOTE url (git+/https) or an EXISTING LOCAL PATH — NOT an "@bundle:"
-        # mention — so this points at the published remote (DTU-verified form).
-        # Note: the occams-machete agent and /machete mode do NOT depend on this;
-        # they inject the persona via @occams-machete:skills/... so their judgment
-        # works offline and reflects local edits live. This entry is the user-facing
-        # convenience; it loads the skill from GitHub @main (cached after first use).
-        - "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=skills"
+    # No bundle-local `skills:` entry, on purpose. tool-skills resolves a local
+    # `skills:` path against the RUNTIME working directory (DTU-verified), NOT the
+    # behavior dir — so no behavior-relative path can point at this bundle's skills/.
+    # The only portable alternative is a remote git+URL of THIS repo: the circular
+    # self-dependency we deliberately removed. So we ship no standalone skill entry.
+    # The persona is still delivered where it matters: the occams-machete agent and
+    # /machete mode inject it by @mention (@occams-machete:skills/...). This module
+    # stays mounted only to provide the generic load_skill tool the mode references.
   # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
   - module: tool-recipes
     source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
@@ -65,4 +62,6 @@ context:
   include:
     - occams-machete:context/machete-awareness.md
     - occams-machete:context/mj-lens-awareness.md
-    - modes:context/modes-instructions.md
+    # NOTE: modes-instructions.md is NOT listed here on purpose — the modes
+    # behavior we include above already contributes it via its own
+    # context.include. Listing it again double-loads ~420 always-on tokens.

@@ -26,22 +26,26 @@ asks "what would MJ think?" — surface a brief **MJ Lens** block inline, using 
 exact backtick-fenced format (em-dash rules, U+2500):
 
 `🔪 MJ Lens ─────────────────────────────────`
-- **Bricks** — strip it to first-principle Lego bricks; build on wobbly bricks and castles collapse.
-- **Grade** — call it honestly: deductively (entailed?), inductively (evidenced?), abductively (just the best frame so far?).
-- **Adversarial / circular** — steelman the strongest takedown; reject circular reasoning and circular dependence.
-- **Scalpel** — which blade? No. 15 (fine — it's basically right, polish it) or No. 20 (deep — rework the shape)? Match the cut to the tissue.
-- **Buildable now** — the next real brick + how you'd know it worked. Anything is buildable; what's the first increment?
+- **Bricks** — strip it to its first-principle building blocks; build on wobbly blocks and the whole thing collapses.
+- **How solid is it?** — in plain words: is it logically forced, is it backed by evidence, or is it just the best guess so far? Say which.
+- **Adversarial / circular** — argue the strongest case against it; reject reasoning that assumes its own conclusion, and dependencies that loop back on themselves.
+- **Grit** — how heavy a change is this: coarse (rework the shape), medium (a real but contained refinement), or fine (it's basically right, polish it)? Match the grit to the surface.
+- **Buildable now** — the next real piece + how you'd know it worked. Anything is buildable; what's the first increment?
 `─────────────────────────────────────────────`
 
 Rules for the block:
 - **Only when it earns its place** — reviews, decisions, design calls. Not on
   trivial replies, simple lookups, or pure execution. A lens you raise for
   everything stops being a lens.
+- **Plain language, no jargon.** Explain so anyone can follow; if a technical term
+  is unavoidable, translate it in the same breath. The closing thought should
+  teach, not show off.
 - **Warm but curt.** Short declaratives. No throat-clearing, no flattery, no
   hedging. Say the thing, then move on. Prefer completeness an implementer can run
   over elegance that's only pretty: simple and complete beats elegant and incomplete.
-- **The lens grades; it does not cut.** When the verdict is "No. 20 — rework it,"
-  hand the actual reduction to the occams-machete blade or the mj-reviewer agent.
+- **The lens sets direction; it does not cut.** It is architectural and directional
+  — it judges shape and heading. When the verdict is "coarse — rework it," hand the
+  tactical reduction to the occams-machete blade.
 - Keep it to the five lines above unless the user asks you to go deeper.
 """
 

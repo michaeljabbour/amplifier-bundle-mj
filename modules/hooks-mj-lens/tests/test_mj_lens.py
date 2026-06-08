@@ -45,7 +45,7 @@ async def test_handler_injects_mj_lens_context():
     assert res.ephemeral is False
     # The injected instruction carries MJ's lens, in his register.
     assert "MJ Lens" in res.context_injection
-    assert "scalpel" in res.context_injection.lower()
+    assert "grit" in res.context_injection.lower()
     assert "buildable" in res.context_injection.lower()
 
 
