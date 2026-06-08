@@ -46,12 +46,19 @@ amplifier-bundle-occams-machete/
 │   └── occams-machete.md          # the executioner: actually performs the cuts
 ├── modes/
 │   └── machete.md                 # /machete — reduction-only working posture
-└── context/
-    └── machete-awareness.md       # thin routing for the root session
+├── recipes/
+│   ├── reduce-target.yaml         # baseline → cut → verify (single target)
+│   └── panel-then-cut.yaml        # review → APPROVAL GATE → cut (the panel, wired)
+├── context/
+│   └── machete-awareness.md       # thin routing for the root session
+├── bundle.dot                     # composition diagram (v3 convention)
+└── bundle.png                     # rendered diagram
 ```
 
 Yes, that's deliberately small. A bundle that preaches ruthless simplicity and
-then ships forty files would be a punchline. This one eats its own cooking.
+then ships forty files would be a punchline. This one eats its own cooking — the
+two recipes earn their place by adding what plain delegation can't (a recorded
+before/after baseline, and a human approval gate before irreversible edits land).
 
 ## Usage
 
@@ -74,7 +81,37 @@ delegate(
 /machete
 ```
 In machete mode, subtraction is the default move, new files are treated as
-suspects (`write_file` warns), and whole-file deletes ask first.
+suspects (`write_file` warns), shell is surfaced once (`bash` warns), and
+whole-file deletes ask first.
+
+**Run a guarded reduction pass (recipes):**
+```
+# single target: records a green baseline, cuts, re-verifies
+execute recipe occams-machete:recipes/reduce-target.yaml with target_path=src/router.py
+
+# the panel: three-lens review → human approval gate → cut → verify
+execute recipe occams-machete:recipes/panel-then-cut.yaml with target_path=src/router.py
+```
+The agent already runs its own inventory → cut → verify loop, so reach for a
+recipe only when you want what plain delegation can't give you: a recorded
+before/after baseline, or a **human approval gate** before irreversible edits
+land. `panel-then-cut` is the three siblings wired into one auditable pipeline —
+Sam's "why exist?", Crusty's "what cost?", then the Machete's blade, with you
+holding the gate in between.
+
+## The panel, made real
+
+The three siblings are not rivals; they're a pipeline:
+
+| | Question | Output |
+|---|---|---|
+| **Cranky Old Sam** | "Why does this exist at all?" | A simplicity verdict. |
+| **Crusty Old Engineer** | "What will this cost you later?" | A risk assessment. |
+| **Occam's Machete** *(this bundle)* | "Fine. It's out." | A smaller codebase, tests green. |
+
+`recipes/panel-then-cut.yaml` turns that table from a metaphor into a runnable,
+gated workflow. The composition is also drawn in `bundle.png` (source:
+`bundle.dot`, v3 convention).
 
 ## The discipline (what keeps it a machete, not a wood chipper)
 

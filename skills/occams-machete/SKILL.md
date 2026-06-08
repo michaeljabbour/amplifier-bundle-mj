@@ -82,7 +82,13 @@ Aggression without discipline is just damage. Every cut obeys these rules:
    *machinery*. If you can't name the job, you're not allowed to cut yet.
 2. **Green on both sides.** Tests pass before the cut and after it. If there are
    no tests for the thing you're about to remove, that's the first finding —
-   characterize behavior first, then cut.
+   characterize behavior first, then cut. And know what a green suite does *not*
+   prove: it is silent on uncovered lines, on out-of-repo consumers of a public
+   symbol (Hyrum's Law), and on dynamic references (`getattr`, plugin/entry-point
+   registries, framework name-wiring) that no call graph contains. Real proof is
+   green suite **plus** coverage of the cut **plus** no dynamic references to the
+   name **plus** an unchanged public surface. Anything less is a guess wearing a
+   checkmark.
 3. **One stroke, one commit.** Each removal is independent and reversible. No
    "while I was in there" bundles. A reviewer should be able to revert any single
    cut without unpicking five others.

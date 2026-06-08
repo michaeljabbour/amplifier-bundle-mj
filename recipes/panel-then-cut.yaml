@@ -1,0 +1,170 @@
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+#
+# v1.0.0 (2026-06-07):
+#   - NEW FEATURE: Initial flagship "panel pipeline" recipe
+#     * Stage A (review): advisory-only three-lens complexity review, no edits
+#     * Approval gate: human reviews the ordered cut plan before any cut lands
+#     * Stage B (execute): the approved cut, one reversible stroke at a time
+#
+# =============================================================================
+
+name: "panel-then-cut"
+description: >-
+  Flagship panel pipeline: a three-lens advisory review (Cranky Old Sam's
+  "why exist?", the Crusty Old Engineer's "what will removal cost?", and the
+  Machete's "what comes out, in what safe order, with what proof"), then a
+  HUMAN APPROVAL GATE, then the cut. No irreversible edit lands until a human
+  has seen and approved the plan.
+version: "1.0.0"
+author: "Occam's Machete bundle"
+tags: ["reduction", "simplification", "occams-machete", "panel", "approval-gate"]
+
+# Requirements:
+#   - occams-machete bundle loaded (provides occams-machete:occams-machete agent)
+#   - Optional: cranky-old-sam and crusty-old-engineer skills (deepen lenses 1 & 2)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=occams-machete:recipes/panel-then-cut.yaml \
+#     context='{"target_path": "src/mymodule"}'
+#
+#   # Then, after Stage A pauses at the approval gate:
+#   amplifier tool invoke recipes operation=approvals
+#   amplifier tool invoke recipes operation=approve \
+#     session_id=<session_id> stage_name=review
+
+context:
+  target_path: ""                       # Required: file/module/dir to review & reduce
+  test_command: "python -m pytest -q"   # Optional: the safety-net test command
+
+stages:
+  # ===========================================================================
+  # STAGE A — REVIEW (advisory only; MUST NOT modify any files)
+  # ===========================================================================
+  - name: "review"
+    steps:
+      # Record a green baseline so the panel reasons about real coverage status.
+      - id: "review-baseline"
+        type: "bash"
+        command: |
+          echo "=== GREEN BASELINE: {{test_command}} ==="
+          {{test_command}} 2>&1 || echo "[baseline non-zero exit — surfaced, not fatal]"
+        output: "baseline_tests"
+        output_exit_code: "baseline_exit_code"
+        on_error: "continue"
+        timeout: 1800
+
+      # The three-lens advisory panel. Edits NOTHING.
+      - id: "panel-review"
+        agent: "occams-machete:occams-machete"
+        prompt: |
+          ADVISORY ONLY. Do NOT modify, create, or delete any file in this
+          stage. Produce a plan, not a cut.
+
+          Target under review: {{target_path}}
+          Safety-net test command: {{test_command}}
+
+          Green baseline (exit code {{baseline_exit_code}}):
+          ---
+          {{baseline_tests}}
+          ---
+
+          If the skills `cranky-old-sam` and `crusty-old-engineer` are
+          available, load them via load_skill to deepen lenses 1 and 2.
+          Otherwise use the panel framing the occams-machete skill already
+          encodes.
+
+          Apply THREE LENSES to {{target_path}}:
+
+            LENS 1 — Cranky Old Sam: "Why does this exist at all?"
+              Name what fails to earn its existence: dead code, speculative
+              generality, abstractions with one caller, layers that only
+              forward, configuration nobody flips.
+
+            LENS 2 — The Crusty Old Engineer: "What will removing it cost?"
+              For each candidate, weigh the risk of removal: dynamic references
+              (reflection, getattr, importlib, registries, entry points),
+              public-symbol / out-of-repo consumers (Hyrum's Law — someone may
+              depend on observable behavior), and test-coverage gaps that would
+              let a bad cut pass unnoticed.
+
+            LENS 3 — The Machete: "What comes out, in what safe order, with
+            what proof for each?"
+              Turn the above into an ORDERED, PROOF-BACKED cut plan: smallest
+              and safest first, each stroke individually reversible, each with
+              the specific evidence that makes it safe and the test signal that
+              will confirm it.
+
+          OUTPUT (and nothing else — edit no files):
+            1. Complexity inventory (what's accidental, why)
+            2. Ordered, proof-backed cut plan (stroke 1..N, each with its proof)
+            3. Test-coverage status (where the safety net is strong vs thin)
+            4. Confidence level (and what would raise it)
+        output: "cut_plan"
+        timeout: 3600
+
+    # -------------------------------------------------------------------------
+    # APPROVAL GATE — human sees the cut plan before any irreversible edit.
+    # -------------------------------------------------------------------------
+    approval:
+      required: true
+      prompt: |
+        ===========================================================
+        PANEL REVIEW COMPLETE — approve before any cut is made
+        ===========================================================
+
+        Target: {{target_path}}
+        Safety net: {{test_command}}
+        Baseline exit code: {{baseline_exit_code}}
+
+        ----- ORDERED, PROOF-BACKED CUT PLAN (body-count preview) -----
+        {{cut_plan}}
+        ---------------------------------------------------------------
+
+        Approve to let the Machete execute this plan one reversible stroke at
+        a time (reverting any stroke that reddens the suite). Deny to stop —
+        no files will be modified.
+      timeout: 0
+      default: "deny"
+
+  # ===========================================================================
+  # STAGE B — EXECUTE (runs only after the gate is approved)
+  # ===========================================================================
+  - name: "execute"
+    steps:
+      - id: "execute-cuts"
+        agent: "occams-machete:occams-machete"
+        prompt: |
+          The cut plan below was reviewed and APPROVED by a human. Execute it.
+
+          Target: {{target_path}}
+          Safety-net test command: {{test_command}}
+
+          Approved cut plan:
+          ---
+          {{cut_plan}}
+          ---
+
+          Execute it faithfully:
+            - One reversible stroke at a time, in the approved order.
+            - Re-run {{test_command}} after EACH stroke.
+            - Revert immediately any stroke that reddens the suite, and note it.
+            - Do not invent new cuts beyond the approved plan; if you discover a
+              plan stroke is unsafe, skip it and record why.
+
+          End with the body count report:
+            -N lines, -M files, -K abstractions, tests green.
+        output: "machete_report"
+        timeout: 3600
+
+      - id: "execute-verify-final"
+        type: "bash"
+        command: |
+          echo "=== POST-CONDITION: {{test_command}} ==="
+          {{test_command}} 2>&1
+        output: "final_tests"
+        output_exit_code: "final_exit_code"
+        on_error: "continue"
+        timeout: 1800

@@ -31,6 +31,12 @@ tools:
         # The @occams-machete: prefix is resolved by tool-skills itself, not by
         # the bundle loader. Points at the skills/ directory holding the persona.
         - "@occams-machete:skills"
+  # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
+  - module: tool-recipes
+    source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
+    config:
+      session_dir: ~/.amplifier/projects/{project}/recipe-sessions
+      auto_cleanup_days: 7
 
 # The executioner agent (loads agents/occams-machete.md).
 agents:

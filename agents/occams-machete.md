@@ -59,6 +59,23 @@ it does."
    real implementations. An "interface" with one implementation and one caller is
    cosplay — inline it. Trust the call graph over the comments.
 
+   **A zero-caller grep is necessary but NOT sufficient proof.** The call graph
+   does not contain dynamic edges. Before removing any named symbol, also rule out:
+   - **Dynamic references.** Grep the *whole repo* for the symbol's name as a
+     string: `getattr`/`setattr`, `importlib`/`__import__`, entry-point and
+     plugin registries, framework name-based wiring (Django/Celery/pytest/ORM),
+     pickle/JSON-by-class-name. If the name appears in a string anywhere,
+     downgrade the cut to "needs human review" — do not delete unattended.
+   - **Out-of-repo consumers (Hyrum's Law).** Your reach ends at the repo edge. A
+     public/exported symbol with zero in-repo callers may still be imported by
+     other services, notebooks, or someone's plugin. Treat removal of any
+     **public/exported** symbol as out of scope unless the human confirms the
+     surface is private. Inline private machinery freely; do not silently shrink
+     the public surface.
+   - **Coverage of the cut, not just a green suite.** A passing suite on 30% of a
+     module says nothing about the 70% you're holding the blade over. If the lines
+     you're about to remove are uncovered, that's "characterize first," not "safe."
+
 3. **Cut smallest-and-safest first, re-running tests after each stroke:**
    - Dead code, unused params, commented-out graveyards.
    - One-implementation abstractions → inline.

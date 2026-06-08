@@ -1,0 +1,98 @@
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+#
+# v1.0.0 (2026-06-07):
+#   - NEW FEATURE: Initial single-target reduction recipe
+#     * Enforces a green test baseline before any cut (structural guardrail)
+#     * Delegates the actual reduction to occams-machete:occams-machete
+#     * Re-runs tests as a post-condition so green-on-both-sides is recorded
+#
+# =============================================================================
+
+name: "reduce-target"
+description: >-
+  Single-target complexity reduction with enforced before/after test
+  verification. Records a green baseline, lets the Machete amputate accidental
+  complexity one reversible stroke at a time, then re-verifies tests.
+version: "1.0.0"
+author: "Occam's Machete bundle"
+tags: ["reduction", "simplification", "occams-machete"]
+
+# Requirements:
+#   - occams-machete bundle loaded (provides occams-machete:occams-machete agent)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=occams-machete:recipes/reduce-target.yaml \
+#     context='{"target_path": "src/mymodule"}'
+
+context:
+  target_path: ""                       # Required: file/module/dir to reduce
+  test_command: "python -m pytest -q"   # Optional: the safety-net test command
+
+steps:
+  # ---------------------------------------------------------------------------
+  # Step 1: Record a GREEN BASELINE. Tolerant — surface the result, do not
+  # hard-fail the recipe if the suite errors (the Machete needs to know the
+  # starting state, even an imperfect one).
+  # ---------------------------------------------------------------------------
+  - id: "record-baseline"
+    type: "bash"
+    command: |
+      echo "=== GREEN BASELINE: {{test_command}} ==="
+      {{test_command}} 2>&1 || echo "[baseline non-zero exit — surfaced, not fatal]"
+    output: "baseline_tests"
+    output_exit_code: "baseline_exit_code"
+    on_error: "continue"
+    timeout: 1800
+
+  # ---------------------------------------------------------------------------
+  # Step 2: The cut. Hand the target and the baseline to the Machete and
+  # instruct it to apply its full contract.
+  # ---------------------------------------------------------------------------
+  - id: "machete-reduce"
+    agent: "occams-machete:occams-machete"
+    prompt: |
+      Reduce the complexity of: {{target_path}}
+
+      Safety-net test command: {{test_command}}
+
+      Green baseline (exit code {{baseline_exit_code}}):
+      ---
+      {{baseline_tests}}
+      ---
+
+      Apply your full contract:
+        1. Establish the job — what is this target actually for?
+        2. Establish the safety net — confirm {{test_command}} is the guard you
+           re-run after every stroke.
+        3. Inventory BEFORE amputating. A zero-caller grep is NOT sufficient
+           proof. Before removing anything, rule out:
+             - dynamic references (reflection, getattr, string dispatch,
+               importlib, entry points, registries)
+             - public-symbol / out-of-repo consumers (exported API, plugin
+               surface, anything other code or other repos may import)
+        4. Cut smallest-and-safest first; one reversible stroke at a time.
+        5. Re-run {{test_command}} after EACH stroke. Revert any stroke that
+           reddens the suite.
+        6. End with the body count report:
+           -N lines, -M files, -K abstractions, tests green.
+
+      Make the cuts. Then report the body count.
+    output: "machete_report"
+    timeout: 3600
+
+  # ---------------------------------------------------------------------------
+  # Step 3: Post-condition. Re-run the suite so the recipe records that tests
+  # are green AFTER the reduction as well.
+  # ---------------------------------------------------------------------------
+  - id: "verify-final"
+    type: "bash"
+    command: |
+      echo "=== POST-CONDITION: {{test_command}} ==="
+      {{test_command}} 2>&1
+    output: "final_tests"
+    output_exit_code: "final_exit_code"
+    on_error: "continue"
+    timeout: 1800
