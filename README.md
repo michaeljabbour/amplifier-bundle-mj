@@ -35,8 +35,10 @@ and *act*:
 
 ```
 amplifier-bundle-occams-machete/
-├── occams-machete.md              # bundle root (thin router)
+├── bundle.md                      # bundle root (thin router → foundation + behavior)
 ├── README.md                      # you are here
+├── behaviors/
+│   └── occams-machete.yaml        # wires the agent, skill, and /machete mode
 ├── skills/
 │   └── occams-machete/
 │       └── SKILL.md               # the persona: judgment + voice + discipline
@@ -97,13 +99,18 @@ tests green`. Numbers, not adjectives.
 
 ## Status
 
-`v0.1.0` — scaffold. The persona, agent, mode, and routing are written. Bundle
-**wiring should be validated** before first real use:
+`v0.1.0` — wired and validated. The persona, agent, mode, and routing are
+written, and the bundle has been converted to the Amplifier-native thin-bundle
+pattern:
 
-- Run `validate-bundle-repo` (or consult `foundation:foundation-expert`) to
-  confirm the `agents:`, `modes:`, and `tools:`/`tool-skills` keys in
-  `occams-machete.md` resolve correctly in your foundation version.
-- Or run it through **bundlewizard** (`/bundle-verify`) for a three-level audit.
+- `bundle.md` is a thin router: `includes:` foundation + `behaviors/occams-machete.yaml`.
+- The behavior wires the agent (`agents.include`), the persona skill
+  (`tool-skills` with a `source:`), and the `/machete` mode (the modes system:
+  the modes behavior + `hooks-mode` `search_paths` + `tool-mode`).
+
+To re-validate after changes, run `validate-bundle-repo`, consult
+`foundation:foundation-expert`, or run it through **bundlewizard**
+(`/bundle-verify`) for a three-level audit.
 
 ## Lineage
 
