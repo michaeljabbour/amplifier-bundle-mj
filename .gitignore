@@ -9,3 +9,6 @@ project-context/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local DTU / amplifier state (reality-check profiles, etc.)
+.amplifier/

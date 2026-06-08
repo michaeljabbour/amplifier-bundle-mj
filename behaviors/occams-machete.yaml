@@ -20,8 +20,10 @@ hooks:
         - "@occams-machete:modes"
   # Surfaces MJ's review lens as an inline insight block on review/decision turns
   # (session:start → inject_context, mirroring hooks-insight-blocks). Fail-open.
+  # NOTE: a relative source in a BEHAVIOR file resolves relative to behaviors/,
+  # not the repo root — so go up one level to reach modules/ (verified in DTU).
   - module: hooks-mj-lens
-    source: ./modules/hooks-mj-lens
+    source: ../modules/hooks-mj-lens
     config:
       enabled: true
       priority: 50
