@@ -1,7 +1,7 @@
 // Occam's Machete — bundle composition diagram (v3 convention, hand-authored)
 digraph occams_machete {
   rankdir=TB;
-  graph [source_hash="240b868f928fb8a4", fontname="Helvetica", labelloc="t",
+  graph [source_hash="f6c32851b2ecf7c1", fontname="Helvetica", labelloc="t",
          label="Occam's Machete — reduction blade + MJ's review lens\n(skill · agent · /machete mode · recipes · mj-reviewer)", fontsize=16, bgcolor="white"];
   node  [fontname="Helvetica", fontsize=11, style="filled", shape="box", color="#37474f"];
   edge  [fontname="Helvetica", fontsize=9, color="#546e7a"];
@@ -47,6 +47,7 @@ digraph occams_machete {
     t_mode    [label="tool-mode",    fillcolor="#bbdefb"];
     h_mode    [label="hooks-mode",   fillcolor="#bbdefb"];
     t_recipes [label="tool-recipes", fillcolor="#bbdefb"];
+    h_mjlens  [label="hooks-mj-lens\n(local) inline MJ-lens block", fillcolor="#bbdefb"];
   }
 
   root -> foundation [style="dashed", color="red", label="includes"];
@@ -60,6 +61,7 @@ digraph occams_machete {
   behavior -> t_skills  [label="tools"];
   behavior -> t_mode    [label="tools"];
   behavior -> h_mode    [label="hooks"];
+  behavior -> h_mjlens  [label="hooks"];
   behavior -> t_recipes [label="tools"];
 
   t_skills  -> skill [style="dotted", label="loads"];
@@ -70,6 +72,7 @@ digraph occams_machete {
   agent -> skill [style="dotted", label="load_skill"];
   mode  -> skill [style="dotted", label="load_skill"];
   mjrev -> mjprofile [style="dotted", label="reads (evidence)"];
+  h_mjlens -> mjrev [style="dotted", label="session:start → inline lens"];
   mjrev -> agent     [style="dotted", label="hands off 'coarse → cut'"];
   r_reduce -> agent [style="dotted", label="delegates"];
   r_panel  -> agent [style="dotted", label="delegates"];

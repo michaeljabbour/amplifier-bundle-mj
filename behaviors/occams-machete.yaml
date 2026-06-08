@@ -18,6 +18,13 @@ hooks:
         # The @occams-machete: prefix is resolved by hooks-mode itself (its own
         # @mention resolution), not by the bundle loader.
         - "@occams-machete:modes"
+  # Surfaces MJ's review lens as an inline insight block on review/decision turns
+  # (session:start → inject_context, mirroring hooks-insight-blocks). Fail-open.
+  - module: hooks-mj-lens
+    source: ./modules/hooks-mj-lens
+    config:
+      enabled: true
+      priority: 50
 
 tools:
   - module: tool-mode
