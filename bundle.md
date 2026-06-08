@@ -5,7 +5,8 @@ bundle:
   description: >-
     A decisive code-and-prose reducer. Sam and Crusty review; the Machete cuts —
     safely, one reversible stroke at a time, tests green on both sides. Ships a
-    persona skill, an executioner agent, and a /machete reduction mode.
+    persona skill, an executioner agent, an MJ-lens reviewer ("what would MJ
+    think?"), and a /machete reduction mode.
 
 # Thin bundle: inherit foundation (filesystem, bash, grep, LSP, etc.), then add
 # our unique capability via the behavior. The behavior wires the skill, the

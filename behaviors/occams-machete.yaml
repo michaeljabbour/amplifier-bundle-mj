@@ -27,6 +27,15 @@ hooks:
     config:
       enabled: true
       priority: 50
+  # Highlights notable Machete callouts — chiefly the proactive `/machete` mode
+  # offer — as an inline ✂ block so they stand out (session:start → inject_context,
+  # same mechanism as hooks-mj-lens / hooks-insight-blocks). Fail-open. Relative
+  # source resolves relative to behaviors/, so up one level to reach modules/.
+  - module: hooks-machete-blocks
+    source: ../modules/hooks-machete-blocks
+    config:
+      enabled: true
+      priority: 50
 
 tools:
   - module: tool-mode
