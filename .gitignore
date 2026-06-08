@@ -10,5 +10,11 @@ __pycache__/
 *.pyc
 .DS_Store
 
+# Tooling caches (ruff, pytest)
+.ruff_cache/
+**/.ruff_cache/
+.pytest_cache/
+**/.pytest_cache/
+
 # Local DTU / amplifier state (reality-check profiles, etc.)
 .amplifier/
