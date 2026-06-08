@@ -43,7 +43,7 @@ tools:
     config:
       gate_policy: "warn"
   - module: tool-skills
-    source: git+https://github.com/microsoft/amplifier-module-tool-skills@main
+    source: git+https://github.com/microsoft/amplifier-bundle-skills@main#subdirectory=modules/tool-skills
     # No bundle-local `skills:` entry, on purpose. tool-skills resolves a local
     # `skills:` path against the RUNTIME working directory (DTU-verified), NOT the
     # behavior dir — so no behavior-relative path can point at this bundle's skills/.
