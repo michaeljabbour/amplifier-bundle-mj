@@ -61,6 +61,37 @@ then ships forty files would be a punchline. This one eats its own cooking — t
 two recipes earn their place by adding what plain delegation can't (a recorded
 before/after baseline, and a human approval gate before irreversible edits land).
 
+## Install
+
+There are two ways to bring the Machete into your workflow.
+
+### Layer it on top of other apps (recommended)
+
+Add the **behavior** as an *app bundle* so the Machete (the executioner agent,
+the persona skill, the `/machete` mode, and the MJ lens) is composed onto **every**
+session, regardless of which primary bundle you run:
+
+```
+amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=behaviors/occams-machete.yaml" --app
+```
+
+`--app` makes it always-on across all your sessions. The
+`#subdirectory=behaviors/occams-machete.yaml` fragment points at the behavior, so it
+layers onto your existing app instead of replacing your root bundle. Remove it later with:
+
+```
+amplifier bundle remove occams-machete-behavior
+```
+
+### Use it as a standalone root bundle
+
+If you'd rather run the Machete on its own:
+
+```
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main
+amplifier bundle use occams-machete
+```
+
 ## Usage
 
 **Get the verdict + plan (no diff yet):** enter `/machete`, or ask the
