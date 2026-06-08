@@ -1,62 +1,46 @@
-// Occam's Machete — bundle composition diagram (v3 convention)
-// Hand-authored following the bundle-to-dot v3 convention (bundle_repo_dot API
-// not present in this foundation build). Regenerate with `generate-bundle-docs`
-// once amplifier_foundation.bundle_docs is available.
+// Occam's Machete — bundle composition diagram (v3 convention, hand-authored)
 digraph occams_machete {
   rankdir=TB;
-  graph [source_hash="db0feaab147d5134", fontname="Helvetica", labelloc="t",
-         label="Occam's Machete — a code-and-prose reduction bundle\n(skill · agent · /machete mode · recipes)", fontsize=16, bgcolor="white"];
+  graph [source_hash="240b868f928fb8a4", fontname="Helvetica", labelloc="t",
+         label="Occam's Machete — reduction blade + MJ's review lens\n(skill · agent · /machete mode · recipes · mj-reviewer)", fontsize=16, bgcolor="white"];
   node  [fontname="Helvetica", fontsize=11, style="filled", shape="box", color="#37474f"];
   edge  [fontname="Helvetica", fontsize=9, color="#546e7a"];
 
-  // ---- Root bundle -------------------------------------------------------
   root [label="bundle.md\n(occams-machete)\nthin router", fillcolor="#80cbc4", shape="box3d"];
 
-  // ---- External dependencies (dashed; cost borne upstream) ---------------
   subgraph cluster_external {
     label="External (composed, cost upstream)"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
     foundation [label="amplifier-foundation\n(filesystem, bash, grep, LSP…)", fillcolor="#f5f5f5", style="filled,dashed", color="red"];
     modes_beh  [label="amplifier-bundle-modes\nbehaviors/modes.yaml", fillcolor="#f5f5f5", style="filled,dashed", color="red"];
   }
-
-  // ---- Behaviors cluster -------------------------------------------------
   subgraph cluster_behaviors {
     label="Behaviors"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
     behavior [label="behaviors/occams-machete.yaml\nwires it all together", fillcolor="#e0f2f1"];
   }
-
-  // ---- Agents cluster ----------------------------------------------------
   subgraph cluster_agents {
     label="Agents"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    agent [label="agents/occams-machete.md\nthe executioner\n(edits · tests · body count)", fillcolor="#c8e6c9"];
+    agent  [label="agents/occams-machete.md\nthe executioner (the blade)", fillcolor="#c8e6c9"];
+    mjrev  [label="agents/mj-reviewer.md\nthe MJ lens — 'what would MJ think?'", fillcolor="#c8e6c9"];
   }
-
-  // ---- Skills (the judgment) --------------------------------------------
   subgraph cluster_skills {
     label="Skills"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    skill [label="skills/occams-machete/SKILL.md\nthe persona + discipline", fillcolor="#e1bee7"];
+    skill [label="skills/occams-machete/SKILL.md\npersona + discipline + reasoning", fillcolor="#e1bee7"];
   }
-
-  // ---- Modes (the posture) ----------------------------------------------
   subgraph cluster_modes {
     label="Modes"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    mode [label="modes/machete.md\n/machete — reduction posture\n(subtraction-biased tool gates)", fillcolor="#fff9c4"];
+    mode [label="modes/machete.md\n/machete — reduction posture", fillcolor="#fff9c4"];
   }
-
-  // ---- Recipes (the orchestration) --------------------------------------
   subgraph cluster_recipes {
     label="Recipes"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
     r_reduce [label="recipes/reduce-target.yaml\nbaseline → cut → verify", fillcolor="#ffe0b2"];
     r_panel  [label="recipes/panel-then-cut.yaml\nreview → APPROVAL GATE → cut", fillcolor="#ffe0b2"];
   }
-
-  // ---- Context cluster ---------------------------------------------------
   subgraph cluster_context {
     label="Context Files"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    ctx [label="context/machete-awareness.md\nroot-session routing", fillcolor="#e1bee7"];
+    ctx       [label="context/machete-awareness.md\nblade routing (always-on)", fillcolor="#e1bee7"];
+    mjaware   [label="context/mj-lens-awareness.md\nMJ-lens routing (always-on)", fillcolor="#e1bee7"];
+    mjprofile [label="context/mj-profile.md\nMJ evidence profile (on-demand)", fillcolor="#d1c4e9"];
   }
-
-  // ---- Modules / tools (wired by the behavior) --------------------------
   subgraph cluster_modules {
     label="Modules / Tools"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
     t_skills  [label="tool-skills",  fillcolor="#bbdefb"];
@@ -65,13 +49,14 @@ digraph occams_machete {
     t_recipes [label="tool-recipes", fillcolor="#bbdefb"];
   }
 
-  // ---- Composition edges -------------------------------------------------
   root -> foundation [style="dashed", color="red", label="includes"];
   root -> behavior   [label="includes"];
   behavior -> modes_beh [style="dashed", color="red", label="includes"];
 
-  behavior -> agent [label="agents.include"];
-  behavior -> ctx   [label="context.include"];
+  behavior -> agent     [label="agents.include"];
+  behavior -> mjrev     [label="agents.include"];
+  behavior -> ctx       [label="context.include"];
+  behavior -> mjaware   [label="context.include"];
   behavior -> t_skills  [label="tools"];
   behavior -> t_mode    [label="tools"];
   behavior -> h_mode    [label="hooks"];
@@ -84,10 +69,11 @@ digraph occams_machete {
 
   agent -> skill [style="dotted", label="load_skill"];
   mode  -> skill [style="dotted", label="load_skill"];
+  mjrev -> mjprofile [style="dotted", label="reads (evidence)"];
+  mjrev -> agent     [style="dotted", label="hands off 'coarse → cut'"];
   r_reduce -> agent [style="dotted", label="delegates"];
   r_panel  -> agent [style="dotted", label="delegates"];
 
-  // ---- Legend ------------------------------------------------------------
   subgraph cluster_legend {
     label="Legend"; style="filled"; fillcolor="#eceff1"; fontsize=10;
     L1 [label="root bundle", fillcolor="#80cbc4"];

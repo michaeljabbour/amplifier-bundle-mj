@@ -38,13 +38,16 @@ tools:
       session_dir: ~/.amplifier/projects/{project}/recipe-sessions
       auto_cleanup_days: 7
 
-# The executioner agent (loads agents/occams-machete.md).
+# The executioner agent (the blade) and the MJ-lens reviewer ("what would MJ think?").
 agents:
   include:
     - occams-machete:occams-machete
+    - occams-machete:mj-reviewer
 
-# Lightweight awareness only — root-session routing for when to reach for the blade.
+# Lightweight awareness only — always-on routing. The heavy artifacts (the persona
+# SKILL, the MJ profile) are context sinks loaded on demand by their agents.
 context:
   include:
     - occams-machete:context/machete-awareness.md
+    - occams-machete:context/mj-lens-awareness.md
     - modes:context/modes-instructions.md

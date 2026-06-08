@@ -43,7 +43,8 @@ amplifier-bundle-occams-machete/
 │   └── occams-machete/
 │       └── SKILL.md               # the persona: judgment + voice + discipline
 ├── agents/
-│   └── occams-machete.md          # the executioner: actually performs the cuts
+│   ├── occams-machete.md          # the executioner: actually performs the cuts
+│   └── mj-reviewer.md             # the MJ lens: "what would MJ think about this?"
 ├── modes/
 │   └── machete.md                 # /machete — reduction-only working posture
 ├── recipes/
@@ -148,6 +149,30 @@ pattern:
 To re-validate after changes, run `validate-bundle-repo`, consult
 `foundation:foundation-expert`, or run it through **bundlewizard**
 (`/bundle-verify`) for a three-level audit.
+
+## "What would MJ think about this?"
+
+This bundle is MJ's machete — so it also carries **MJ's lens**. Ask *"what would MJ
+think about this?"* (about an idea, design, plan, argument, or diff) and the
+`mj-reviewer` agent answers the way MJ actually reviews — built from evidence mined
+across **305 of his own sessions**, graded by confidence, and honest about what's
+corroborated vs. self-reported (it won't fabricate corroboration — MJ would catch it).
+
+MJ's review runs seven moves: **first principles** → grade the claim across
+**deductive / inductive / abductive** inference → an **adversarial + anti-circular**
+pass → a **grit call** (coarse structural rework = the machete, vs fine polish) →
+a **buildable-now** next step (*anything is buildable*) → **completeness over
+elegance** when they conflict → a verdict that's **warm, blunt, brief**.
+
+```
+delegate(agent="occams-machete:mj-reviewer",
+         instruction="What would MJ think about <idea/design/plan/diff>?")
+```
+
+Every session that loads this bundle is surfaced the lens automatically (via the
+always-on `context/mj-lens-awareness.md`); the full evidence-graded profile lives at
+`context/mj-profile.md` and is loaded on demand. The reviewer **grades**; when the
+call is "coarse — cut it," the blade does the cutting.
 
 ## Lineage
 
