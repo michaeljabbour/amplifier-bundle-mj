@@ -1,0 +1,41 @@
+---
+bundle:
+  name: occams-machete
+  version: 0.1.0
+  description: >-
+    A decisive code-and-prose reducer. Sam and Crusty review; the Machete cuts —
+    safely, one reversible stroke at a time, tests green on both sides. Ships a
+    persona skill, an executioner agent, and a /machete reduction mode.
+
+# Thin bundle: inherit foundation (filesystem, bash, grep, LSP, etc.), then add
+# our unique capability via the behavior. The behavior wires the skill, the
+# agent, and the /machete mode (modes system: hooks-mode + tool-mode).
+includes:
+  - bundle: git+https://github.com/microsoft/amplifier-foundation@main
+  - bundle: occams-machete:behaviors/occams-machete
+---
+
+# Occam's Machete
+
+The simplest explanation is usually right. The simplest code usually is too.
+This bundle is the blade that gets you there.
+
+Where **Cranky Old Sam** asks *"why does this exist at all?"* and the
+**Crusty Old Engineer** asks *"what will this cost you later?"*, the **Machete**
+does the thing neither of them will: it picks up the blade and **removes the
+thing** — safely, one reversible stroke at a time, tests green on both sides.
+
+It cuts code. It cuts plans. It cuts thought diarrhea — the rambling, hedging,
+restated, gold-plated sprawl that accumulates when smart people keep typing past
+the point they were done.
+
+## What's in the box
+
+| Capability | What it is | Reach for it when |
+|---|---|---|
+| `load_skill("occams-machete")` | The persona + judgment. Diagnoses bloat, proposes the smaller version, in the Machete's voice. | You want the verdict and the plan, not the diff yet. |
+| `delegate(agent="occams-machete")` | The executioner. Reads, reduces, runs the tests, returns a body count. | You want the cut *made*, not just recommended. |
+| `/machete` mode | A reduction-only working posture: subtraction is the default, new files are treated as suspects. | You're doing a sustained slash-and-burn pass on a file or module. |
+
+Start at `README.md`. The Machete would tell you to read less and delete more,
+but it wrote you a README anyway, because it's not a savage.

@@ -1,0 +1,44 @@
+bundle:
+  name: occams-machete-behavior
+  version: 0.1.0
+  description: |
+    Wires the Occam's Machete capability onto a host bundle: the executioner
+    agent, the persona skill (via tool-skills), and the /machete reduction mode
+    (via the modes system: hooks-mode + tool-mode).
+
+# Mount the modes system so /machete registers and switches at runtime.
+includes:
+  - bundle: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=behaviors/modes.yaml
+
+hooks:
+  - module: hooks-mode
+    source: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=modules/hooks-mode
+    config:
+      search_paths:
+        # The @occams-machete: prefix is resolved by hooks-mode itself (its own
+        # @mention resolution), not by the bundle loader.
+        - "@occams-machete:modes"
+
+tools:
+  - module: tool-mode
+    source: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=modules/tool-mode
+    config:
+      gate_policy: "warn"
+  - module: tool-skills
+    source: git+https://github.com/microsoft/amplifier-module-tool-skills@main
+    config:
+      skills:
+        # The @occams-machete: prefix is resolved by tool-skills itself, not by
+        # the bundle loader. Points at the skills/ directory holding the persona.
+        - "@occams-machete:skills"
+
+# The executioner agent (loads agents/occams-machete.md).
+agents:
+  include:
+    - occams-machete:occams-machete
+
+# Lightweight awareness only — root-session routing for when to reach for the blade.
+context:
+  include:
+    - occams-machete:context/machete-awareness.md
+    - modes:context/modes-instructions.md
