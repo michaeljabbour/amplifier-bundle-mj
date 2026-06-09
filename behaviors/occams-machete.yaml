@@ -62,11 +62,14 @@ tools:
       session_dir: ~/.amplifier/projects/{project}/recipe-sessions
       auto_cleanup_days: 7
 
-# The executioner agent (the blade) and the MJ-lens reviewer ("what would MJ think?").
+# The panel: the executioner (the blade), the MJ-lens reviewer ("what would MJ
+# think?" — direction), and the Crusty Old Engineer (the reliability guard —
+# "will it break, and what will it cost?").
 agents:
   include:
     - occams-machete:occams-machete
     - occams-machete:mj-reviewer
+    - occams-machete:crusty-old-engineer
 
 # Lightweight awareness only — always-on routing. The heavy artifacts (the persona
 # SKILL, the MJ profile) are context sinks loaded on demand by their agents.

@@ -1,0 +1,123 @@
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+#
+# v1.0.0 (2026-06-09):
+#   - NEW: A pre-flight reliability guard. Gathers the review surface (the diff
+#     and the changed files), then runs the Crusty Old Engineer to catch the two
+#     classes the direction/reduction lenses skip: obvious FAILURES (contract
+#     violations, lagging refs, load/fork fragility, silent failure) and
+#     engineering ANTI-PATTERNS. Advisory only — it edits nothing and returns a
+#     GO / GO-eyes-open / NO-GO verdict with BLOCKERS vs RISKS.
+#
+# =============================================================================
+
+name: "preflight-guard"
+description: >-
+  Reliability guard before you ship a change, open a PR, or trust an "it's
+  fixed" claim. Gathers the changeset (diff + changed files), then runs the
+  Crusty Old Engineer to surface BLOCKERS (it breaks — with proof) and RISKS
+  (it'll cost you — graded), ending in a GO / GO-eyes-open / NO-GO verdict. The
+  guard runs the actual checks (tests, type/lint, validators, greps) rather than
+  judging from a summary. Advisory only: it modifies no files.
+version: "1.0.0"
+author: "Occam's Machete bundle"
+tags: ["review", "guard", "preflight", "failure-modes", "anti-patterns", "occams-machete"]
+
+# Requirements:
+#   - occams-machete bundle loaded (provides occams-machete:crusty-old-engineer)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=occams-machete:recipes/preflight-guard.yaml \
+#     context='{"target_path": ".", "diff_base": "HEAD"}'
+#
+#   target_path: file / dir to review (default: the repo / cwd)
+#   diff_base:   git ref to diff against for the changeset (default: HEAD, i.e.
+#                staged + unstaged working changes). Use a branch/tag/SHA to
+#                review a whole branch's delta.
+
+context:
+  target_path: "."     # File/dir under review
+  diff_base: "HEAD"     # Git ref to compute the changeset against
+
+steps:
+  # ---------------------------------------------------------------------------
+  # Step 1 — Gather the review surface. Cheap, deterministic context so the
+  # guard judges the ACTUAL change, not a description of it. Never fails the
+  # recipe (on_error: continue) — a non-repo target still gets reviewed by path.
+  # ---------------------------------------------------------------------------
+  - id: "gather-surface"
+    type: "bash"
+    command: |
+      echo "=== TARGET: {{target_path}} ==="
+      echo
+      if git -C "{{target_path}}" rev-parse --git-dir >/dev/null 2>&1; then
+        REPO="{{target_path}}"
+      elif git rev-parse --git-dir >/dev/null 2>&1; then
+        REPO="."
+      else
+        REPO=""
+      fi
+      if [ -n "$REPO" ]; then
+        echo "=== CHANGED FILES (vs {{diff_base}}, plus working tree) ==="
+        git -C "$REPO" status --short 2>/dev/null
+        git -C "$REPO" diff --name-status "{{diff_base}}" 2>/dev/null
+        echo
+        echo "=== DIFF (vs {{diff_base}}, plus working tree) ==="
+        # Bounded so a huge diff can't blow the context; the guard reads files for depth.
+        { git -C "$REPO" diff "{{diff_base}}" 2>/dev/null; git -C "$REPO" diff 2>/dev/null; } | head -c 60000
+      else
+        echo "(not a git repo — the guard will review {{target_path}} by reading it directly)"
+      fi
+    output: "surface"
+    output_exit_code: "surface_exit_code"
+    on_error: "continue"
+    timeout: 120
+
+  # ---------------------------------------------------------------------------
+  # Step 2 — The guard. Crusty reads the changed files, RUNS the checks he can
+  # (tests, type/lint, the relevant validator, greps for anti-pattern
+  # signatures), then classifies. Advisory only — he edits nothing.
+  # ---------------------------------------------------------------------------
+  - id: "crusty-guard"
+    agent: "occams-machete:crusty-old-engineer"
+    prompt: |
+      ADVISORY ONLY — review and report. Do NOT modify, create, or delete any file.
+
+      You are guarding this change before it ships. Catch the two things the
+      direction and reduction lenses skip: OBVIOUS FAILURES (it breaks) and
+      ENGINEERING ANTI-PATTERNS (it'll cost later).
+
+      Target under review: {{target_path}}
+
+      The changeset surface (changed files + a bounded diff) is below. Treat it
+      as a pointer, not the whole truth — open and READ the changed files in
+      full, and RUN the checks you can rather than judging from the diff:
+        - the test suite, if there is one;
+        - type/lint/format checks (e.g. python_check for Python) on touched files;
+        - the relevant contract/protocol validator for the artifact's ecosystem
+          (e.g. for an Amplifier module, that mount() returns a Tool or a
+          callable — not a metadata dict);
+        - greps for the anti-pattern signatures in your checklist (silent-failure
+          masking like `|| echo`, eager/always-on heavy or native-dep loads,
+          dynamic references that defeat a zero-caller claim, lagging/diverged
+          source pins, evidence-free "it's fixed" claims).
+
+      ----- CHANGESET SURFACE (exit {{surface_exit_code}}) -----
+      {{surface}}
+      ----------------------------------------------------------
+
+      Apply your full discipline — evidence over assertion (every BLOCKER cites
+      its proof), the anti-conflation guard (a divergence with a stated reason is
+      a deliberate trade-off, not a defect), and the locality check (local-only
+      artifacts don't ship). Do NOT invent failures to look thorough; a clean
+      change earns a clean GO.
+
+      Output exactly your contract:
+        - BLOCKERS (it breaks) — each with the evidence that proves it + the fix
+        - RISKS (it'll cost you) — each graded high/medium/low + what lowers it
+        - VERDICT — GO / GO — eyes open / NO-GO, one blunt sentence of why
+        - FIX THIS FIRST — the single highest-leverage action
+    output: "guard_report"
+    timeout: 3600
