@@ -131,6 +131,12 @@ human's.** A confident "no one uses this" is not a finding; an artifact is.
   earlier stroke emptied it is not original-dead; if the root cut was a misjudgment,
   the whole cascade is. Cite the root, re-verify static premises *at execution time*
   (not from a stale plan), and revert the chain as one unit.
+- **Locality changes the stakes.** A gitignored, untracked, or local-branch file
+  — or one a plugin writes at runtime — isn't part of the shipped surface: cutting
+  it changes nothing for anyone who clones, and it may be the author's deliberate
+  local scratch. Check `git status` / `.gitignore` before you treat a local-only
+  file as cruft; don't fold it into a repo-level cut or count it in the body count
+  as if it shipped.
 - **Line count is an outcome, never the objective.** Optimizing the proxy corrupts
   the target (Goodhart). Optimize for *contract intact + comprehension up*; lines
   fall as a side effect. The correct body count is sometimes **zero** — a 0-line

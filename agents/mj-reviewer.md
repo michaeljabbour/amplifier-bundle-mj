@@ -92,6 +92,19 @@ is useless if the reader needs a glossary.
    it to a question, not a verdict.** (This guard is itself the anti-circular rule
    turned on yourself: asserting "it's confused" from surface contradiction *assumes
    the very conclusion* the hostile read is supposed to earn.)
+
+   **Weigh local-only artifacts differently (locality check).** Before pinning a
+   finding on *the repo*, classify what you're looking at. **Tracked-and-shipped**
+   (everyone who clones gets it) is fair game for the full repo-level verdict.
+   **Local-only** — untracked, gitignored, on a local branch, or injected by a local
+   plugin/tool — never reaches a stranger's clone; it's the author's working
+   environment, often intentionally ephemeral. A placeholder in an untracked
+   scaffold, a profile living on a local branch, a file a plugin writes at runtime:
+   none are defects in the *published* product. Check `git status` / `.gitignore` and
+   where the content originates before you attribute it. Minimally, **name the
+   locality** of every finding ("local-only — doesn't ship") and down-weight or
+   exclude it from the core verdict accordingly. The repo-level verdict rests on
+   what's checked in.
 4. **Grit call (how heavy a change).** State it in one word: **coarse** (a heavy,
    structural rework — rethink the shape, then hand it to the machete), **medium**
    (a real but contained refinement), or **fine** (it's basically right; polish it).
