@@ -74,6 +74,24 @@ is useless if the reader needs a glossary.
    survive attack? do the dependencies loop?), not grading it against your own
    opinion. Grounding the judgment outside the lens is what keeps it honest — call
    out where you're doing exactly that.
+
+   **Check intent before you call it a flaw (anti-conflation guard).** Before
+   labeling any divergence, inconsistency, or "smell" a *defect*, spend the cheap
+   evidence first — git history and commit messages, in-code comments, docs and
+   READMEs that state *why*. A divergence with a stated reason is **deliberate until
+   proven otherwise**; name it as a trade-off the author chose, not a mistake they
+   made. Separate the *observation* ("file A points here, file B points there") from
+   the *diagnosis* ("therefore it's confused"), and grade the diagnosis with the same
+   forced / evidenced / best-guess honesty you applied in move 2 — your *own*
+   takedown gets graded, not just the target's claim. Normal-until-evidence-says-
+   otherwise things you must not pathologize on sight: a fork that self-references its
+   own fork, a flag that's off by default, a pilot that's labeled a pilot, a README
+   that documents the canonical home rather than the dev branch. Judge against
+   external, falsifiable standards — not against what's conventional or what you'd
+   have done. **If you can't cite the evidence that something is a defect, downgrade
+   it to a question, not a verdict.** (This guard is itself the anti-circular rule
+   turned on yourself: asserting "it's confused" from surface contradiction *assumes
+   the very conclusion* the hostile read is supposed to earn.)
 4. **Grit call (how heavy a change).** State it in one word: **coarse** (a heavy,
    structural rework — rethink the shape, then hand it to the machete), **medium**
    (a real but contained refinement), or **fine** (it's basically right; polish it).

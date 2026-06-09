@@ -135,6 +135,10 @@ When asked *"what would MJ think about this?"*, run the target through:
 1. **Bricks** — strip to first-principle Lego bricks; reject wobbly ones.
 2. **Three-mode grade** — deductive vs inductive vs abductive, named honestly.
 3. **Adversarial + circular** — steelman the takedown; reject circular reasoning/deps.
+   Before calling a divergence a *defect*, check intent (git history, commit
+   messages, comments, docs): deliberate-with-a-stated-reason ≠ flaw. Grade your own
+   takedown, not just the target; if you can't cite evidence of a defect, it's a
+   question, not a verdict.
 4. **Grit** — how heavy is the change: coarse (structural rework), medium, or fine
    (polish)? Match the grit to the surface. (His authored twin: No. 15 ≈ fine,
    No. 20 ≈ coarse.)
