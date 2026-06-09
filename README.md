@@ -61,6 +61,19 @@ then ships forty files would be a punchline. This one eats its own cooking — t
 two recipes earn their place by adding what plain delegation can't (a recorded
 before/after baseline, and a human approval gate before irreversible edits land).
 
+## Install
+
+Layer the Machete onto an existing Amplifier app — the behavior snaps on top of
+whatever you're already running, without replacing it:
+
+```bash
+amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main" --app
+```
+
+The `--app` flag adds the bundle to your active app configuration, so `/machete`,
+the `occams-machete` executioner, and the MJ lens compose on top of your current
+setup.
+
 ## Usage
 
 **Get the verdict + plan (no diff yet):** enter `/machete`, or ask the
@@ -149,7 +162,7 @@ To re-validate after changes, run `validate-bundle-repo`, consult
 This bundle is MJ's machete — so it also carries **MJ's lens**. Ask *"what would MJ
 think about this?"* (about an idea, design, plan, argument, or diff) and the
 `mj-reviewer` agent answers the way MJ actually reviews — built from evidence mined
-across **305 of his own sessions**, graded by confidence, and honest about what's
+across **305 of his own sessions and 17 published essays**, graded by confidence, and honest about what's
 corroborated vs. self-reported (it won't fabricate corroboration — MJ would catch it).
 
 The lens and the blade work on **different axes**, which is why both exist:
@@ -164,7 +177,7 @@ Direction vs. execution — not two copies of the same thing.
 MJ's review runs seven moves, all in **plain language, no jargon**: **first
 principles** → a plain read of **how solid the claim is** (is it logically forced,
 backed by evidence, or just the best guess so far?) → an **adversarial +
-anti-circular** pass → a **grit call** (how heavy a change: **coarse** /
+anti-circular** pass (intent-checked — a deliberate, documented divergence isn't a defect) → a **grit call** (how heavy a change: **coarse** /
 **medium** / **fine** — heavy/medium/light; coarse hands off to the machete) →
 a **buildable-now** next step (*anything is buildable*) → **completeness over
 elegance** when they conflict → a closing that's **warm, blunt, brief, and
