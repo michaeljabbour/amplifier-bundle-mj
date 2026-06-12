@@ -1,0 +1,49 @@
+name: eval-reduce-red
+description: >
+  Ubuntu 24.04 with uv + git + pytest. Seeds the pulse fixture from a Gitea
+  mirror into /workspace/pulse, then appends a deliberately FAILING test and
+  commits it so HEAD is RED before the agent runs. Also clones the
+  occams-machete bundle to /opt/occams-machete so the machete agent can install
+  it from a local path (no mitmproxy / url_rewrites needed). The baseline agent
+  never installs it.
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux python3 python3-pip && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    # Install pytest so both the agent and the grader can run `python3 -m pytest`.
+    - pip install --break-system-packages pytest
+    - mkdir -p /workspace
+    # Clone the pulse fixture from the Gitea mirror using basic auth.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/pulse-fixture" /workspace/pulse
+    # Clone the occams-machete bundle locally so the machete agent installs the
+    # current committed code from a file:// path. Harmless for the baseline agent.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/amplifier-bundle-occams-machete" /opt/occams-machete
+    # Seed a pre-existing failing test and commit it so the baseline is RED.
+    - |
+      cat > /workspace/pulse/tests/test_regression.py <<'PYEOF'
+      def test_known_regression():
+          # Pre-existing failing test: the baseline suite is RED before any reduction.
+          from pulse.messages import format_message
+          assert format_message({"title": "A", "body": "b"}) == "WRONG-EXPECTED-VALUE"
+      PYEOF
+    - cd /workspace/pulse && git -c user.email=eval@local -c user.name=eval add -A && git -c user.email=eval@local -c user.name=eval commit -m "seed red baseline"
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: pulse-cloned
+    command: "test -d /workspace/pulse/.git && echo OK"
+  - name: machete-cloned
+    command: "test -f /opt/occams-machete/bundle.md && echo OK"
+  - name: pytest-available
+    command: "python3 -m pytest --version"

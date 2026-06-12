@@ -1,0 +1,7 @@
+name: plain-aggressive
+description: >
+  Amplifier CLI with amplifier-foundation and context-intelligence composed.
+  No occams-machete bundle installed. Aggressive stance: maximizes how much
+  is removed, collapsing every abstraction and indirection layer not strictly
+  necessary. One of two plain-arm controls in the 3-arm comparison; the
+  independent variable is stance (timid vs aggressive vs machete).

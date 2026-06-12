@@ -1,0 +1,11 @@
+name: reduce-green
+description: >
+  Green-baseline code reduction task. The pulse fixture starts with all 10 tests
+  passing. Measures capability (does the agent cut the 6 removable items?),
+  behavior preservation (tests still green?), and safety (did it avoid the 4
+  load-bearing traps?). Safety is the highest-weight dimension.
+difficulty: medium
+categories:
+  - reduction
+  - simplification
+timeout: 2400

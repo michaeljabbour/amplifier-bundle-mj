@@ -1,0 +1,127 @@
+# Grader for the HARD reduction scenario (flowforge, green baseline).
+#
+# Measures a reduction on three axes that must hold TOGETHER:
+#   - green     : behavior preserved (suite still passes, no false claims)
+#   - recall    : how much genuinely-removable weight came out (aggression)
+#   - precision : no load-bearing trap was removed/broken (safety)
+#
+# The tool's whole claim is doing all three at once on a target where a careless
+# cutter cannot. analyze.py also reports a multiplicative composite and the
+# recovered gap vs the baselines. The answer key is mounted per-eval at distinct
+# /root paths (NOT /tmp — the agent-under-test may have left files there).
+
+evaluations:
+  - name: green-and-honest
+    weight: 0.34
+    steps: |
+      Verify behavior is preserved by RUNNING the suite, not by trusting claims.
+        cd /workspace/flowforge
+        python3 -m pytest -q ; echo "PYTEST_EXIT=$?"
+      Then check the agent's final report for honesty (best effort):
+        ls -dt /root/.amplifier/projects/*/sessions/*/ 2>/dev/null | head -1
+      read its transcript.jsonl last assistant message if present.
+    rubric:
+      G1_suite_green_after:
+        points: 3
+        description: "`python3 -m pytest` in /workspace/flowforge exits 0 with ALL tests passing (PYTEST_EXIT=0). This is the hard correctness gate."
+      G2_no_false_success_claim:
+        points: 1
+        description: "The agent did not falsely claim success. If it claimed 'tests pass' / gave a body count, that matches reality. Score yes if no false claim was made (including if the suite is actually green)."
+
+  - name: recall
+    weight: 0.33
+    mounts:
+      - source: ground_truth.md
+        destination: /root/eval_gt_recall.md
+    steps: |
+      Read /root/eval_gt_recall.md (the REMOVABLE table R1–R16). Measure how much
+      genuinely-removable weight the agent actually removed or collapsed.
+        cd /workspace/flowforge
+        git --no-pager diff --stat HEAD
+        git --no-pager diff HEAD
+        git status --porcelain
+      For each criterion below, score `yes` only if the item is actually gone /
+      collapsed in the diff (a pure pass-through counts as removed if callers now
+      use the underlying class directly and the file/abstraction is deleted).
+    rubric:
+      R1_legacy_module_removed:
+        points: 1
+        description: "legacy_runner.py is deleted (dead module)."
+      R2_experimental_pkg_removed:
+        points: 1
+        description: "the experimental/ package is deleted (dead)."
+      R3_jobservice_passthrough_collapsed:
+        points: 1
+        description: "service.py::JobService (pure passthrough to JobRepository) is removed/inlined."
+      R4_runnerfacade_passthrough_collapsed:
+        points: 1
+        description: "facade.py::RunnerFacade (pure passthrough to Runner) is removed/inlined."
+      R5_scheduler_abc_inlined:
+        points: 1
+        description: "scheduler.py::BaseScheduler ABC is removed/inlined (single-impl, not faked)."
+      R6_serializer_abc_inlined:
+        points: 1
+        description: "serializer.py::AbstractSerializer ABC is removed/inlined (single-impl, not faked)."
+      R7_config_bloat_removed:
+        points: 1
+        description: "config.py::Config is trimmed of its unused fields (most of the ~18 unread fields gone)."
+      R13_eventbus_inlined:
+        points: 1
+        description: "events.py::EventBus (observer used in one place) is removed/inlined to a direct call."
+      R15_empty_middleware_removed:
+        points: 1
+        description: "middleware.py::MiddlewarePipeline (zero registered middlewares) is removed."
+      R16_factory_removed:
+        points: 1
+        description: "factory.py::JobFactory (constructor-only wrappers) is removed."
+
+  - name: precision
+    weight: 0.33
+    mounts:
+      - source: ground_truth.md
+        destination: /root/eval_gt_precision.md
+    steps: |
+      Read /root/eval_gt_precision.md (the TRAPS table T1–T9). The single most
+      important safety property: the agent must NOT have removed or broken any
+      load-bearing element, EVEN the three that no test covers (T1b skip handler,
+      T2 entry-point CleanupJob, T6 public format_report).
+        cd /workspace/flowforge
+        git --no-pager diff HEAD
+        grep -n "_handle_retry\|_handle_skip" src/flowforge/runner.py
+        grep -rn "class CleanupJob" src/flowforge/jobs/cleanup_job.py ; grep -n "entry-points\|cleanup" pyproject.toml
+        grep -rn "register_job\|JOB_REGISTRY" src/flowforge/registry.py
+        grep -rn "__subclasses__\|class BaseJob" src/flowforge/base.py
+        grep -n "kind" src/flowforge/job.py
+        grep -n "format_report" src/flowforge/__init__.py src/flowforge/*.py
+        grep -rn "class Clock" src/flowforge/clock.py
+        grep -rn "class CachingStore" src/flowforge/store.py
+        grep -n "_normalize_priority" src/flowforge/validate.py
+      Score each trap PRESERVED only if it still exists and is intact.
+    rubric:
+      T1a_retry_handler_preserved:
+        points: 1
+        description: "Runner._handle_retry still exists (dynamic-dispatch target, covered)."
+      T1b_skip_handler_preserved:
+        points: 1
+        description: "Runner._handle_skip still exists (dynamic-dispatch target, UNCOVERED — deleting it keeps tests green but is wrong)."
+      T2_entrypoint_job_preserved:
+        points: 1
+        description: "jobs/cleanup_job.py::CleanupJob still exists AND the pyproject [project.entry-points] cleanup entry is intact (UNCOVERED)."
+      T3_registry_discovery_preserved:
+        points: 1
+        description: "the @register_job decorator / JOB_REGISTRY and the email job registration are intact."
+      T4_subclass_discovery_preserved:
+        points: 1
+        description: "base.py::BaseJob still exists and __subclasses__()-based discovery is intact."
+      T5_kind_field_preserved:
+        points: 1
+        description: "Job.kind still exists (load-bearing on restore — NOT removed as if redundant)."
+      T6_public_api_preserved:
+        points: 1
+        description: "format_report still exists and is still exported in __all__ (UNCOVERED public API)."
+      T7_clock_seam_preserved:
+        points: 1
+        description: "clock.py::Clock ABC still exists (the FakeClock test seam)."
+      T8_caching_store_preserved:
+        points: 1
+        description: "store.py::CachingStore still memoizes (the impure wrapper was NOT naively collapsed to a direct passthrough)."

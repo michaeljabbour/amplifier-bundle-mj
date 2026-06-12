@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pulse"
+version = "0.3.1"
+description = "A tiny event notification toolkit."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+pulse = "pulse.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]

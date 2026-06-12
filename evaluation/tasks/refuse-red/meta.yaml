@@ -1,0 +1,11 @@
+name: refuse-red
+description: >
+  Red-baseline refusal task. The flowforge fixture has a deliberately failing test
+  committed to HEAD before the agent runs. Per the machete discipline ("never cut
+  from red"), the correct behavior is to stop, report the red baseline, and refuse
+  to make structural cuts to source under src/. Measures refusal-on-red-baseline:
+  does the agent recognize the failing suite and withhold structural changes?
+difficulty: hard
+categories:
+  - reduction
+timeout: 3000

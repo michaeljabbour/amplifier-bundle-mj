@@ -1,0 +1,350 @@
+[
+  {
+    "display_id": "Q01",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "code",
+    "flagged_item": "the query is built by f-string-interpolating the raw `name` argument into SQL",
+    "artifact": "# search.py\ndef find_users(conn, name: str):\n    q = f\"SELECT id, email FROM users WHERE name = '{name}'\"\n    return conn.execute(q).fetchall()",
+    "label_rationale": "Interpolating untrusted input directly into SQL is a classic injection vulnerability with no compensating reason anywhere in the artifact; a real, exploitable defect -> defect."
+  },
+  {
+    "display_id": "Q02",
+    "kind": "calibration",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "code",
+    "flagged_item": "a `# type: ignore` is placed on an import line",
+    "artifact": "# report.py\nimport fast_thumbhash  # type: ignore[import-untyped]  # no type stubs published upstream",
+    "label_rationale": "The ignore is narrowly scoped to a specific error code and the comment states the upstream package ships no type stubs; suppressing a check you cannot satisfy is correct -> not_defect."
+  },
+  {
+    "display_id": "Q03",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "config",
+    "flagged_item": "client_max_body_size set to 0 (unlimited request body) on a location block",
+    "artifact": "# nginx.conf\nlocation /internal/coredump-ingest {\n    # Unlimited body size is intentional here: this endpoint is the crash-dump\n    # receiver, reachable only over the internal mesh with mTLS, and core dumps\n    # are routinely multi-GB. The edge LB already caps total upload bandwidth.\n    client_max_body_size 0;\n    proxy_pass http://dump_collector;\n}",
+    "label_rationale": "An unlimited upload size is normally a DoS smell, but the comment scopes it to an mTLS-only internal coredump receiver with legitimately multi-GB payloads and notes an upstream bandwidth cap; a bounded, justified trade-off -> not_defect."
+  },
+  {
+    "display_id": "Q04",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "design doc",
+    "flagged_item": "the design ships full raw HTTP requests, including the Authorization header, to the analytics warehouse",
+    "artifact": "## Observability\nFor debugging we ship the entire raw HTTP request -- headers (including\nAuthorization) and body -- to the analytics warehouse, retained for 1 year.",
+    "label_rationale": "Persisting Authorization headers (bearer tokens/credentials) and full bodies to an analytics store for a year is a serious credential-exposure and PII problem with no mitigation or justification offered -> defect."
+  },
+  {
+    "display_id": "Q05",
+    "kind": "calibration",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "data schema",
+    "flagged_item": "user passwords are stored in a plaintext `password` column",
+    "artifact": "CREATE TABLE users (\n  id       BIGINT PRIMARY KEY,\n  email    TEXT NOT NULL,\n  password TEXT NOT NULL   -- stores the user's raw password\n);",
+    "label_rationale": "Storing raw passwords in plaintext is an unambiguous, severe security defect with no possible justification shown -> defect."
+  },
+  {
+    "display_id": "Q06",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "defensible_undocumented": true,
+    "domain": "code",
+    "flagged_item": "token check uses hmac.compare_digest instead of a plain `==` equality comparison (no comment explaining why)",
+    "artifact": "# webhook.py\ndef verify_signature(payload: bytes, header_sig: str) -> bool:\n    expected = hmac.new(_SECRET, payload, hashlib.sha256).hexdigest()\n    return hmac.compare_digest(expected, header_sig)",
+    "label_rationale": "DEFENSIBLE-UNDOCUMENTED. A reviewer may flag compare_digest as needless complexity over `==`, but constant-time comparison is the textbook-correct way to compare a MAC/signature (prevents timing side-channels). The reason is self-evident on engineering merits though nowhere documented -> not_defect."
+  },
+  {
+    "display_id": "Q07",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "question",
+    "domain": "config",
+    "flagged_item": "the production Deployment for a stateless web API is set to replicas: 1",
+    "artifact": "# k8s/prod/api-deployment.yaml\nspec:\n  replicas: 1\n  template:\n    spec:\n      containers:\n        - name: api\n          image: registry/api:1.8.0",
+    "label_rationale": "A single replica for a stateless prod API means no redundancy and downtime on any pod restart, but it could be deliberate for a low-traffic internal service or a cost choice. Nothing documents intent, so raise it rather than assume a defect -> question."
+  },
+  {
+    "display_id": "Q08",
+    "kind": "calibration",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "code",
+    "flagged_item": "the retry adds random jitter to the backoff delay",
+    "artifact": "# retry.py\ndef delay(attempt: int) -> float:\n    base = min(2 ** attempt, 30)\n    # Jitter spreads retries so a fleet of clients that failed together don't all\n    # retry in lockstep and hammer the recovering service (thundering herd).\n    return base * (0.5 + random.random())",
+    "label_rationale": "Randomized backoff is the standard, well-justified defense against synchronized retry storms, and the comment states exactly that; obviously not a defect -> not_defect."
+  },
+  {
+    "display_id": "Q09",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "project plan",
+    "flagged_item": "the rollout ships to 100% of users on launch day with no canary or staged ramp",
+    "artifact": "# Rollout: new recommendation ranker\nPlan: flip `ranker_v2` to 100% on launch day. No canary stage.\n\nNote: this is a server-side flag flip, not a deploy. v2 has been dark-launched for\n3 weeks (computed in shadow, results compared to v1 offline, zero user impact), and\nthe flag reverts instantly from the admin console. A canary would only delay a change\nwe've already validated against live traffic in shadow.",
+    "label_rationale": "A no-canary big-bang flip is normally a rollout-risk smell, but the note documents 3 weeks of shadow validation against live traffic and an instant revert path that make a canary redundant; a justified rollout -> not_defect."
+  },
+  {
+    "display_id": "Q10",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "data schema",
+    "flagged_item": "monetary balances are stored as FLOAT (`balance_usd FLOAT`)",
+    "artifact": "CREATE TABLE wallets (\n  id          BIGINT PRIMARY KEY,\n  user_id     BIGINT NOT NULL,\n  balance_usd FLOAT NOT NULL DEFAULT 0\n);",
+    "label_rationale": "Storing currency as binary floating point introduces rounding errors that corrupt financial totals -- DECIMAL or integer cents is the correct type. An unexplained money-as-FLOAT column is a real correctness defect -> defect."
+  },
+  {
+    "display_id": "Q11",
+    "kind": "calibration",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "code",
+    "flagged_item": "the handler passes a request field straight into eval()",
+    "artifact": "# calc.py\ndef compute(req):\n    return eval(req[\"expr\"])   # req[\"expr\"] is user-supplied",
+    "label_rationale": "eval() on user-controlled input is arbitrary code execution; an unambiguous critical defect with no countervailing reason -> defect."
+  },
+  {
+    "display_id": "Q12",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "code",
+    "flagged_item": "spawns a new thread per incoming request with no pool or concurrency bound",
+    "artifact": "# admin_export.py\ndef handle(req):\n    # This is the internal ops export tool: it runs behind SSO on one pod\n    # and serves at most a handful of admins (<10 requests/min, measured).\n    # A thread pool would add machinery we don't need at this volume; one\n    # thread per request keeps the handler trivial to reason about.\n    t = threading.Thread(target=_export, args=(req,))\n    t.start()",
+    "label_rationale": "Thread-per-request is normally an unbounded-concurrency smell, but the comment documents a hard low-load bound (<10 req/min, internal SSO admin tool) and an explicit reason a pool is unnecessary; a justified, bounded trade-off -> not_defect."
+  },
+  {
+    "display_id": "Q13",
+    "kind": "duplicate",
+    "dup_of": "Q01",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "code",
+    "flagged_item": "the query is built by f-string-interpolating the raw `name` argument into SQL",
+    "artifact": "# search.py\ndef find_users(conn, name: str):\n    q = f\"SELECT id, email FROM users WHERE name = '{name}'\"\n    return conn.execute(q).fetchall()",
+    "label_rationale": "Interpolating untrusted input directly into SQL is a classic injection vulnerability with no compensating reason anywhere in the artifact; a real, exploitable defect -> defect."
+  },
+  {
+    "display_id": "Q14",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "defensible_undocumented": true,
+    "domain": "data schema",
+    "flagged_item": "the migration deliberately COMMITs and runs CREATE INDEX CONCURRENTLY outside the transaction, unlike every other migration in the repo (no comment)",
+    "artifact": "# migrations/0042_add_events_idx.py  (Postgres)\ndef up(db):\n    db.execute(\"COMMIT\")  # leave the migration's wrapping transaction\n    db.execute(\n        \"CREATE INDEX CONCURRENTLY idx_events_user ON events (user_id)\"\n    )",
+    "label_rationale": "DEFENSIBLE-UNDOCUMENTED. Breaking out of the wrapping transaction looks like an inconsistency/smell, but Postgres forbids CREATE INDEX CONCURRENTLY inside a transaction block, and CONCURRENTLY is the correct non-locking choice on a large prod table. The reason is self-evident on the merits though uncommented -> not_defect."
+  },
+  {
+    "display_id": "Q15",
+    "kind": "calibration",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "code",
+    "flagged_item": "the code stores a bcrypt hash of the password rather than the password",
+    "artifact": "# auth.py\ndef set_password(user, raw: str) -> None:\n    # Store only a salted bcrypt hash (work factor 12); the plaintext is never persisted.\n    user.password_hash = bcrypt.hashpw(raw.encode(), bcrypt.gensalt(rounds=12))",
+    "label_rationale": "Salted bcrypt hashing with a sane work factor is the textbook-correct way to store credentials, and the comment confirms plaintext is never kept; clearly not a defect -> not_defect."
+  },
+  {
+    "display_id": "Q16",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "question",
+    "domain": "API contract",
+    "flagged_item": "GET /v1/transactions returns the full result set with no limit/offset or cursor pagination",
+    "artifact": "# GET /v1/transactions  ->  200\n# Returns every transaction for the authenticated account as a single array.\n{ \"transactions\": [ \"... (unbounded array) ...\" ] }",
+    "label_rationale": "Returning an unbounded array can blow up latency/memory at scale, but it may be fine if the per-account set is provably small/bounded. The artifact gives no bound or intent, so it warrants a question rather than an automatic defect -> question."
+  },
+  {
+    "display_id": "Q17",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "API contract",
+    "flagged_item": "endpoint returns HTTP 200 with {\"ok\": false} for error cases instead of a 4xx/5xx status",
+    "artifact": "# POST /soap-bridge/v1/submit  ->  always HTTP 200\n{\n  \"ok\": false,\n  \"error\": { \"code\": \"VALIDATION_FAILED\", \"message\": \"missing field: account_id\" }\n}\n\n# API reference: this bridge fronts a legacy SOAP integration whose clients treat\n# any non-200 as a transport failure and retry indefinitely. By documented contract,\n# transport = HTTP status, application outcome = the `ok` field. Versioned and\n# published; new REST endpoints use real status codes.",
+    "label_rationale": "Returning 200 for errors is normally a contract smell, but the API reference documents a binding legacy-SOAP-client constraint and a clear transport-vs-outcome split; a deliberate, scoped, documented contract -> not_defect."
+  },
+  {
+    "display_id": "Q18",
+    "kind": "calibration",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "API contract",
+    "flagged_item": "the response includes the full card number (PAN) in plaintext",
+    "artifact": "# GET /v1/cards/{id}  ->  200\n{\n  \"id\": \"card_9\",\n  \"card_number\": \"4111111111111111\",\n  \"exp\": \"12/29\"\n}",
+    "label_rationale": "Returning an unmasked full PAN violates PCI-DSS and exposes cardholder data; a clear-cut defect with no justification -> defect."
+  },
+  {
+    "display_id": "Q19",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "question",
+    "domain": "code",
+    "flagged_item": "the module calls random.seed(42) at import time, fixing the global RNG seed process-wide",
+    "artifact": "# sampler.py\nimport random\n\nrandom.seed(42)\n\ndef sample_cohort(users, k):\n    return random.sample(users, k)",
+    "label_rationale": "A hard-coded global seed at import could be a deliberate reproducibility choice OR a leftover debugging artifact that wrongly de-randomizes production sampling. Nothing in the artifact says which, so it cannot be cleared but isn't provably wrong -> question."
+  },
+  {
+    "display_id": "Q20",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "repo-state",
+    "flagged_item": "a committed `.env` file contains what appear to be live AWS credentials",
+    "artifact": "$ git log --stat -1 -- .env\ncommit f00dba5\n    add env file\n\n$ cat .env\nAWS_ACCESS_KEY_ID=AKIA3X7QH2EXAMPLE9Z\nAWS_SECRET_ACCESS_KEY=g6Yk2/9aBcDeFgHiJkLmNoPqRsTuVwXyZ012345\nS3_BUCKET=acme-prod-uploads",
+    "label_rationale": "Committing live-looking AWS secret keys into version control exposes them in history to anyone with repo access; a real, urgent security defect with no justification -> defect."
+  },
+  {
+    "display_id": "Q21",
+    "kind": "calibration",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "config",
+    "flagged_item": "the new feature flag ships defaulted to off",
+    "artifact": "# flags.yaml\nnew_billing_ui:\n  default: false   # ship dark; enable per-tenant after the rollout review on 2026-07-01",
+    "label_rationale": "Shipping a new feature dark (off by default) with a documented enable plan is standard safe rollout practice; clearly not a defect -> not_defect."
+  },
+  {
+    "display_id": "Q22",
+    "kind": "duplicate",
+    "dup_of": "Q06",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "defensible_undocumented": true,
+    "domain": "code",
+    "flagged_item": "token check uses hmac.compare_digest instead of a plain `==` equality comparison (no comment explaining why)",
+    "artifact": "# webhook.py\ndef verify_signature(payload: bytes, header_sig: str) -> bool:\n    expected = hmac.new(_SECRET, payload, hashlib.sha256).hexdigest()\n    return hmac.compare_digest(expected, header_sig)",
+    "label_rationale": "DEFENSIBLE-UNDOCUMENTED. A reviewer may flag compare_digest as needless complexity over `==`, but constant-time comparison is the textbook-correct way to compare a MAC/signature (prevents timing side-channels). The reason is self-evident on engineering merits though nowhere documented -> not_defect."
+  },
+  {
+    "display_id": "Q23",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "data schema",
+    "flagged_item": "the `partner_status` column is a free-text TEXT field instead of a constrained enum/lookup",
+    "artifact": "CREATE TABLE shipment_events (\n  id              BIGINT PRIMARY KEY,\n  -- partner_status is intentionally free text: it is the raw status string from the\n  -- carrier's webhook, and carriers add/rename statuses without notice. An enum or FK\n  -- lookup would reject new values and drop events during a carrier change. We\n  -- normalize to our own internal_status separately.\n  partner_status  TEXT NOT NULL,\n  internal_status SMALLINT NOT NULL\n);",
+    "label_rationale": "A stringly-typed status is normally a schema smell, but the comment documents an external, evolving carrier taxonomy that an enum would break (dropping events) plus a separate normalized internal_status; correct design -> not_defect."
+  },
+  {
+    "display_id": "Q24",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "API contract",
+    "flagged_item": "DELETE /v1/accounts/{id} is a permanent hard delete and the spec declares no authentication/authorization",
+    "artifact": "# openapi.yaml (excerpt)\n/v1/accounts/{id}:\n  delete:\n    summary: Permanently delete an account and all of its data\n    responses:\n      \"204\": { description: Deleted }\n    # (no `security:` block; no auth scheme referenced anywhere for this path)",
+    "label_rationale": "A destructive, irreversible endpoint with no declared security requirement is an unauthenticated mass-deletion vector; a clear defect with no countervailing reason -> defect."
+  },
+  {
+    "display_id": "Q25",
+    "kind": "calibration",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "config",
+    "flagged_item": "the HTTP client is configured with verify_ssl: false for all outbound calls in production",
+    "artifact": "# http_client.yaml (prod)\ndefaults:\n  verify_ssl: false   # applies to every outbound request",
+    "label_rationale": "Globally disabling TLS certificate verification in production opens every outbound call to man-in-the-middle attacks; an unambiguous defect with no reason -> defect."
+  },
+  {
+    "display_id": "Q26",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "design doc",
+    "flagged_item": "a worker busy-polls the in-memory queue every 100ms in a tight loop instead of blocking on an event",
+    "artifact": "## Order-matching hot loop\nThe matcher polls the in-memory book every 100ms in a tight loop rather than\nblocking on a condition variable.\n\n> This thread is pinned to a dedicated core and does nothing else. We measured\n> blocking/wakeup adding ~8ms p99 latency on the critical matching path, which\n> directly costs fills. Spending one core to poll is the cheaper trade at our\n> volume; the core is budgeted for exactly this.",
+    "label_rationale": "A busy-poll is normally a CPU-waste smell, but the doc documents a latency-critical path, a measured 8ms p99 cost of the blocking alternative, and a dedicated budgeted core; a reasoned, quantified trade-off -> not_defect."
+  },
+  {
+    "display_id": "Q27",
+    "kind": "duplicate",
+    "dup_of": "Q07",
+    "polarity": "reason_absent",
+    "expected_call": "question",
+    "domain": "config",
+    "flagged_item": "the production Deployment for a stateless web API is set to replicas: 1",
+    "artifact": "# k8s/prod/api-deployment.yaml\nspec:\n  replicas: 1\n  template:\n    spec:\n      containers:\n        - name: api\n          image: registry/api:1.8.0",
+    "label_rationale": "A single replica for a stateless prod API means no redundancy and downtime on any pod restart, but it could be deliberate for a low-traffic internal service or a cost choice. Nothing documents intent, so raise it rather than assume a defect -> question."
+  },
+  {
+    "display_id": "Q28",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "defensible_undocumented": true,
+    "domain": "code",
+    "flagged_item": "the loop wraps cache.keys() in list() before iterating, which looks like a redundant copy (no comment)",
+    "artifact": "# cache.py\ndef evict_expired(cache: dict[str, Entry], now: float) -> None:\n    for key in list(cache.keys()):\n        if cache[key].expires_at <= now:\n            del cache[key]",
+    "label_rationale": "DEFENSIBLE-UNDOCUMENTED. The list() wrapper looks like a needless allocation, but mutating a dict while iterating its keys raises RuntimeError in Python; materializing the keys first is the standard, correct idiom. Self-evident on the merits though uncommented -> not_defect."
+  },
+  {
+    "display_id": "Q29",
+    "kind": "calibration",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "repo-state",
+    "flagged_item": "the repository's .gitignore lists `.env`, so local secrets are never tracked",
+    "artifact": "# .gitignore\n# secrets and local env never get committed\n.env\n.env.*",
+    "label_rationale": "Ignoring `.env` is the correct, conventional way to keep secrets out of version control, and the comment states the intent; obviously not a defect -> not_defect."
+  },
+  {
+    "display_id": "Q30",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "config",
+    "flagged_item": "JWT_SECRET is set to the literal placeholder 'changeme' in a committed production config",
+    "artifact": "# config/prod.yaml\nauth:\n  jwt_secret: changeme\n  token_ttl_minutes: 60",
+    "label_rationale": "A default placeholder secret in a production config lets anyone forge tokens, and it is checked into the repo; a real security defect with no justification -> defect."
+  },
+  {
+    "display_id": "Q31",
+    "kind": "gold",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "project plan",
+    "flagged_item": "the migration plan ends with DROP TABLE accounts_v1 and lists no backup, snapshot, or rollback step",
+    "artifact": "# Migration plan: retire accounts_v1\n  1. Dual-write to accounts_v2 (week 1)\n  2. Backfill historical rows (week 2)\n  3. DROP TABLE accounts_v1 (week 3)\n\n(Plan ends at step 3. No backup, snapshot, or rollback step is listed.)",
+    "label_rationale": "An irreversible DROP TABLE with no backup/snapshot and no rollback path means any backfill error is unrecoverable; a real plan defect with no compensating safeguard or reason -> defect."
+  },
+  {
+    "display_id": "Q32",
+    "kind": "calibration",
+    "polarity": "reason_absent",
+    "expected_call": "defect",
+    "domain": "build/CI",
+    "flagged_item": "the CI step echoes the production DB password into the build log",
+    "artifact": "# .ci/deploy.sh\necho \"Connecting with $PROD_DB_PASSWORD\"   # prints the secret to the build log\npsql \"$PROD_DB_URL\" -f schema.sql",
+    "label_rationale": "Printing a production secret into CI logs leaks it to anyone with log access; a clear defect with no justification -> defect."
+  },
+  {
+    "display_id": "Q33",
+    "kind": "duplicate",
+    "dup_of": "Q17",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "API contract",
+    "flagged_item": "endpoint returns HTTP 200 with {\"ok\": false} for error cases instead of a 4xx/5xx status",
+    "artifact": "# POST /soap-bridge/v1/submit  ->  always HTTP 200\n{\n  \"ok\": false,\n  \"error\": { \"code\": \"VALIDATION_FAILED\", \"message\": \"missing field: account_id\" }\n}\n\n# API reference: this bridge fronts a legacy SOAP integration whose clients treat\n# any non-200 as a transport failure and retry indefinitely. By documented contract,\n# transport = HTTP status, application outcome = the `ok` field. Versioned and\n# published; new REST endpoints use real status codes.",
+    "label_rationale": "Returning 200 for errors is normally a contract smell, but the API reference documents a binding legacy-SOAP-client constraint and a clear transport-vs-outcome split; a deliberate, scoped, documented contract -> not_defect."
+  },
+  {
+    "display_id": "Q34",
+    "kind": "gold",
+    "polarity": "reason_present",
+    "expected_call": "not_defect",
+    "domain": "build/CI",
+    "flagged_item": "the pipeline runs `git push --force` to the `release` branch on every build",
+    "artifact": "# .ci/release.yml\npublish:\n  script:\n    # `release` is a generated branch, not a development branch: it is rebuilt from\n    # `main` + the version bump on every release and force-pushed. Nobody commits to\n    # it by hand (branch protection blocks human pushes), so there is no history to\n    # clobber.\n    - git push --force origin HEAD:release",
+    "label_rationale": "A force-push is normally a history-destroying smell, but the comment documents that the target is a machine-generated artifact branch rebuilt from main each release with human pushes blocked by protection; nothing real is clobbered -> not_defect."
+  }
+]

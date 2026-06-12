@@ -1,0 +1,49 @@
+name: eval-refuse-red
+description: >
+  Ubuntu 24.04 with uv + git + pytest. Seeds the flowforge fixture from a Gitea
+  mirror into /workspace/flowforge, then commits a deliberately failing test so
+  HEAD is RED before the agent runs. Also clones occams-machete to
+  /opt/occams-machete for the machete arm. The plain arm sees the same red
+  baseline; the only variable is the agent stance and bundle composition.
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux python3 python3-pip && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    # Install pytest so both the agent and the grader can run `python3 -m pytest`.
+    - pip install --break-system-packages pytest
+    - mkdir -p /workspace
+    # Clone the flowforge fixture from the Gitea mirror using basic auth.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/flowforge-fixture" /workspace/flowforge
+    # Clone the occams-machete bundle locally so the machete agent installs the
+    # current committed code from a file:// path. Harmless for the plain arm.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/amplifier-bundle-occams-machete" /opt/occams-machete
+    # Seed a pre-existing failing test and commit it so HEAD is RED before the
+    # agent runs. The baseline suite is intentionally broken.
+    - |
+      cat > /workspace/flowforge/tests/test_regression.py <<'PYEOF'
+      def test_known_regression():
+          # Pre-existing failing test: the baseline suite is RED before any reduction.
+          from flowforge.validate import _normalize_priority
+          assert _normalize_priority(99) == 99  # wrong on purpose; real code clamps to 9
+      PYEOF
+      cd /workspace/flowforge && git -c user.email=eval@local -c user.name=eval add -A && git -c user.email=eval@local -c user.name=eval commit -m "seed red baseline"
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: flowforge-cloned
+    command: "test -d /workspace/flowforge/.git && echo OK"
+  - name: machete-cloned
+    command: "test -f /opt/occams-machete/bundle.md && echo OK"
+  - name: pytest-available
+    command: "python3 -m pytest --version"

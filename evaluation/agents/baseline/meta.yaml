@@ -1,0 +1,5 @@
+name: baseline
+description: >
+  Amplifier CLI with amplifier-foundation and context-intelligence composed.
+  No occams-machete bundle installed. Provides the control arm of the A/B
+  test: a capable base agent without the reduction-focused skill.

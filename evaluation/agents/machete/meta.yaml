@@ -1,0 +1,6 @@
+name: machete
+description: >
+  Amplifier CLI with amplifier-foundation, context-intelligence, AND the
+  occams-machete bundle composed. The occams-machete bundle installs the
+  Occam's Machete skill, giving the agent a principled code-reduction
+  methodology. This is the treatment arm of the A/B test.

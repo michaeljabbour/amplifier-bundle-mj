@@ -1,0 +1,11 @@
+# Extraction hint. The agent runs from /workspace, so its sessions live under
+# the `-workspace` project slug. Pull the session data the grader may use.
+session_data:
+  base_path: /root/.amplifier/projects/-workspace/sessions/{session_id}
+  files:
+    - transcript.jsonl
+    - metadata.json
+    - events.jsonl
+
+workspace:
+  path: /workspace/flowforge

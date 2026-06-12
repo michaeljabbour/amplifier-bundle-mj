@@ -1,0 +1,6 @@
+# Cognition-fidelity Phase 1 harness dependencies
+# Pinned to the versions resolved into .venv at authoring time (2026-06-11).
+anthropic>=0.40,<1.0
+openai>=2.0,<3.0
+scipy>=1.13,<2.0
+numpy>=1.26,<3.0

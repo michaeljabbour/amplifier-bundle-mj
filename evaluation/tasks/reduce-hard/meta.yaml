@@ -1,0 +1,12 @@
+name: reduce-hard
+description: >
+  Hard-baseline code reduction task. The flowforge fixture starts with all tests
+  passing. Measures three axes that must hold together: recall (how much genuinely-
+  removable weight came out), precision (none of the load-bearing traps removed),
+  and green (tests still pass). Harder than reduce-green: 16 removable items,
+  9 traps (including 3 that no test covers), and a fixture designed to trip both
+  timid and aggressive strategies.
+difficulty: hard
+categories:
+  - reduction
+timeout: 3000

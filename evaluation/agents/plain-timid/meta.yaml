@@ -1,0 +1,6 @@
+name: plain-timid
+description: >
+  Amplifier CLI with amplifier-foundation and context-intelligence composed.
+  No occams-machete bundle installed. Conservative stance: only removes code
+  it is certain is dead or unused. One of two plain-arm controls in the 3-arm
+  comparison; the independent variable is stance (timid vs aggressive vs machete).

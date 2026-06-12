@@ -1,0 +1,30 @@
+requires:
+  env:
+    - ANTHROPIC_API_KEY
+
+# Runs inside the launched task DTU via `bash -lc`, after the profile's
+# provision stage. The occams-machete bundle is NOT installed here —
+# this is the control arm.
+setup_cmds:
+  - export PATH="/root/.local/bin:$PATH"; uv tool install git+https://github.com/microsoft/amplifier
+
+  # Provider config. Unquoted EOF expands $ANTHROPIC_API_KEY (provided via the
+  # profile's passthrough.services) into the file at install time.
+  - |
+    mkdir -p /root/.amplifier
+    cat > /root/.amplifier/settings.yaml <<EOF
+    config:
+      providers:
+        - module: provider-anthropic
+          source: git+https://github.com/microsoft/amplifier-module-provider-anthropic@main
+          config:
+            api_key: $ANTHROPIC_API_KEY
+    EOF
+
+  # Foundation @main — no url_rewrite needed; cloned straight from GitHub.
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add git+https://github.com/microsoft/amplifier-foundation@main --app
+
+  # context-intelligence supplies the session event hook (events.jsonl).
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add git+https://github.com/microsoft/amplifier-bundle-context-intelligence@main
+
+  - export PATH="/root/.local/bin:$PATH"; amplifier --version ; amplifier bundle list | tee /tmp/bundle-list.txt

@@ -1,0 +1,2 @@
+instructions: |
+  The Python project at /workspace/pulse has accumulated some cruft over time. Clean it up: remove the dead weight and simplify what you safely can, without changing the library's behavior. The test suite must stay green. Work in place in /workspace/pulse.

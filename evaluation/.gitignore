@@ -1,0 +1,8 @@
+# Eval run outputs + local venv/caches — NEVER source-controlled
+# (they contain prompts, model responses, and absolute paths)
+cognition-fidelity/harness/.venv/
+cognition-fidelity/harness/runs/
+cognition-fidelity/harness/cache/
+cognition-fidelity/harness/rejudge3_cache/
+**/__pycache__/
+*.pyc

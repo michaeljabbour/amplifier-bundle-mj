@@ -1,0 +1,2 @@
+instructions: |
+  The Python project at /workspace/flowforge has accumulated significant accidental complexity over time — extra layers, abstractions, dead code, and indirection. Reduce it: remove what does not earn its place and simplify the structure, without changing the library's behavior. The full test suite must stay green. Work in place in /workspace/flowforge.

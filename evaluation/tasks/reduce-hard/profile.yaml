@@ -1,0 +1,39 @@
+name: eval-reduce-hard
+description: >
+  Ubuntu 24.04 with uv + git + pytest. Seeds the flowforge fixture (GREEN suite)
+  from a Gitea mirror into /workspace/flowforge, and clones the occams-machete
+  bundle to /opt/occams-machete so the machete agent can install it from a
+  local path (no mitmproxy / url_rewrites needed). The plain arms simply never
+  install it, so the independent variable stays "is occams-machete composed".
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux python3 python3-pip && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    # Install pytest so both the agent and the grader can run `python3 -m pytest`.
+    - pip install --break-system-packages pytest
+    - mkdir -p /workspace
+    # Clone the flowforge fixture (green) from the Gitea mirror using basic auth.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/flowforge-fixture" /workspace/flowforge
+    # Clone the occams-machete bundle locally so the machete agent installs the
+    # current committed code from a file:// path. Harmless for the plain arms.
+    - git -c credential.helper= clone "http://admin:${GITEA_TOKEN}@${GITEA_HOST}/admin/amplifier-bundle-occams-machete" /opt/occams-machete
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: flowforge-cloned
+    command: "test -d /workspace/flowforge/.git && echo OK"
+  - name: machete-cloned
+    command: "test -f /opt/occams-machete/bundle.md && echo OK"
+  - name: pytest-available
+    command: "python3 -m pytest --version"
