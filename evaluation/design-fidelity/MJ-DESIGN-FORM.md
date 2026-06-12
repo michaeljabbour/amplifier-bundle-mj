@@ -34,10 +34,10 @@ Your SaaS charges a flat $49/user/month. Sales reports that large prospects balk
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 2
+- direction: redesign
+- load-bearing concern: An irreversible revenue-model bet with zero metering infrastructure and zero willingness-to-pay evidence.
+- read: The pain signal (large prospects balking at per-seat) is real, but the proposal jumps straight to the heaviest possible answer. Reshape it: run a WTP study, build minimal metering as shadow instrumentation, and pilot a hybrid (platform fee + usage) with a handful of large new deals. Commit to the full switch only after the pilot shows billing predictability doesn't tank retention — CS's churn worry is exactly what killed this for other companies.
 
 ---
 
@@ -49,10 +49,10 @@ Three product teams each maintain their own service for sending notifications (e
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 0
+- direction: kill
+- load-bearing concern: A solution without a felt problem — no team reported pain; the duplication was found by an audit, not by anyone living with it.
+- read: Platformization makes three independently-shipping teams hostage to a shared release cadence and a live-traffic migration, in exchange for fixing pain nobody reported. The coordination tax almost certainly exceeds the cost of 40% duplicated code. If the retry-logic duplication itches, extract a small shared library teams can adopt voluntarily — that captures most of the value at none of the coupling. Kill the central service.
 
 ---
 
@@ -64,10 +64,10 @@ A 10-engineer team merges PRs whenever someone gets around to reviewing. Lately 
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: ship-as-is
+- load-bearing concern: Measured pain (2–4 day review latency plus incident-causing rubber-stamps) met by a minimal, reversible remedy.
+- read: This is the right-sized response: the incidents prove the informal approach stopped scaling, and everything proposed (SLA target, soft size cap, rotation) is lightweight and trivially revertible if it turns out to be bureaucracy. Ship it, revisit in a month.
 
 ---
 
@@ -89,10 +89,10 @@ It has a unit test covering both branches. A reviewer notes there's no handling 
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 0
+- direction: ship-as-is
+- load-bearing concern: Proportionality — it's a tested two-call-site helper for a 15-person internal dashboard.
+- read: All three reviewer notes are gold-plating at this blast radius: 'yesterday/tomorrow' is unrequested scope, localization is irrelevant for an internal admin tool, and the clock-freeze testing pattern is standard and already working. Injecting now() is a fine nice-to-have if the author wants it, but none of this should block merge.
 
 ---
 
@@ -104,10 +104,10 @@ Your consumer mobile app grew by bolting features onto a single home feed. Reten
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 2
+- direction: redesign
+- load-bearing concern: A 3-month irreversible nav rework justified only by qualitative evidence, with a cheaper testable alternative on the table.
+- read: The cohort insight is plausible but a 200-person qual study can't carry a bet this size against nervous-leadership DAU risk. Reshape the plan: run the behavioral cohort analysis to confirm the split exists in usage data, ship incremental feed personalization as an A/B first, and keep the mode-split as the follow-on if personalization moves nothing. Same destination, staged risk.
 
 ---
 
@@ -119,10 +119,10 @@ Your app runs on PostgreSQL. A new feature lets users explore 'who-knows-whom' c
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: kill
+- load-bearing concern: Cheap options inside the existing stack are unexhausted, against a new datastore nobody on the team can operate.
+- read: Adding Neo4j plus a CDC sync pipeline for a 5%-beta feature is a permanent operational surface bought before anyone tried indexing, query reshaping, caching, or a precomputed edge-closure table in Postgres — where the team's expertise actually is. Kill the proposal for now; timebox a week of in-Postgres optimization, and only reopen the graph-DB conversation if the budget provably can't be met.
 
 ---
 
@@ -134,10 +134,10 @@ A team of 12 has organically grown 40 Slack channels. A new ops person proposes 
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: tweak
+- load-bearing concern: Cost-benefit — the pinned index solves the only real observed pain (newcomer disorientation) for near-zero ongoing cost.
+- read: Adopt the cheap pieces: pinned channel index and an onboarding shortlist. Skip the enforced naming convention and archive policy — that's ongoing curation overhead for a 12-person team whose members 'mostly find what they need.' If the team doubles, revisit.
 
 ---
 
@@ -158,10 +158,10 @@ An incident review found that during a gateway slowdown, the three fixed-interva
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: ship-as-is
+- load-bearing concern: The change directly removes the incident's root cause and is config-only, reversible, and safe under idempotency.
+- read: Exponential backoff with jitter, a sane timeout, and fewer retries is the textbook fix for retry-driven pool exhaustion, and idempotency keys remove the double-charge risk. Sanity-check 8s against the gateway's real p99 before shipping, but this is exactly the kind of low-risk, incident-driven change you approve without ceremony.
 
 ---
 
@@ -173,10 +173,10 @@ You run a B2B product with a 'Reports' module. Analytics show only 8% of account
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 0
+- direction: kill
+- load-bearing concern: Revenue concentration — the 8% usage sits in the top revenue decile and is explicitly cited in renewals.
+- read: Monthly open-rate is the wrong metric: the module is cheap to run, stable, and load-bearing for your biggest contracts. Sunsetting it with no replacement trades one engineer of capacity for renewal risk on top-decile accounts — a terrible exchange rate. Kill the sunset; if the maintenance cost rankles, scope a lighter replacement first and migrate before retiring anything.
 
 ---
 
@@ -188,10 +188,10 @@ Your app runs on PostgreSQL. A new feature lets users explore 'who-knows-whom' c
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: kill
+- load-bearing concern: Unexhausted in-Postgres options versus a new operational surface the team has never run in production.
+- read: Same call as any premature-datastore proposal: 2.1s p95 is a starting point, not a verdict — nobody has tried query reshaping, caching, or precomputed adjacency/closure tables yet. Timebox the optimization work in the stack the team knows; bring in a graph DB only if the feature graduates from beta and Postgres provably can't hit budget.
 
 ---
 
@@ -203,10 +203,10 @@ A feature flag `new_checkout_enabled` was introduced 14 months ago for a gradual
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: tweak
+- load-bearing concern: The dead branch is no longer a viable rollback — 11 months unexercised means flipping it back would itself be an incident.
+- read: Remove the flag and the old checkout path. The 'in case we roll back' rationale is illusory: code that hasn't run against a year of changes isn't a safety net, it's a trap, and meanwhile it taxes every reader (as this new hire just demonstrated). Git history is the real rollback. Local, reversible cleanup — good first task for the new hire.
 
 ---
 
@@ -218,10 +218,10 @@ A 10-engineer team merges PRs whenever someone gets around to reviewing. Lately 
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: ship-as-is
+- load-bearing concern: Concrete, measured pain — multi-day review latency and rubber-stamp incidents — answered by a minimal reversible policy.
+- read: The incidents settle the 'is this bureaucracy?' debate: the informal system already failed in production. Every element proposed is soft, cheap, and revertible. Adopt it as written and review whether it helped in 4–6 weeks.
 
 ---
 
@@ -233,10 +233,10 @@ Your public REST API (used by ~300 third-party integrators) has no versioning sc
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 2
+- direction: tweak
+- load-bearing concern: Breaking 300 integrators — including slow-release-cycle revenue drivers — on a 60-day email deadline is uncollectable.
+- read: Version the API, but amend the proposal: don't promise v1 'indefinitely.' Ship /v2, keep v1 behind the translation layer with a published 12-month deprecation window, and instrument v1 usage so you can chase down the long tail. The in-place-break alternative saves machinery but bets large revenue on every integrator shipping inside 60 days, which their release cycles say they won't.
 
 ---
 
@@ -257,10 +257,10 @@ An incident review found that during a gateway slowdown, the three fixed-interva
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 1
+- direction: ship-as-is
+- load-bearing concern: Incident-validated fix, idempotent calls, config-only and trivially reversible — risk is about as low as changes get.
+- read: This addresses the exact failure mode from the review (synchronized retries + long timeout exhausting the pool) with the standard remedy. Verify the 8s timeout clears the gateway's legitimate slow path, then ship.
 
 ---
 
@@ -272,10 +272,10 @@ A 7-person engineering team holds a 15-minute daily standup. A new manager, citi
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 0
+- direction: kill
+- load-bearing concern: No measured problem — the team ships reliably, and the people closest to blocker-surfacing say the standup is where it happens.
+- read: This is change driven by a manager's general sentiment, not evidence, and the cost it would pay (losing the one reliable blocker-surfacing point, per the seniors) is concrete while the benefit (15 minutes) is trivial for a co-located single-timezone team. Don't replace it. If meeting load is the real complaint, audit the whole calendar — the daily standup is the wrong target.
 
 ---
 
@@ -287,7 +287,7 @@ You run a B2B product with a 'Reports' module. Analytics show only 8% of account
 
 *What's the right call here, and how heavy a change is warranted?*
 
-- grit:
-- direction:
-- load-bearing concern:
-- read:
+- grit: 0
+- direction: kill
+- load-bearing concern: The 'low-usage' framing hides that the users are top-decile revenue accounts citing reports in renewal decisions.
+- read: One engineer of maintenance on a stable, low-ticket module is cheap insurance on your largest contracts. Removing it with no replacement converts a quiet asset into active churn risk exactly where churn is most expensive. Kill the sunset proposal; revisit only with a replacement plan that's validated with those accounts.
