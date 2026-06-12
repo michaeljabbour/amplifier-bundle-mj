@@ -1,0 +1,25 @@
+{
+  "study": "occams-machete cognition-fidelity Phase 1 (anti-conflation guard)",
+  "frozen_at_utc": "2026-06-12T02:27:56.365741Z",
+  "artifact_sha256": {
+    "context/mj-profile.md": "ac01bd855718af00bf230eafe8b67d000ba8a9bcddfeb21b7cbc492fa3a0df24",
+    "agents/mj-reviewer.md": "d9f0a875a1d6ac1c031f8cc106e396db7101670d6e39e3232afbed3684cd9151",
+    "skills/occams-machete/SKILL.md": "264f6c456c21e4e0538af76d86843c040a0c5f1319c830e43608dfa1af71a510",
+    "bundle.md": "212676aa37eea18f471345f4011cca64caf45961fa069e0cfeaa76fba34ac6e5"
+  },
+  "combined_freeze_sha256": "0d047a59fe434bd81497b9560a60e52919d7800f18f88ac0d35d8117ea80cde0",
+  "profile_corpus_note": "mj-profile.md built from 305 root sessions + 17 Substack articles (NOT in repo). All probes are synthetic/held-out and authored AFTER this freeze; none drawn from that corpus.",
+  "models": {
+    "arms": "claude-sonnet-4-5 (anthropic) \u2014 same model for lens/baseline/style-only; only system prompt differs",
+    "voice_neutralizer": "gpt-4.1 (openai) \u2014 different family from arms",
+    "judge": "gpt-4.1 (openai) \u2014 different family from arms; blind to arm + hypothesis"
+  },
+  "sampling": "3 samples/probe/arm -> majority vote -> 1 binary",
+  "tests": {
+    "primary": "McNemar exact (paired)",
+    "fidelity_gate": "exact binomial + Clopper-Pearson lower>0.70",
+    "multiplicity": "primary alone @0.05 (Phase1); Holm family in Phase2"
+  },
+  "git_head_at_freeze": "4862bc2a3eceb90a4b31d6f49c93fc2c4c6a1df6",
+  "git_branch": "main"
+}
