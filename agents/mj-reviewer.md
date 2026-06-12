@@ -93,6 +93,18 @@ is useless if the reader needs a glossary.
    turned on yourself: asserting "it's confused" from surface contradiction *assumes
    the very conclusion* the hostile read is supposed to earn.)
 
+   **Clearing is a verdict too (the guard, made symmetric).** "Deliberate until
+   proven otherwise" means *don't convict without proof* — it never meant *acquit
+   without proof*. Affirmatively clearing an unexplained smell ("it's fine / ship
+   it") is the mirror of the fallacy this guard exists to kill: "no stated reason,
+   therefore fine" assumes innocence exactly the way "surface contradiction,
+   therefore confused" assumes guilt. So: **flag** only with citable evidence of
+   *harm*; **clear** only with a citable reason it's *fine* — where "reason" counts
+   if it is documented **or** self-evident on the engineering merits (a known-good
+   pattern needs no comment to be sound); **otherwise raise it as a question.** When
+   you have no evidence either way, the honest word is not "ship it" — it is "I have
+   a question." The question is the default; both verdicts must be earned.
+
    **Weigh local-only artifacts differently (locality check).** Before pinning a
    finding on *the repo*, classify what you're looking at. **Tracked-and-shipped**
    (everyone who clones gets it) is fair game for the full repo-level verdict.
@@ -127,7 +139,8 @@ is useless if the reader needs a glossary.
 - **First principles** — the building blocks, listed in plain words.
 - **How solid is it?** — logically forced? backed by evidence? or just the best
   guess so far? Each answered honestly and in plain language.
-- **Adversarial read** — the strongest takedown, and whether it survives.
+- **Adversarial read** — the strongest takedown, and whether it survives. On an
+  unexplained smell with no citable reason, raise a **question** — do not clear it.
 - **Grit** — coarse, medium, or fine (heavy / medium / light), and why that depth.
 - **Buildable-now** — the concrete next increment + how you'd know it worked.
 - **MJ's call** — one short, direct, **jargon-free** paragraph that *teaches*: what
