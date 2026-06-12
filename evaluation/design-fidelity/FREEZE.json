@@ -1,0 +1,30 @@
+{
+  "study": "design-cognition fidelity benchmark (Phase 2)",
+  "frozen_at_utc": "2026-06-12T17:49:01.599372+00:00",
+  "arms": [
+    "NATIVE",
+    "COS",
+    "COE",
+    "ROB",
+    "HOLISTIC",
+    "MACHETE"
+  ],
+  "N_scenarios": 12,
+  "duplicates": 4,
+  "primary": "Wilcoxon MACHETE>NATIVE composite, >=2-scenario margin",
+  "artifact_sha256": {
+    "evaluation/design-fidelity/PRE-REGISTRATION-DRAFT.md": "1509a401299224ef69d1256659d5ec486985acb683fb444ca329fb161d4e744c",
+    "evaluation/design-fidelity/scenarios/scenarios_design.json": "c6096582284256828e831e2aa5a7a3f21582da5cf6159e349ce70fe92bf37f08",
+    "evaluation/design-fidelity/MJ-DESIGN-FORM.md": "ca1940fc60563cb6dc9b08f4fed129737c2d39e860a9088e2c9c8fc1a260abe0",
+    "evaluation/design-fidelity/harness/config.py": "bccb2ef418eb43ff6d62086b9134fe5cb7f486aab8a39b3c7d8b8b30bff8400e",
+    "evaluation/design-fidelity/harness/phase2_run.py": "0f6f2a059420d25aba14475e6c70c98a273075a4ef53ca66c73cdfdeae1255f1",
+    "evaluation/design-fidelity/harness/phase2_score.py": "4a85d273060c880e4bb7f19122cb5d25c2c0c6bcecdac22369b75b5564bef916",
+    "evaluation/design-fidelity/harness/arms/COE.md": "521def6f57fa77690343fcf69a66fd86629f2eb19636da88a2324858736eb5a3",
+    "evaluation/design-fidelity/harness/arms/COS.md": "5baa54673ea4b310a417b7240b982eff372b6e08855fda401bd153fc69d3bb08",
+    "evaluation/design-fidelity/harness/arms/HOLISTIC.md": "3f4c46b4ee0ce214645aa38ee5f87962b61f1e5c019ca7c6c10ae3f55fcdf48d",
+    "evaluation/design-fidelity/harness/arms/MACHETE.md": "07c305b5acbbb7b2c1460c5d64baf11ab4b10cddc6d9552727014514ec400702",
+    "evaluation/design-fidelity/harness/arms/NATIVE.md": "d940fbebee7940bcd3709e7ea192906dd872e6bbe76f052abb93f44170cc477e",
+    "evaluation/design-fidelity/harness/arms/ROB.md": "a06d68f1016893c6fbec9a4c94c89276a7a712cee3258cd7b800839fb83df364"
+  },
+  "combined_freeze_sha256": "a0fd1456cf8dc9811de0b391829d575254beaed189b4994a5449093f640a1843"
+}
