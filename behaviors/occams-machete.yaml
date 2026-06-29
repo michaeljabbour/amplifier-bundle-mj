@@ -61,12 +61,20 @@ tools:
     # kernel now passes when forking a sub-session, so pinning it there fails module
     # load with "got an unexpected keyword argument 'is_forked_session'".
     source: git+https://github.com/microsoft/amplifier-bundle-skills@main#subdirectory=modules/tool-skills
-    # Retained deliberately (keeps the behavior at 3 tools — an accepted exception):
-    # recipes/panel-then-cut.yaml loads sibling lens skills via load_skill when they
-    # are available. No bundle-local `skills:` entry on purpose — tool-skills resolves
-    # a local `skills:` path against the RUNTIME cwd (DTU-verified), not the behavior
-    # dir, so no behavior-relative path can reach this bundle's skills/. The persona is
-    # delivered by @mention (@occams-machete:skills/...) in the agent and /machete mode.
+    # Expose THIS bundle's own skills/ dir (mj, occams-machete) for load_skill
+    # directory-discovery. config.skills uses a git SELF-REFERENCE — the only source
+    # form tool-skills resolves independent of runtime cwd. A bundle-local relative
+    # `skills:` path resolves against the RUNTIME cwd (DTU-verified, breaks), and an
+    # @mention (@occams-machete:skills) silently fails at mount: tool-skills'
+    # _resolve_skill_sources() only routes git+/https:// through the mention/clone path
+    # and treats everything else as a literal Path(...).resolve() (source-verified).
+    # Caveat: the self-reference fetches from remote HEAD, so local-only edits to
+    # skills/ require a push + `amplifier update` before they're visible.
+    # (The @mention @occams-machete:skills/... delivery in the agent and /machete mode
+    # still stands — that's runtime injection, a separate channel from this discovery.)
+    config:
+      skills:
+        - "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=skills"
   # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
   - module: tool-recipes
     source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
