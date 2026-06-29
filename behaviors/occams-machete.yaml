@@ -36,6 +36,18 @@ hooks:
     config:
       enabled: true
       priority: 50
+  # Surfaces brief, learning-focused insights (why a cut is safe, what simplicity
+  # principle is in play) as an inline ★ block — a contemporary, bundle-native
+  # upgrade of amplifier-module-hooks-insight-blocks: same session:start →
+  # inject_context mechanism, but the upstream's `★ Insight ─────` U+2500 rule is
+  # replaced by a Markdown blockquote (Rich strips the raw rule but paints
+  # blockquotes magenta). Fail-open. Relative source resolves relative to
+  # behaviors/, so up one level to reach modules/.
+  - module: hooks-insight-blocks
+    source: ../modules/hooks-insight-blocks
+    config:
+      enabled: true
+      priority: 50
 
 tools:
   - module: tool-mode
