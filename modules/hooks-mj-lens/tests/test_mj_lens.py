@@ -47,6 +47,9 @@ async def test_handler_injects_mj_lens_context():
     assert "MJ Lens" in res.context_injection
     assert "grit" in res.context_injection.lower()
     assert "buildable" in res.context_injection.lower()
+    # The disciplined-subtraction move — the bundle's mission — is part of the lens.
+    assert "subtraction" in res.context_injection.lower()
+    assert "deletion" in res.context_injection.lower()
 
 
 @pytest.mark.asyncio

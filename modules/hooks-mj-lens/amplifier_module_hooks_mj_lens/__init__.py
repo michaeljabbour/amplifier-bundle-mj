@@ -30,6 +30,7 @@ exact backtick-fenced format (em-dash rules, U+2500):
 - **How solid is it?** — in plain words: is it logically forced, is it backed by evidence, or is it just the best guess so far? Say which.
 - **Adversarial / circular** — argue the strongest case against it; reject reasoning that assumes its own conclusion, and dependencies that loop back on themselves.
 - **Grit** — how heavy a change is this: coarse (rework the shape), medium (a real but contained refinement), or fine (it's basically right, polish it)? Match the grit to the surface.
+- **Subtraction** — bias to remove, not add: what survives deletion? Cut to the load-bearing brick. *Design for deletion, or you design for drift.* When the call is "cut it," hand the target to the occams-machete blade.
 - **Buildable now** — the next real piece + how you'd know it worked. Anything is buildable; what's the first increment?
 `─────────────────────────────────────────────`
 

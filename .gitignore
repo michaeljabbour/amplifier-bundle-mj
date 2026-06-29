@@ -10,6 +10,9 @@ __pycache__/
 *.pyc
 .DS_Store
 
+# Per-module lockfiles from local test runs (modules take amplifier-core as a peer dep)
+**/uv.lock
+
 # Tooling caches (ruff, pytest)
 .ruff_cache/
 **/.ruff_cache/
