@@ -8,7 +8,7 @@ digraph occams_machete {
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="9d9c55ae5538c6054a435015cdb7447f85e6d0e7b426c44dc122b1cc23ffdb53"
+    source_hash="8bf82d8f6814436eccfbf13bc193e93ed92154581742b8a0911adb880cdc0af5"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
@@ -21,7 +21,7 @@ digraph occams_machete {
         fillcolor="#f9f9f9"
         color="#999999"
 
-        beh_occams_machete_behavior [label="occams-machete-behavior\n7 tools · 2 ctx\n~2608 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+        beh_occams_machete_behavior [label="occams-machete-behavior\n5 tools · 2 ctx\n~2563 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
     }
 
     subgraph cluster_agents {
@@ -41,9 +41,7 @@ digraph occams_machete {
         fillcolor="#f9f9f9"
         color="#999999"
 
-        mod_hooks_insight_blocks [label="hooks-insight-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
-        mod_hooks_machete_blocks [label="hooks-machete-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
-        mod_hooks_mj_lens [label="hooks-mj-lens", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_inline_blocks [label="hooks-inline-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
     }
 
     subgraph cluster_context {
@@ -84,9 +82,7 @@ digraph occams_machete {
     beh_occams_machete_behavior -> agt_occams_machete [label="owns"]
     beh_occams_machete_behavior -> agt_mj_reviewer [label="owns"]
     beh_occams_machete_behavior -> agt_crusty_old_engineer [label="owns"]
-    beh_occams_machete_behavior -> mod_hooks_mj_lens [label="uses", penwidth=0.8]
-    beh_occams_machete_behavior -> mod_hooks_machete_blocks [label="uses", penwidth=0.8]
-    beh_occams_machete_behavior -> mod_hooks_insight_blocks [label="uses", penwidth=0.8]
+    beh_occams_machete_behavior -> mod_hooks_inline_blocks [label="uses", penwidth=0.8]
     beh_occams_machete_behavior -> ctx_machete_awareness_md [style=dotted, color=purple]
     beh_occams_machete_behavior -> ctx_mj_lens_awareness_md [style=dotted, color=purple]
 }

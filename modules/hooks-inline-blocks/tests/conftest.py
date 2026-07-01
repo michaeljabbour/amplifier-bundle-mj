@@ -14,7 +14,7 @@ the module under test — just enough surface (kwargs -> attributes) for these
 tests to construct and inspect HookResult instances.
 
 This shim lives ONLY here, in tests/conftest.py. It must never be added to the
-shipped package (amplifier_module_hooks_insight_blocks/).
+shipped package (amplifier_module_hooks_inline_blocks/).
 """
 
 import sys

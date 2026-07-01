@@ -50,6 +50,8 @@ amplifier-bundle-occams-machete/
 ├── recipes/
 │   ├── reduce-target.yaml         # baseline → cut → verify (single target)
 │   └── panel-then-cut.yaml        # multi-lens review → APPROVAL GATE → cut
+├── modules/
+│   └── hooks-inline-blocks/       # renders ★ insight / ✂ machete / 🔪 MJ-lens callout blocks
 ├── context/
 │   └── machete-awareness.md       # thin routing for the root session
 ├── bundle.dot                     # composition diagram (v3 convention)

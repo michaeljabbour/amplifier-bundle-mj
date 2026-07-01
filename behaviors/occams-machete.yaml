@@ -18,36 +18,30 @@ hooks:
         # The @occams-machete: prefix is resolved by hooks-mode itself (its own
         # @mention resolution), not by the bundle loader.
         - "@occams-machete:modes"
-  # Surfaces MJ's review lens as an inline insight block on review/decision turns
-  # (session:start → inject_context, mirroring hooks-insight-blocks). Fail-open.
+  # Surfaces the insight (★) / machete (✂) / MJ-lens (🔪) inline blocks. Consolidates
+  # the three formerly-separate hooks-insight-blocks / hooks-machete-blocks /
+  # hooks-mj-lens modules into one parametrized brick (see the module docstring for
+  # the full rationale). This is a BUG FIX, not just a refactor: the predecessors
+  # registered on session:start, but the kernel's session-lifecycle emission path
+  # fires that event and never captures—applies the returned HookResult — confirmed
+  # at the kernel-source level (core/foundation/amplifier experts). Their injections
+  # never reached the model. `prompt:submit` IS routed through
+  # process_hook_result()/context.add_message() (the proven hooks-explanatory
+  # pattern), so this is the event that actually works. A per-(session_id,
+  # block-name) fire-once guard reproduces the original "inject exactly once per
+  # session" semantics on an event that fires every turn. Fail-open per block.
   # NOTE: a relative source in a BEHAVIOR file resolves relative to behaviors/,
   # not the repo root — so go up one level to reach modules/ (verified in DTU).
-  - module: hooks-mj-lens
-    source: ../modules/hooks-mj-lens
+  - module: hooks-inline-blocks
+    source: ../modules/hooks-inline-blocks
     config:
-      enabled: true
+      event: prompt:submit
+      ephemeral: false
       priority: 50
-  # Highlights notable Machete callouts — chiefly the proactive `/machete` mode
-  # offer — as an inline ✂ block so they stand out (session:start → inject_context,
-  # same mechanism as hooks-mj-lens / hooks-insight-blocks). Fail-open. Relative
-  # source resolves relative to behaviors/, so up one level to reach modules/.
-  - module: hooks-machete-blocks
-    source: ../modules/hooks-machete-blocks
-    config:
-      enabled: true
-      priority: 50
-  # Surfaces brief, learning-focused insights (why a cut is safe, what simplicity
-  # principle is in play) as an inline ★ block — a contemporary, bundle-native
-  # upgrade of amplifier-module-hooks-insight-blocks: same session:start →
-  # inject_context mechanism, but the upstream's `★ Insight ─────` U+2500 rule is
-  # replaced by a Markdown blockquote (Rich strips the raw rule but paints
-  # blockquotes magenta). Fail-open. Relative source resolves relative to
-  # behaviors/, so up one level to reach modules/.
-  - module: hooks-insight-blocks
-    source: ../modules/hooks-insight-blocks
-    config:
-      enabled: true
-      priority: 50
+      blocks:
+        - use: insight
+        - use: machete
+        - use: mj-lens
 
 tools:
   - module: tool-mode

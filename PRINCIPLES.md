@@ -61,8 +61,9 @@ real work. The honest default on an unexamined smell is a question, not a shrug.
 
 - **Modules are self-contained bricks.** A hook module mounts via `mount()`, honors
   `enabled` / `priority`, and **fails open** — a briefing error degrades to a no-op,
-  never breaks a session. Mirror the sibling `hooks-mj-lens` / `hooks-machete-blocks`
-  / `hooks-insight-blocks` contract.
+  never breaks a session. Mirror the consolidated `hooks-inline-blocks` contract
+  (event/ephemeral are config-driven; `prompt:submit`, not `session:start`, is
+  required for an injection to actually reach the model — see the module docstring).
 - **Always-on tokens are a budget.** Context injected every session
   (`mj-lens-awareness`, `machete-awareness`, the hook blocks) must earn its place.
   Heavy artifacts (the persona skill, `mj-profile.md`) are context sinks — loaded **on
