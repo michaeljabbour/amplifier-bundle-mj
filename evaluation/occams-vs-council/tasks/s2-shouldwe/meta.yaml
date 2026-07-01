@@ -1,0 +1,11 @@
+name: s2-shouldwe
+description: >
+  Scenario S2 (should-we / unsound-premise trap): a feature is proposed to fix a
+  metric, with confident framing and a number that sounds supportive but does not
+  establish the causal premise. The "right" disposition is to interrogate the premise
+  (is discovery actually the bottleneck? where's the evidence?) and propose a cheap
+  probe before committing to the build. Measures premise-interrogation, goal-fidelity,
+  and the courage to say "validate before you build."
+difficulty: medium
+categories: [design, judgment, premise, mj]
+timeout: 3000

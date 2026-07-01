@@ -1,0 +1,82 @@
+# Grader for S1 (YAGNI / over-engineering trap).
+#
+# ONE evaluation, eight rubric dimensions (0..5 each, 40 points total). The same
+# rubric scores all three variants; the cross-variant pivot — not this grader — is
+# what surfaces whether occams-machete / council move the dimensions. The auditor
+# reads the agent's design.md AND its reasoning transcript, and scores each
+# dimension strictly. The "right" disposition for S1 is RESTRAINT: build the one
+# integration directly, defer the speculative plugin abstraction.
+
+evaluations:
+  - name: design-discipline
+    weight: 1.0
+    steps: |
+      Score the agent's design for S1 across eight dimensions. Read both the
+      DELIVERABLE and the REASONING:
+
+      1. Read the deliverable:
+           amplifier-digital-twin exec <dtu_id> -- cat /workspace/design.md
+         If missing or empty, the agent produced no design -> score every dimension 0.
+      2. Read HOW it reasoned. Locate the ROOT session dir under
+         /root/.amplifier/projects/-workspace/sessions/ (the session whose
+         metadata.json has no parent_id; if ambiguous, the most recently modified
+         root). Read its transcript.jsonl. For the council variant, also read
+         /workspace/council-review.md if present.
+      3. Score each dimension 0..5 strictly, from EVIDENCE in the design + transcript.
+         5 = exemplary and explicit; 3 = present but partial; 0 = absent or actively
+         wrong. The correct disposition for THIS task is to NOT build the plugin
+         system yet — reward designs that recognize that and justify it; penalize
+         designs that enthusiastically build the speculative abstraction with no
+         pushback.
+    rubric:
+      D1_restraint:
+        points: 5
+        description: >
+          Resists over-engineering. Recommends building the one integration directly
+          and DEFERRING the speculative plugin architecture (YAGNI). 5 = explicitly
+          rejects building the plugin system now and justifies why; 0 = designs the
+          full plugin framework for one integration with no restraint.
+      D2_premise_interrogation:
+        points: 5
+        description: >
+          Questions whether the plugin system should be built at all and challenges
+          the "future integrations are coming" premise (how many? when? evidence?).
+          5 = directly interrogates the premise and asks for evidence; 0 = accepts
+          the premise unquestioned.
+      D3_first_principles_soundness:
+        points: 5
+        description: >
+          Reasoning is grounded in first principles and claims are graded honestly
+          (what is forced vs evidenced vs a guess); no overclaiming. 5 = sound and
+          explicitly hedged where uncertain; 0 = hand-wavy or asserts unsupported
+          claims as fact.
+      D4_failure_and_cost_awareness:
+        points: 5
+        description: >
+          Surfaces the real costs/risks/failure modes — e.g. maintenance debt and
+          wrong-abstraction risk of a premature plugin layer, or the cost of NOT
+          abstracting. 5 = names concrete costs on the chosen path; 0 = ignores costs.
+      D5_goal_fidelity:
+        points: 5
+        description: >
+          Keeps the real goal (ship working data import / serve the user) in view
+          rather than drifting into building infrastructure for its own sake. 5 =
+          ties the recommendation back to the actual goal; 0 = solves the wrong problem.
+      D6_actionability:
+        points: 5
+        description: >
+          Gives a concrete, minimal next step and how you'd know it's right (build
+          the one integration; revisit the abstraction when a second real one
+          appears, with a trigger). 5 = buildable-now with a clear trigger; 0 = vague.
+      D7_decision_clarity:
+        points: 5
+        description: >
+          Lands a clear, defensible recommendation — INCLUDING the courage to say
+          "don't build the plugin system yet." 5 = unambiguous, well-justified call;
+          0 = wishy-washy or hides behind "it depends" with no decision.
+      D8_signal_to_noise:
+        points: 5
+        description: >
+          Focused and concise; not padded, rambling, hedged, or gold-plated. 5 =
+          tight and high-signal; 0 = bloated / restated / exhausting. (This dimension
+          guards against review machinery merely ADDING verbosity.)

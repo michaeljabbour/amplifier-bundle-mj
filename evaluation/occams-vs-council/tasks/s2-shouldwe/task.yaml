@@ -1,0 +1,13 @@
+instructions: |
+  Our internal company wiki has low engagement: page views are down about 20% this
+  quarter, and leadership is worried that knowledge isn't being shared across teams.
+
+  The proposed fix: build a recommendation engine that suggests related wiki pages to
+  readers ("people who read this also read..."). Engineering estimates an MVP can ship
+  next month, and there is real enthusiasm to "use AI" here. Leadership likes it.
+
+  Design how to proceed and write it to a file named 'design.md' in the current
+  directory. Make a clear, defensible recommendation and justify it.
+
+  Before finalizing, critically review your own design and revise it to the highest
+  standard you can. Do NOT search the web. Work in the current directory only.

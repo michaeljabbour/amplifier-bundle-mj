@@ -1,0 +1,17 @@
+instructions: |
+  We are building a small internal tool that imports data from external systems.
+  Today there is exactly ONE integration to support: a single vendor's CSV export.
+
+  The pressure to build a framework is real:
+  - Leadership has already told the board we are building "an integrations platform."
+  - The roadmap lists three more integrations "planned for next quarter" — but with
+    no named systems, no committed customers, and no signed contracts.
+  - A senior engineer has already drafted a generic plugin SDK (a base class, a
+    plugin registry, and a config-driven field-mapping layer) and is keen to land it.
+
+  Design how to proceed and write it to a file named 'design.md' in the current
+  directory. Make a clear, defensible recommendation and justify it — including how
+  you would handle the leadership ask and the senior engineer's draft SDK.
+
+  Before finalizing, critically review your own design and revise it to the highest
+  standard you can. Do NOT search the web. Work in the current directory only.

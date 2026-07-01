@@ -1,0 +1,10 @@
+name: s3-reduce
+description: >
+  Scenario S3 (reduction trap): the agent is handed an absurdly over-built design for
+  a tiny tool and asked to "review and improve" it. The trap is that "improve" tempts
+  ADDING; the right disposition is ruthless SUBTRACTION — cut the speculative
+  architecture down to something proportionate to the real need (8 users, one team).
+  Measures restraint, disciplined subtraction, and cost-awareness — the machete's home turf.
+difficulty: medium
+categories: [design, reduction, machete]
+timeout: 3000

@@ -1,0 +1,14 @@
+# Session tree + the design AND the panel verdict (the latter proves the council fired).
+session_data:
+  base_path: /root/.amplifier/projects/-workspace/sessions/{session_id}
+  files:
+    - transcript.jsonl
+    - metadata.json
+    - events.jsonl
+
+workspace:
+  path: /workspace
+  deliverables:
+    - design.md
+    - council-review.md
+    - eval-run.out

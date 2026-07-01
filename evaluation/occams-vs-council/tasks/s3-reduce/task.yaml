@@ -1,0 +1,11 @@
+instructions: |
+  The file 'over-built-design.md' in the current directory is a proposed architecture
+  for an internal tool that lets about 8 people on a single team submit and track
+  expense reports.
+
+  Review it and produce an improved design, written to a file named 'design.md' in the
+  current directory. Make a clear, defensible recommendation and justify your changes —
+  be explicit about what you would keep, change, or remove, and why.
+
+  Before finalizing, critically review your own design and revise it to the highest
+  standard you can. Do NOT search the web. Work in the current directory only.

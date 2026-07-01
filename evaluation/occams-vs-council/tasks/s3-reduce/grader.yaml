@@ -1,0 +1,83 @@
+# Grader for S3 (reduction trap).
+#
+# Same eight dimension KEYS as the other scenarios (clean cross-variant aggregation),
+# with the "right disposition" tailored to S3: the over-built-design.md is absurdly
+# over-engineered for ~8 users; the correct move is ruthless SUBTRACTION — cut the
+# microservices/event-bus/k8s/DSL/plugin sprawl down to a single small app
+# proportionate to the real need. Score each dimension 0..5 from design.md + transcript.
+
+evaluations:
+  - name: design-discipline
+    weight: 1.0
+    steps: |
+      Score the agent's improved design for S3 across eight dimensions, reading both
+      the DELIVERABLE and the REASONING.
+
+      1. Read the deliverable:
+           amplifier-digital-twin exec <dtu_id> -- cat /workspace/design.md
+         If missing or empty -> score every dimension 0. Also read the seeded original
+         at /workspace/over-built-design.md for comparison.
+      2. Read HOW it reasoned. Locate the ROOT session dir under
+         /root/.amplifier/projects/-workspace/sessions/ (the session whose
+         metadata.json has no parent_id; if ambiguous, the most recently modified
+         root). Read its transcript.jsonl. For the council variant, also read
+         /workspace/council-review.md if present.
+      3. Score each dimension 0..5 strictly, from EVIDENCE. The correct disposition for
+         THIS task is to REDUCE: an 8-user single-team expense tool needs roughly a
+         single small app (one service, one database, simple auth, receipts in object
+         storage), NOT microservices, an event bus, a workflow DSL, multi-region k8s,
+         a plugin system, or blockchain audit. Reward designs that cut hard and justify
+         the cuts; penalize designs that merely polish, reorganize, or ADD to the
+         over-built design without removing the speculative complexity.
+    rubric:
+      D1_restraint:
+        points: 5
+        description: >
+          Ruthlessly reduces rather than adds. Cuts the speculative architecture down
+          to something proportionate to ~8 users. 5 = collapses the microservices/event
+          bus/DSL/k8s/plugin sprawl into a single small app and says so plainly; 0 =
+          keeps (or extends) the over-built design, "improving" by adding more.
+        # NOTE: D1 here measures SUBTRACTION specifically — the machete's core value.
+      D2_premise_interrogation:
+        points: 5
+        description: >
+          Questions why each heavy component exists for this scale — "do 8 users need
+          microservices / an event bus / a custom DSL / multi-region?" — instead of
+          accepting the "build it right / design for scale" framing. 5 = interrogates
+          the components against the real need; 0 = accepts the premise.
+      D3_first_principles_soundness:
+        points: 5
+        description: >
+          Reasoning grounded in first principles (match the solution to the actual
+          load and team size); claims graded honestly. 5 = sound, scale-appropriate
+          reasoning; 0 = cargo-cults "best practice" architecture regardless of need.
+      D4_failure_and_cost_awareness:
+        points: 5
+        description: >
+          Surfaces the real costs of the over-built design (operational burden, on-call,
+          $40–60k/month, cognitive load, fragility) and the low cost of the reduced one.
+          5 = names concrete costs that justify the cuts; 0 = ignores cost.
+      D5_goal_fidelity:
+        points: 5
+        description: >
+          Keeps the real goal (8 people submit + track + approve expenses) front and
+          center, sizing the design to it. 5 = design clearly serves the actual goal;
+          0 = serves "platform" ambitions the goal never asked for.
+      D6_actionability:
+        points: 5
+        description: >
+          Gives a concrete, minimal build a small team could ship soon, and a clear
+          trigger for when ANY heavier piece would be justified. 5 = buildable-now
+          minimal design + revisit triggers; 0 = vague.
+      D7_decision_clarity:
+        points: 5
+        description: >
+          Lands a clear, defensible call with an explicit keep/change/REMOVE list —
+          including the courage to delete most of the proposal. 5 = unambiguous,
+          well-justified cuts; 0 = wishy-washy or just reorganizes without removing.
+      D8_signal_to_noise:
+        points: 5
+        description: >
+          The improved design is itself concise and proportionate (it should practice
+          what it preaches — a short design for a small tool), not a new wall of text.
+          5 = tight and high-signal; 0 = replaces one bloated doc with another.

@@ -1,0 +1,13 @@
+# Same extraction as the baseline: full session tree + the design deliverable.
+session_data:
+  base_path: /root/.amplifier/projects/-workspace/sessions/{session_id}
+  files:
+    - transcript.jsonl
+    - metadata.json
+    - events.jsonl
+
+workspace:
+  path: /workspace
+  deliverables:
+    - design.md
+    - eval-run.out

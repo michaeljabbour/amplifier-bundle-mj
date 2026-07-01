@@ -1,0 +1,1305 @@
+{
+  "run": "/Users/michaeljabbour/.amplifier/evaluation/occams-vs-council/20260701T070714Z",
+  "n_trials": 27,
+  "variants": [
+    "council",
+    "occams-machete",
+    "regular"
+  ],
+  "scenarios": [
+    "s1-yagni",
+    "s2-shouldwe",
+    "s3-reduce"
+  ],
+  "rows": [
+    {
+      "trial": "council__s1-yagni__trial-1",
+      "variant": "council",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s1-yagni__trial-2",
+      "variant": "council",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s1-yagni__trial-3",
+      "variant": "council",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s2-shouldwe__trial-1",
+      "variant": "council",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s2-shouldwe__trial-2",
+      "variant": "council",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s2-shouldwe__trial-3",
+      "variant": "council",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s3-reduce__trial-1",
+      "variant": "council",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s3-reduce__trial-2",
+      "variant": "council",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__s3-reduce__trial-3",
+      "variant": "council",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 0.95,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          3.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "occams-machete__s1-yagni__trial-1",
+      "variant": "occams-machete",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s1-yagni__trial-2",
+      "variant": "occams-machete",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s1-yagni__trial-3",
+      "variant": "occams-machete",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s2-shouldwe__trial-1",
+      "variant": "occams-machete",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s2-shouldwe__trial-2",
+      "variant": "occams-machete",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s2-shouldwe__trial-3",
+      "variant": "occams-machete",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s3-reduce__trial-1",
+      "variant": "occams-machete",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s3-reduce__trial-2",
+      "variant": "occams-machete",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__s3-reduce__trial-3",
+      "variant": "occams-machete",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s1-yagni__trial-1",
+      "variant": "regular",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s1-yagni__trial-2",
+      "variant": "regular",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s1-yagni__trial-3",
+      "variant": "regular",
+      "scenario": "s1-yagni",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "plugin/import",
+      "expected": "data-import/plugin",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s2-shouldwe__trial-1",
+      "variant": "regular",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s2-shouldwe__trial-2",
+      "variant": "regular",
+      "scenario": "s2-shouldwe",
+      "state": "failed",
+      "overall": null,
+      "dims": {
+        "D1_restraint": [
+          null,
+          null
+        ],
+        "D2_premise_interrogation": [
+          null,
+          null
+        ],
+        "D3_first_principles_soundness": [
+          null,
+          null
+        ],
+        "D4_failure_and_cost_awareness": [
+          null,
+          null
+        ],
+        "D5_goal_fidelity": [
+          null,
+          null
+        ],
+        "D6_actionability": [
+          null,
+          null
+        ],
+        "D7_decision_clarity": [
+          null,
+          null
+        ],
+        "D8_signal_to_noise": [
+          null,
+          null
+        ]
+      },
+      "subject": null,
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s2-shouldwe__trial-3",
+      "variant": "regular",
+      "scenario": "s2-shouldwe",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": "wiki/recommend",
+      "expected": "wiki-recommender",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s3-reduce__trial-1",
+      "variant": "regular",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s3-reduce__trial-2",
+      "variant": "regular",
+      "scenario": "s3-reduce",
+      "state": "failed",
+      "overall": null,
+      "dims": {
+        "D1_restraint": [
+          null,
+          null
+        ],
+        "D2_premise_interrogation": [
+          null,
+          null
+        ],
+        "D3_first_principles_soundness": [
+          null,
+          null
+        ],
+        "D4_failure_and_cost_awareness": [
+          null,
+          null
+        ],
+        "D5_goal_fidelity": [
+          null,
+          null
+        ],
+        "D6_actionability": [
+          null,
+          null
+        ],
+        "D7_decision_clarity": [
+          null,
+          null
+        ],
+        "D8_signal_to_noise": [
+          null,
+          null
+        ]
+      },
+      "subject": null,
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__s3-reduce__trial-3",
+      "variant": "regular",
+      "scenario": "s3-reduce",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": "expense",
+      "expected": "expense-tracker",
+      "mismatch": false,
+      "council_review": false
+    }
+  ],
+  "per_variant_scenario": {
+    "council|s1-yagni": [
+      0.983,
+      3
+    ],
+    "council|s2-shouldwe": [
+      0.992,
+      3
+    ],
+    "council|s3-reduce": [
+      0.967,
+      3
+    ],
+    "occams-machete|s1-yagni": [
+      0.983,
+      3
+    ],
+    "occams-machete|s2-shouldwe": [
+      0.983,
+      3
+    ],
+    "occams-machete|s3-reduce": [
+      0.992,
+      3
+    ],
+    "regular|s1-yagni": [
+      0.992,
+      3
+    ],
+    "regular|s2-shouldwe": [
+      0.988,
+      2
+    ],
+    "regular|s3-reduce": [
+      1.0,
+      2
+    ]
+  },
+  "per_variant_dimension": {
+    "council|D1_restraint": 1.0,
+    "council|D2_premise_interrogation": 1.0,
+    "council|D3_first_principles_soundness": 1.0,
+    "council|D4_failure_and_cost_awareness": 1.0,
+    "council|D5_goal_fidelity": 1.0,
+    "council|D6_actionability": 1.0,
+    "council|D7_decision_clarity": 1.0,
+    "council|D8_signal_to_noise": 0.844,
+    "occams-machete|D1_restraint": 1.0,
+    "occams-machete|D2_premise_interrogation": 1.0,
+    "occams-machete|D3_first_principles_soundness": 1.0,
+    "occams-machete|D4_failure_and_cost_awareness": 1.0,
+    "occams-machete|D5_goal_fidelity": 1.0,
+    "occams-machete|D6_actionability": 1.0,
+    "occams-machete|D7_decision_clarity": 1.0,
+    "occams-machete|D8_signal_to_noise": 0.889,
+    "regular|D1_restraint": 1.0,
+    "regular|D2_premise_interrogation": 1.0,
+    "regular|D3_first_principles_soundness": 1.0,
+    "regular|D4_failure_and_cost_awareness": 1.0,
+    "regular|D5_goal_fidelity": 1.0,
+    "regular|D6_actionability": 1.0,
+    "regular|D7_decision_clarity": 1.0,
+    "regular|D8_signal_to_noise": 0.943
+  },
+  "per_variant_overall": {
+    "council": 0.981,
+    "occams-machete": 0.986,
+    "regular": 0.993
+  },
+  "mismatches": [],
+  "unscored": [
+    "regular__s2-shouldwe__trial-2",
+    "regular__s3-reduce__trial-2"
+  ]
+}

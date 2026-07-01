@@ -1,0 +1,6 @@
+name: regular
+description: >
+  Variant "regular": stock Amplifier CLI with amplifier-foundation @ main composed.
+  The baseline / control in the occams-vs-council comparison — no review
+  augmentation. All three variants pin the same model (opus48 routing matrix) so the
+  only difference between them is the composed bundle, not the model.

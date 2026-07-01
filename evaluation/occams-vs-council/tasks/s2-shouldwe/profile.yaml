@@ -1,0 +1,27 @@
+name: occams-vs-council-s2
+description: >
+  Ubuntu 24.04 with uv + git. A bare design task — no repo seeded; the agent writes
+  design.md into /workspace. Each variant installs its own bundle(s) from GitHub (see
+  the agent's install.yaml). Shared shape across all variants so only the composed
+  bundle differs.
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - mkdir -p /workspace
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: workspace-exists
+    command: "test -d /workspace && echo OK"

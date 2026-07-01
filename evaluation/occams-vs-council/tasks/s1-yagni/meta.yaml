@@ -1,0 +1,9 @@
+name: s1-yagni
+description: >
+  Scenario S1 (YAGNI / over-engineering trap): a design request whose "right"
+  disposition is restraint — build the one integration directly and defer the
+  speculative plugin abstraction. Measures whether review-augmented variants resist
+  over-engineering, interrogate the premise, and land a clear "build less" call.
+difficulty: medium
+categories: [design, judgment, restraint, occams-machete]
+timeout: 3000
