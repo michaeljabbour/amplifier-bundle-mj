@@ -21,3 +21,9 @@ packages = ["amplifier_module_hooks_machete_blocks"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+
+# Test-only tooling. amplifier-core stays OUT of [project.dependencies] because it
+# is a runtime peer dep provided by the host; tests get a real-or-stub shim via
+# tests/conftest.py instead of a hard dependency here.
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio"]

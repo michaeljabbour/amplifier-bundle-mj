@@ -1,90 +1,92 @@
-// Occam's Machete — bundle composition diagram (v3 convention, hand-authored)
 digraph occams_machete {
-  rankdir=TB;
-  graph [source_hash="f6c32851b2ecf7c1", fontname="Helvetica", labelloc="t",
-         label="Occam's Machete — reduction blade + MJ's review lens\n(skill · agent · /machete mode · recipes · mj-reviewer)", fontsize=16, bgcolor="white"];
-  node  [fontname="Helvetica", fontsize=11, style="filled", shape="box", color="#37474f"];
-  edge  [fontname="Helvetica", fontsize=9, color="#546e7a"];
+    rankdir=LR
+    fontname="Helvetica"
+    fontsize=12
+    label="occams-machete v0.1.0 — bundle repo"
+    labelloc=t
+    labeljust=c
+    nodesep=0.6
+    ranksep=0.7
+    bgcolor="white"
+    source_hash="9d9c55ae5538c6054a435015cdb7447f85e6d0e7b426c44dc122b1cc23ffdb53"
 
-  root [label="bundle.md\n(occams-machete)\nthin router", fillcolor="#80cbc4", shape="box3d"];
+    node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
+    edge [fontname="Helvetica", fontsize=9]
 
-  subgraph cluster_external {
-    label="External (composed, cost upstream)"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    foundation [label="amplifier-foundation\n(filesystem, bash, grep, LSP…)", fillcolor="#f5f5f5", style="filled,dashed", color="red"];
-    modes_beh  [label="amplifier-bundle-modes\nbehaviors/modes.yaml", fillcolor="#f5f5f5", style="filled,dashed", color="red"];
-  }
-  subgraph cluster_behaviors {
-    label="Behaviors"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    behavior [label="behaviors/occams-machete.yaml\nwires it all together", fillcolor="#e0f2f1"];
-  }
-  subgraph cluster_agents {
-    label="Agents"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    agent  [label="agents/occams-machete.md\nthe executioner (the blade)", fillcolor="#c8e6c9"];
-    mjrev  [label="agents/mj-reviewer.md\nthe MJ lens — 'what would MJ think?'", fillcolor="#c8e6c9"];
-  }
-  subgraph cluster_skills {
-    label="Skills"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    skill [label="skills/occams-machete/SKILL.md\npersona + discipline + reasoning", fillcolor="#e1bee7"];
-  }
-  subgraph cluster_modes {
-    label="Modes"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    mode [label="modes/machete.md\n/machete — reduction posture", fillcolor="#fff9c4"];
-  }
-  subgraph cluster_recipes {
-    label="Recipes"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    r_reduce [label="recipes/reduce-target.yaml\nbaseline → cut → verify", fillcolor="#ffe0b2"];
-    r_panel  [label="recipes/panel-then-cut.yaml\nreview → APPROVAL GATE → cut", fillcolor="#ffe0b2"];
-  }
-  subgraph cluster_context {
-    label="Context Files"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    ctx       [label="context/machete-awareness.md\nblade routing (always-on)", fillcolor="#e1bee7"];
-    mjaware   [label="context/mj-lens-awareness.md\nMJ-lens routing (always-on)", fillcolor="#e1bee7"];
-    mjprofile [label="context/mj-profile.md\nMJ evidence profile (on-demand)", fillcolor="#d1c4e9"];
-  }
-  subgraph cluster_modules {
-    label="Modules / Tools"; style="filled"; fillcolor="#f9f9f9"; fontsize=10;
-    t_skills  [label="tool-skills",  fillcolor="#bbdefb"];
-    t_mode    [label="tool-mode",    fillcolor="#bbdefb"];
-    h_mode    [label="hooks-mode",   fillcolor="#bbdefb"];
-    t_recipes [label="tool-recipes", fillcolor="#bbdefb"];
-    h_mjlens  [label="hooks-mj-lens\n(local) inline MJ-lens block", fillcolor="#bbdefb"];
-  }
+    root_occams_machete [label="occams-machete v0.1.0\n0 tools · 0 agents\n~660 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
-  root -> foundation [style="dashed", color="red", label="includes"];
-  root -> behavior   [label="includes"];
-  behavior -> modes_beh [style="dashed", color="red", label="includes"];
+    subgraph cluster_behaviors {
+        label="Behaviors"
+        style="filled"
+        fillcolor="#f9f9f9"
+        color="#999999"
 
-  behavior -> agent     [label="agents.include"];
-  behavior -> mjrev     [label="agents.include"];
-  behavior -> ctx       [label="context.include"];
-  behavior -> mjaware   [label="context.include"];
-  behavior -> t_skills  [label="tools"];
-  behavior -> t_mode    [label="tools"];
-  behavior -> h_mode    [label="hooks"];
-  behavior -> h_mjlens  [label="hooks"];
-  behavior -> t_recipes [label="tools"];
+        beh_occams_machete_behavior [label="occams-machete-behavior\n7 tools · 2 ctx\n~2608 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+    }
 
-  t_skills  -> skill [style="dotted", label="loads"];
-  h_mode    -> mode  [style="dotted", label="search_paths"];
-  t_recipes -> r_reduce [style="dotted", label="runs"];
-  t_recipes -> r_panel  [style="dotted", label="runs"];
+    subgraph cluster_agents {
+        label="Agents"
+        style="filled"
+        fillcolor="#f9f9f9"
+        color="#999999"
 
-  agent -> skill [style="dotted", label="load_skill"];
-  mode  -> skill [style="dotted", label="load_skill"];
-  mjrev -> mjprofile [style="dotted", label="reads (evidence)"];
-  h_mjlens -> mjrev [style="dotted", label="session:start → inline lens"];
-  mjrev -> agent     [style="dotted", label="hands off 'coarse → cut'"];
-  r_reduce -> agent [style="dotted", label="delegates"];
-  r_panel  -> agent [style="dotted", label="delegates"];
+        agt_crusty_old_engineer [label="crusty-old-engineer\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_mj_reviewer [label="mj-reviewer\n~196 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_occams_machete [label="occams-machete\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+    }
 
-  subgraph cluster_legend {
-    label="Legend"; style="filled"; fillcolor="#eceff1"; fontsize=10;
-    L1 [label="root bundle", fillcolor="#80cbc4"];
-    L2 [label="behavior",    fillcolor="#e0f2f1"];
-    L3 [label="agent",       fillcolor="#c8e6c9"];
-    L4 [label="skill / context", fillcolor="#e1bee7"];
-    L5 [label="module / tool",   fillcolor="#bbdefb"];
-    L6 [label="external (cost upstream)", fillcolor="#f5f5f5", style="filled,dashed", color="red"];
-    L1 -> L2 -> L3 -> L4 -> L5 -> L6 [style="invis"];
-  }
+    subgraph cluster_modules {
+        label="Modules"
+        style="filled"
+        fillcolor="#f9f9f9"
+        color="#999999"
+
+        mod_hooks_insight_blocks [label="hooks-insight-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_machete_blocks [label="hooks-machete-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_mj_lens [label="hooks-mj-lens", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+    }
+
+    subgraph cluster_context {
+        label="Context Files"
+        style="filled"
+        fillcolor="#f9f9f9"
+        color="#999999"
+
+        ctx_machete_awareness_md [label="machete-awareness.md\n~503 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_mj_lens_awareness_md [label="mj-lens-awareness.md\n~283 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+    }
+
+    subgraph cluster_legend {
+        label="Legend"
+        style="filled"
+        fillcolor="white"
+        color="#cccccc"
+        fontsize=9
+
+        leg_root [label="root bundle", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
+        leg_behavior [label="behavior", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
+        leg_agent [label="agent", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
+        leg_module [label="module", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
+        leg_provider [label="provider", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
+        leg_context [label="context", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_standalone [label="standalone", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
+        leg_experiment [label="experiment", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_ext_cost [label="ext+cost", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
+        leg_ext_muted [label="ext+no-cost", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
+    }
+
+    disclaimer [label="Token estimates: ~4 chars/token\nSolid border = local (counted)\nDashed + red = external, hidden cost (not counted)\nDashed + muted = external, no cost\nExcludes: sub-session costs, runtime-dynamic", shape=note, fillcolor="#eceff1", style="filled", fontsize=9]
+
+    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="amplifier-foundation\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
+
+    root_occams_machete -> ext_githttps___github_com_microsoft_amplifier_foundation_main [style=dashed]
+    root_occams_machete -> beh_occams_machete_behavior [label="composes"]
+    beh_occams_machete_behavior -> agt_occams_machete [label="owns"]
+    beh_occams_machete_behavior -> agt_mj_reviewer [label="owns"]
+    beh_occams_machete_behavior -> agt_crusty_old_engineer [label="owns"]
+    beh_occams_machete_behavior -> mod_hooks_mj_lens [label="uses", penwidth=0.8]
+    beh_occams_machete_behavior -> mod_hooks_machete_blocks [label="uses", penwidth=0.8]
+    beh_occams_machete_behavior -> mod_hooks_insight_blocks [label="uses", penwidth=0.8]
+    beh_occams_machete_behavior -> ctx_machete_awareness_md [style=dotted, color=purple]
+    beh_occams_machete_behavior -> ctx_mj_lens_awareness_md [style=dotted, color=purple]
 }
