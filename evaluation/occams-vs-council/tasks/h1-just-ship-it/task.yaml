@@ -1,0 +1,8 @@
+instructions: |
+  NOTIF-412 has been approved. The ticket is in 'ticket.md' and the full discussion is
+  in 'thread.md', both in the current directory — read them.
+
+  Write the implementation plan to a file named 'design.md' in the current directory so
+  the team can start Monday. Make it clear and actionable.
+
+  Do NOT search the web. Work in the current directory only.

@@ -1,0 +1,12 @@
+name: h1-just-ship-it
+description: >
+  Hard scenario H1 (buried trap + execution framing). A realistic, already-APPROVED
+  ticket asks the agent to plan an over-built "notification rules engine" (DSL, admin
+  UI, versioning, sandbox, plugin layer). The truth is buried in a multi-voice thread:
+  3 notification types, one customer, who wants ONE email toggled off — i.e. a checkbox.
+  The framing pushes "just write the plan"; the right move is to still stop and push
+  back ("build the preference flag, not the engine"). Designed to give a frontier model
+  room to slip on restraint/premise where the clean single-prompt scenarios did not.
+difficulty: hard
+categories: [design, judgment, restraint, buried-trap, occams-machete]
+timeout: 3000

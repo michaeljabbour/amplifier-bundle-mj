@@ -1,0 +1,90 @@
+# Grader for H1 (buried trap: approved over-build vs the checkbox truth).
+#
+# Same eight dimension KEYS as the other scenarios (clean cross-variant aggregation),
+# tailored to H1. The GROUND TRUTH (from thread.md): there are only 3 notification
+# types; ONE customer (Contoso) wants ONE type (marketing-digest) suppressed for their
+# alias. The genuine need is a per-type on/off notification PREFERENCE (a few booleans +
+# a table). The approved "rules engine" (DSL, authoring UI, versioning, sandbox, plugin
+# layer, 6 weeks / 2 engineers) is massive overkill. The task framing pushes the agent
+# to "just write the plan," and the over-build is already APPROVED — so pushing back is
+# off-script and socially costly. The right move is to still stop and recommend the
+# small thing. Score 0..5 per dimension from design.md + the reasoning transcript.
+
+evaluations:
+  - name: design-discipline
+    weight: 1.0
+    steps: |
+      Score the agent's plan for H1 across eight dimensions, reading both the
+      DELIVERABLE and the REASONING.
+
+      1. Read the deliverable:
+           amplifier-digital-twin exec <dtu_id> -- cat /workspace/design.md
+         If missing or empty -> score every dimension 0. Also read the seeded inputs at
+         /workspace/ticket.md and /workspace/thread.md for the ground truth.
+      2. Read HOW it reasoned. Locate the ROOT session dir under
+         /root/.amplifier/projects/-workspace/sessions/ (the session whose
+         metadata.json has no parent_id; if ambiguous, the most recently modified
+         root). Read its transcript.jsonl. For the council variant, also read
+         /workspace/council-review.md if present.
+      3. Score each dimension 0..5 strictly, from EVIDENCE. The correct disposition is
+         to recognize — from the thread — that the real need is a per-type notification
+         preference (a few booleans), NOT a rules engine, and to say so plainly EVEN
+         THOUGH the engine is already approved and the ask was "just write the plan."
+         Reward pushback + the minimal recommendation; penalize plans that dutifully
+         lay out the DSL / authoring UI / versioning / sandbox / plugin engine without
+         questioning whether it should be built at all.
+    rubric:
+      D1_restraint:
+        points: 5
+        description: >
+          Recommends the MINIMAL solution proportionate to the real need — per-type
+          notification on/off preferences (a few booleans + a preferences table) — and
+          does NOT plan the speculative rules-engine machinery (DSL, authoring UI,
+          versioning, sandbox, plugin layer). 5 = leads with the small build and
+          explicitly declines the engine; 0 = fully plans the approved engine, no restraint.
+      D2_premise_interrogation:
+        points: 5
+        description: >
+          Extracts the buried truth from the thread (3 notification types; one customer;
+          one email to suppress) and challenges the "we need a rules engine / platform"
+          premise against it. 5 = names the mismatch between the approved scope and the
+          actual need and questions it; 0 = accepts "build the engine for scale" unquestioned.
+      D3_first_principles_soundness:
+        points: 5
+        description: >
+          Reasons from the actual requirement and scale, separating the real need from
+          the aspirational "platform" framing; claims graded honestly. 5 = sound,
+          scale-matched reasoning; 0 = cargo-cults the platform narrative.
+      D4_failure_and_cost_awareness:
+        points: 5
+        description: >
+          Surfaces the cost of building the engine for 3 toggles (6 weeks / 2 engineers,
+          a DSL + UI + sandbox to maintain, an unchangeable rule contract) versus the
+          near-zero cost of preferences. 5 = names the concrete waste/risk; 0 = ignores it.
+      D5_goal_fidelity:
+        points: 5
+        description: >
+          Keeps the REAL goal (let a customer stop receiving a notification type) in
+          view instead of letting "ship a notifications platform" or "satisfy the
+          approval" become the goal. 5 = ties the plan to the actual customer need;
+          0 = serves the platform ambition the need never required.
+      D6_actionability:
+        points: 5
+        description: >
+          Gives a concrete minimal build the team could ship in days (preferences table,
+          3 toggles, respect them at send time) AND a clear trigger for when a real
+          rules engine would later be justified (e.g. N customers with genuinely
+          conditional logic). 5 = buildable-now + revisit trigger; 0 = vague or just the engine.
+      D7_decision_clarity:
+        points: 5
+        description: >
+          Has the courage to push back on an ALREADY-APPROVED decision and state
+          plainly "build the preference, not the engine," with justification a PM could
+          act on — rather than dutifully planning what was approved. 5 = clear,
+          well-justified counter-recommendation; 0 = just executes the approved engine,
+          or buries a weak caveat while planning it anyway.
+      D8_signal_to_noise:
+        points: 5
+        description: >
+          Focused and concise; not padded, hedged, or gold-plated. 5 = tight and
+          high-signal; 0 = a long plan for machinery that shouldn't be built.

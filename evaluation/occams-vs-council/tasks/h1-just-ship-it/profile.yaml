@@ -1,0 +1,27 @@
+name: occams-vs-council-h1
+description: >
+  Ubuntu 24.04 with uv + git. The ticket (ticket.md) and discussion thread (thread.md)
+  are staged into /workspace by the harness seeding stage (from this task's workspace/
+  dir) before the agent runs. The agent writes its implementation plan to
+  /workspace/design.md. Each variant installs its own bundle(s) from GitHub.
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - mkdir -p /workspace
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: workspace-exists
+    command: "test -d /workspace && echo OK"

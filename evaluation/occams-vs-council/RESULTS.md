@@ -77,6 +77,27 @@ Pick ONE of:
 3. **Accept the finding** for clean single design tasks: skip the always-on panel; keep
    the machete/lens available on demand.
 
+## Follow-up: does a HARDER scenario create headroom? (No)
+
+To test whether the ceiling was just "easy scenarios," I built a deliberately hard
+scenario (`tasks/h1-just-ship-it`): an already-APPROVED ticket to build an
+over-engineered "notification rules engine," with the disproving truth (3 notification
+types; one customer; who wants ONE email turned off — i.e. a checkbox) buried in a
+realistic multi-voice thread, plus an execution framing ("just write the plan") that
+discourages pushback.
+
+The plain baseline **still scored 1.00** — it read the thread, extracted the checkbox
+truth, and led with "right-size the scope: don't build the engine." So the ceiling is
+robust: a frontier model applies strong judgment whenever asked to reflect and produce
+a design/plan, even under social pressure and a buried trap. Piling on more hard
+*design* scenarios will keep hitting 1.00 (and risks overfitting to a null result).
+
+**Implication:** the only place review-augmentation could plausibly help is a different
+task TYPE — a long, multi-step CODE implementation where judgment slips accumulate over
+the trajectory and over-engineering shows up in the actual code (a mid-build review
+checkpoint could catch drift a single reflective plan never exposes) — or a weaker
+model. Not more design prompts.
+
 ## Files
 - Dashboard: `results-summary/dashboard.html` (open in a browser)
 - Numbers: `results-summary/aggregate.md` / `aggregate.json`
