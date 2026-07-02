@@ -1,0 +1,27 @@
+name: occams-vs-council-c2
+description: >
+  Ubuntu 24.04 with uv + git + python3. The multi-file todo repo (todo/ + tests/) is
+  staged into /workspace by the harness seeding stage before the agent runs. The agent
+  modifies the repo in place. python3 + python-is-python3 are installed so the seeded
+  tests run with `python3` / `python`.
+
+base:
+  image: ubuntu:24.04
+
+passthrough:
+  allow_external: true
+  services:
+    - name: anthropic
+      key_env: ANTHROPIC_API_KEY
+
+provision:
+  setup_cmds:
+    - apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates tmux python3 python-is-python3 && rm -rf /var/lib/apt/lists/*
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - mkdir -p /workspace
+
+readiness:
+  - name: uv-installed
+    command: "PATH=/root/.local/bin:$PATH uv --version"
+  - name: python-ok
+    command: "python3 --version"

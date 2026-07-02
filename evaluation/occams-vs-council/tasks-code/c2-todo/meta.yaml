@@ -1,0 +1,12 @@
+name: c2-todo
+description: >
+  Bigger multi-file CODE scenario. A small todo CLI (models/service/store/cli + tests)
+  plus a THREE-part feature request (tags + filtering, due dates + overdue view, archive)
+  that touches several files and offers more surface for both over-engineering (a filter
+  DSL, a plugin/registry, a repository layer, an event system) and for a multi-lens review
+  to add value. The lean answer is new fields + a few filter functions + CLI wiring
+  (~60-120 LOC, no new abstractions). Tests whether the council's heavier review finally
+  pays off on a bigger task, or whether plain occams-machete still wins.
+difficulty: hard
+categories: [code, implementation, multi-file, restraint, occams-machete]
+timeout: 3600

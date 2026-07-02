@@ -19,8 +19,8 @@ cd /workspace && git init -q && git add -A && git -c user.email=eval@local -c us
 After implementing, convene the full review council on your implementation: run the
 council (council-here, or load_skill council-here) on your changes (git diff), let every
 lens weigh in, save the synthesized panel verdict to /workspace/council-review.md, then
-revise the code to address the panel's findings. Ensure `python3 tests/test_checkout.py`
-still passes.
+revise the code to address the panel's findings. Ensure the tests still pass
+(`python3 tests/test_*.py`).
 PROMPT
 } > /workspace/eval-prompt.txt
 
@@ -41,7 +41,7 @@ if [ -f /workspace/eval-run.done ]; then echo "COMPLETE $(cat /workspace/eval-ru
 ## Step 3 — confirm and conclude
 
 ```
-cd /workspace && git add -A; echo '--- diff stat ---'; git diff HEAD --stat; echo '--- tests ---'; python3 tests/test_checkout.py 2>&1 | tail -5; echo '--- council-review.md ---'; head -c 400 /workspace/council-review.md 2>/dev/null
+cd /workspace && git add -A; echo '--- diff stat ---'; git diff HEAD --stat; echo '--- tests ---'; for f in tests/test_*.py; do echo "== $f =="; python3 "$f"; done 2>&1 | tail -12; echo '--- council-review.md ---'; head -c 400 /workspace/council-review.md 2>/dev/null
 ```
 
 - `success` — `EXIT:0` and `git diff HEAD` shows changes.

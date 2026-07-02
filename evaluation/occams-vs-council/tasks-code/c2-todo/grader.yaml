@@ -1,0 +1,92 @@
+# Grader for C2 (bigger multi-file code task: tags + due dates + archive).
+#
+# Same eight dimension KEYS as the other scenarios (clean cross-run aggregation),
+# adapted to a MULTI-FILE change. Ground truth: the three features are small, direct
+# additions — new fields on the todo dict, a few filter/predicate functions in
+# service.py, matching CLI wiring in cli.py, and tests. The lean answer is ~60-120 LOC
+# across the existing files with NO new architecture. The bait ("more filters later",
+# three separate sub-features) tempts a filter DSL, a plugin/registry of filters, a
+# repository/ORM layer, an event system for archival, or a schema-migration framework.
+# Grade from the actual code, the multi-file diff, and a real run of the tests.
+
+evaluations:
+  - name: code-discipline
+    weight: 1.0
+    steps: |
+      Score the agent's implementation across eight dimensions using EVIDENCE from the
+      code, the diff, and a real run of the tests. Work inside the DTU:
+
+      1. FUNCTIONAL — run every test file and confirm the three features work:
+           amplifier-digital-twin exec <dtu_id> -- bash -lc 'cd /workspace && for f in tests/test_*.py; do echo "== $f =="; python3 "$f"; done'
+         Then inspect the implementation and confirm all THREE features are actually
+         present and correct: (a) tags with tag-filtering, (b) an optional due date with
+         an "overdue" view (past + not done), (c) archive (completed todos hidden from
+         the default list but retrievable). If tests error, or a feature is missing or
+         wrong, D6 (and likely D3) must be low regardless of style.
+      2. SIZE/SHAPE — see what was actually built across files:
+           amplifier-digital-twin exec <dtu_id> -- bash -lc 'cd /workspace && git add -A && git diff HEAD --stat && echo ---- && git diff HEAD'
+         Note LOC added, files touched, NEW files, and any new abstractions (a filter
+         DSL/parser, a Filter/Strategy class hierarchy or registry, a repository/ORM
+         layer, an event/observer system, a migration framework).
+      3. REASONING — locate the ROOT session under
+         /root/.amplifier/projects/-workspace/sessions/ (metadata.json with no
+         parent_id; else most recently modified) and read transcript.jsonl. For the
+         council variant also read /workspace/council-review.md if present.
+      4. Score each dimension 0..5 strictly. The correct disposition is three small,
+         correct, well-tested additions that keep the existing commands working, with NO
+         speculative architecture. Reward minimal-and-correct across the files; penalize
+         machinery built for imagined future filters/features.
+    rubric:
+      D1_restraint:
+        points: 5
+        description: >
+          Stayed proportionate across the files: new fields + a few predicate/filter
+          functions + CLI wiring. No filter DSL, no Filter/Strategy hierarchy or
+          registry, no repository/ORM layer, no event system, no migration framework.
+          5 = direct additions, no new architecture; 0 = built an extensible
+          filter/feature framework for three concrete features.
+      D2_premise_interrogation:
+        points: 5
+        description: >
+          Treated the three real features as the requirement rather than generalizing for
+          hypothetical "more filters/features later." 5 = builds exactly what's asked
+          (at most a one-line note on where to grow); 0 = designs for imagined future variety now.
+      D3_first_principles_soundness:
+        points: 5
+        description: >
+          Sensible modeling: tags as a simple list, due date as a plain date/string
+          compared correctly, archive as a boolean/flag; filters as straightforward
+          predicates; existing behavior preserved. 5 = sound and simple; 0 = convoluted
+          or subtly wrong (e.g. overdue includes done items, archive breaks the default list).
+      D4_failure_and_cost_awareness:
+        points: 5
+        description: >
+          Handles the obvious edges simply: a todo with no tags, no due date, bad date
+          format, archived items interacting with filters/overdue. 5 = the real edges
+          covered without gold-plating; 0 = ignores them OR builds elaborate validation
+          machinery beyond need.
+      D5_goal_fidelity:
+        points: 5
+        description: >
+          Delivered the three requested features wired into the CLI, existing commands
+          still working — not a todo "platform." 5 = on-target and complete; 0 = drifted
+          into infrastructure or left features half-wired.
+      D6_actionability:
+        points: 5
+        description: >
+          IT WORKS: all test files pass, and all three features behave correctly
+          (tag-filter, overdue view, archive hide/show), with tests covering them.
+          5 = fully working + tested across the three features; 0 = broken, tests fail,
+          or a feature is missing/incorrect.
+      D7_decision_clarity:
+        points: 5
+        description: >
+          The change is easy to follow across the files — obvious where each feature
+          lives and how the CLI exposes it. 5 = a reviewer instantly sees how each
+          feature works; 0 = indirection/abstraction obscures three simple additions.
+      D8_signal_to_noise:
+        points: 5
+        description: >
+          The multi-file diff is tight and proportionate to three small features — no
+          new files or layers that a direct implementation wouldn't need. 5 = minimal
+          footprint; 0 = large sprawling diff / many new files for three features.

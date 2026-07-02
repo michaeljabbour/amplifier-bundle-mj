@@ -1,0 +1,19 @@
+instructions: |
+  This repository (the current directory) is a small todo CLI:
+  - todo/models.py — new_todo(id, title) factory (a todo is a dict: id, title, done)
+  - todo/service.py — add / list_todos / complete
+  - todo/store.py — JSON load/save
+  - todo/cli.py — argparse CLI (add / list / done)
+  - tests/test_service.py — runnable tests (run: python3 tests/test_service.py)
+
+  Add three features:
+  1. Tags — a todo can have tags (labels). Support listing todos filtered by a tag.
+  2. Due dates — a todo can have an optional due date (YYYY-MM-DD). Support an
+     "overdue" view showing todos whose due date is in the past and are not done.
+  3. Archive — a completed todo can be archived; archived todos are hidden from the
+     default list but can still be listed on request.
+
+  Wire all three into the CLI and add tests for the new behavior. Keep the existing
+  commands working, and make sure `python3 tests/test_service.py` passes.
+
+  Do NOT search the web. Work in the current directory only.

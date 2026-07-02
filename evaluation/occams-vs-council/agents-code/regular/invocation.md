@@ -30,7 +30,7 @@ Do NOT conclude while it prints `RUNNING`. A sub-session is expected, not an err
 ## Step 3 — confirm and conclude
 
 ```
-cd /workspace && git add -A; echo '--- diff stat ---'; git diff HEAD --stat; echo '--- tests ---'; python3 tests/test_checkout.py 2>&1 | tail -5
+cd /workspace && git add -A; echo '--- diff stat ---'; git diff HEAD --stat; echo '--- tests ---'; for f in tests/test_*.py; do echo "== $f =="; python3 "$f"; done 2>&1 | tail -12
 ```
 
 - verdict `success` — sentinel shows `EXIT:0` and `git diff HEAD` shows changes to the repo.
