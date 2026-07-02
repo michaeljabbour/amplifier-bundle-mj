@@ -70,7 +70,7 @@ real work. The honest default on an unexamined smell is a question, not a shrug.
   demand** by their agents, not always-on. Don't double-load.
 - **Verify before you claim done.** Run the module tests (`uv run pytest` in the
   module dir) and `python_check`. Evidence before assertions — see rule 4.
-- **Use the panel.** This bundle is one lens among many. Before shipping a non-trivial
+- **Use the reviewers.** This bundle is one lens among many. Before shipping a non-trivial
   change, run it past the relevant reviewer(s) — `mj-reviewer` (direction),
-  `crusty-old-engineer` (what will it cost / what breaks), the `occams-machete` blade
-  (make the cut), or `/council` for the full orthogonal panel.
+  `crusty-old-engineer` (what will it cost / what breaks), and the `occams-machete` blade
+  (make the cut).
