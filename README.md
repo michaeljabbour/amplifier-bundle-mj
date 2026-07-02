@@ -65,16 +65,34 @@ before/after baseline, and a human approval gate before irreversible edits land)
 
 ## Install
 
-Layer the Machete onto an existing Amplifier app — the behavior snaps on top of
-whatever you're already running, without replacing it:
+There are two ways to bring the Machete into your workflow.
+
+### Layer it onto an existing app (recommended)
+
+Add the **behavior** as an app bundle so the Machete — the `occams-machete` executioner,
+the persona skill, the `/machete` mode, and the MJ lens — composes onto **every** session,
+whatever primary bundle you run:
 
 ```bash
-amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main" --app
+amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=behaviors/occams-machete.yaml" --app
 ```
 
-The `--app` flag adds the bundle to your active app configuration, so `/machete`,
-the `occams-machete` executioner, and the MJ lens compose on top of your current
-setup.
+`--app` makes it always-on across your sessions; the `#subdirectory=behaviors/occams-machete.yaml`
+fragment layers just the behavior on top of your existing app instead of replacing your root
+bundle. Remove it later with:
+
+```bash
+amplifier bundle remove occams-machete-behavior
+```
+
+### Use it as a standalone root bundle
+
+If you'd rather run the Machete on its own:
+
+```bash
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main
+amplifier bundle use occams-machete
+```
 
 ## Usage
 
