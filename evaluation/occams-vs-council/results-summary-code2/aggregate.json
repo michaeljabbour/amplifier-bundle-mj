@@ -1,0 +1,468 @@
+{
+  "run": "/Users/michaeljabbour/.amplifier/evaluation/occams-vs-council/code2-20260702T010046Z",
+  "n_trials": 9,
+  "variants": [
+    "council",
+    "occams-machete",
+    "regular"
+  ],
+  "scenarios": [
+    "c2-todo"
+  ],
+  "rows": [
+    {
+      "trial": "council__c2-todo__trial-1",
+      "variant": "council",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__c2-todo__trial-2",
+      "variant": "council",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__c2-todo__trial-3",
+      "variant": "council",
+      "scenario": "c2-todo",
+      "state": "grading",
+      "overall": null,
+      "dims": {
+        "D1_restraint": [
+          null,
+          null
+        ],
+        "D2_premise_interrogation": [
+          null,
+          null
+        ],
+        "D3_first_principles_soundness": [
+          null,
+          null
+        ],
+        "D4_failure_and_cost_awareness": [
+          null,
+          null
+        ],
+        "D5_goal_fidelity": [
+          null,
+          null
+        ],
+        "D6_actionability": [
+          null,
+          null
+        ],
+        "D7_decision_clarity": [
+          null,
+          null
+        ],
+        "D8_signal_to_noise": [
+          null,
+          null
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "occams-machete__c2-todo__trial-1",
+      "variant": "occams-machete",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          4.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__c2-todo__trial-2",
+      "variant": "occams-machete",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          4.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__c2-todo__trial-3",
+      "variant": "occams-machete",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c2-todo__trial-1",
+      "variant": "regular",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c2-todo__trial-2",
+      "variant": "regular",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c2-todo__trial-3",
+      "variant": "regular",
+      "scenario": "c2-todo",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    }
+  ],
+  "per_variant_scenario": {
+    "council|c2-todo": [
+      1.0,
+      2
+    ],
+    "occams-machete|c2-todo": [
+      0.983,
+      3
+    ],
+    "regular|c2-todo": [
+      1.0,
+      3
+    ]
+  },
+  "per_variant_dimension": {
+    "council|D1_restraint": 1.0,
+    "council|D2_premise_interrogation": 1.0,
+    "council|D3_first_principles_soundness": 1.0,
+    "council|D4_failure_and_cost_awareness": 1.0,
+    "council|D5_goal_fidelity": 1.0,
+    "council|D6_actionability": 1.0,
+    "council|D7_decision_clarity": 1.0,
+    "council|D8_signal_to_noise": 1.0,
+    "occams-machete|D1_restraint": 1.0,
+    "occams-machete|D2_premise_interrogation": 1.0,
+    "occams-machete|D3_first_principles_soundness": 1.0,
+    "occams-machete|D4_failure_and_cost_awareness": 0.867,
+    "occams-machete|D5_goal_fidelity": 1.0,
+    "occams-machete|D6_actionability": 1.0,
+    "occams-machete|D7_decision_clarity": 1.0,
+    "occams-machete|D8_signal_to_noise": 1.0,
+    "regular|D1_restraint": 1.0,
+    "regular|D2_premise_interrogation": 1.0,
+    "regular|D3_first_principles_soundness": 1.0,
+    "regular|D4_failure_and_cost_awareness": 1.0,
+    "regular|D5_goal_fidelity": 1.0,
+    "regular|D6_actionability": 1.0,
+    "regular|D7_decision_clarity": 1.0,
+    "regular|D8_signal_to_noise": 1.0
+  },
+  "per_variant_overall": {
+    "council": 1.0,
+    "occams-machete": 0.983,
+    "regular": 1.0
+  },
+  "mismatches": [],
+  "unscored": [
+    "council__c2-todo__trial-3"
+  ]
+}

@@ -137,6 +137,49 @@ tests pass, nobody added extra files). The difference is purely **discipline**:
 
 Code-run dashboard: `results-summary-code/dashboard.html`.
 
+## Bigger multi-file task (C2): the baseline is already perfect — headroom is on SMALL tasks, not big ones
+
+`tasks-code/c2-todo`: a multi-file todo CLI (models/service/store/cli + tests) + a
+THREE-part feature request (tags + filtering, due dates + "overdue" view, archive) that
+tempts a filter DSL / plugin / repository over-build across files. 3 variants × 3 trials,
+graded on the actual multi-file diff + a real test run.
+
+| setup | mean | trials | restraint | conciseness | works (tests) |
+|---|---|---|---|---|---|
+| plain amplifier | **1.00** | 1.0, 1.0, 1.0 | 1.00 | 1.00 | 5/5 all |
+| + council | 1.00 | 1.0, 1.0 (n=2)* | 1.00 | 1.00 | 5/5 all |
+| + occams-machete | 0.98 | 0.98, 0.98, 1.0 | 1.00 | 1.00 | 5/5 all |
+
+*one council trial didn't finish scoring (transient) — excluded; the other two are perfect.
+
+**Everyone aced it, and nobody over-engineered** (restraint 5/5 across the board). On a
+bigger, *concrete, well-specified* multi-part task the frontier model stays disciplined on
+its own — the three real features keep it busy, leaving no "spare capacity" to gold-plate.
+The bundles add nothing here (occams-machete is marginally *lower* on a single edge-case
+dip; the council merely ties).
+
+### This inverts C1 — and that's the real finding
+- **C1 (tiny, under-specified: "add 2 codes, more later"):** baseline *variable* (0.83), and
+  occams-machete reliably fixes it (0.99). Its win is **real but narrow** — it prevents
+  over-engineering exactly where a frontier model's judgment is most variable: **small,
+  under-constrained tasks with room to gold-plate.**
+- **C2 (bigger, concrete, multi-file):** baseline already **perfect** (1.00). Concrete,
+  well-specified work keeps the model disciplined; the review bundles add nothing.
+- **Design tasks (all of them):** ceiling; bundles add only verbosity.
+
+So *bigger ≠ more headroom* — counterintuitively the bigger task had **less**. Headroom for
+the machete lives specifically in **small / ambiguous / under-specified implementation
+moments**, not in large concrete builds.
+
+### Final answer to "is the council worth it?"
+**No — in any regime tested.** Across design, tiny code, and bigger multi-file code, the
+7-lens council **never wins**: it ties at best (C2) and loses to its own verbosity elsewhere
+(design, C1). **Plain occams-machete dominates or ties it everywhere**, at a fraction of the
+cost. Keep the machete lens available for small/ambiguous implementation moments; skip the
+always-on council.
+
+Code-run dashboards: `results-summary-code/` (C1) and `results-summary-code2/` (C2).
+
 ## Files
 - Dashboard: `results-summary/dashboard.html` (open in a browser)
 - Numbers: `results-summary/aggregate.md` / `aggregate.json`

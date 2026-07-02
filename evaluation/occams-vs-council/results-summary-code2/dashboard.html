@@ -1,0 +1,46 @@
+<!doctype html><meta charset=utf-8><title>occams-vs-council — code2-20260702T010046Z</title>
+<style>
+ body{font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;background:#0f1115;color:#e6e6e6;margin:0;padding:32px;max-width:1100px}
+ h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:28px 0 10px;color:#9ecbff}
+ .sub{color:#8a90a0;margin-bottom:18px}
+ table{border-collapse:collapse;width:100%;margin:6px 0 18px}
+ th,td{padding:7px 10px;text-align:center;border:1px solid #262a33} th{background:#171a21;color:#c8ccd6}
+ td.l,th.l{text-align:left} .var{font-weight:600;color:#fff}
+ .banner{padding:10px 14px;border-radius:8px;margin:10px 0;font-weight:600}
+ .ok{background:#123a1c;color:#9be8a6} .bad{background:#3a1212;color:#ff9c9c}
+ .cell{color:#0c0e12;font-weight:600} small{color:#8a90a0;font-weight:400}
+ .note{color:#c8ccd6;background:#171a21;border-left:3px solid #9ecbff;padding:10px 14px;border-radius:4px}
+</style>
+<h1>occams-vs-council — design-discipline evaluation</h1>
+<div class=sub>run <code>code2-20260702T010046Z</code> · 9 trials · 3 setups × 3 scenarios × up to 3 trials</div>
+<div class='banner bad'>⚠ Sanity: 0 prompt/scenario mismatch(es), 1 unscored — excluded from means. See per-trial table.</div>
+<h2>Overall score by scenario <small>(mean, n trials; excludes flagged)</small></h2><table>
+<tr><th class=l>setup</th><th>c2-todo</th><th>overall</th></tr>
+<tr><td class='l var'>council</td><td style='background:rgb(0,170,60)' class=cell>1.00<br><small>n=2</small></td><td style='background:rgb(0,170,60)' class=cell>1.00</td></tr>
+<tr><td class='l var'>occams-machete</td><td style='background:rgb(13,170,60)' class=cell>0.98<br><small>n=3</small></td><td style='background:rgb(13,170,60)' class=cell>0.98</td></tr>
+<tr><td class='l var'>regular</td><td style='background:rgb(0,170,60)' class=cell>1.00<br><small>n=3</small></td><td style='background:rgb(0,170,60)' class=cell>1.00</td></tr>
+</table>
+<h2>By quality dimension <small>(mean 0–1 across scenarios+trials)</small></h2><table>
+<tr><th class=l>setup</th><th>Restraint</th><th>Premise?</th><th>Soundness</th><th>Failure/Cost</th><th>Goal fidelity</th><th>Actionable</th><th>Decision</th><th>Signal/Noise</th></tr>
+<tr><td class='l var'>council</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td></tr>
+<tr><td class='l var'>occams-machete</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(106,170,60)' class=cell>0.87</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td></tr>
+<tr><td class='l var'>regular</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td style='background:rgb(0,170,60)' class=cell>1.00</td></tr>
+</table>
+<h2>Per-trial detail</h2><table>
+<tr><th class=l>trial</th><th>setup</th><th>scenario</th><th>score</th><th>subject</th><th>panel?</th><th>state</th><th>flag</th></tr>
+<tr><td class=l><small>council__c2-todo__trial-1</small></td><td>council</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td>✓</td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>council__c2-todo__trial-2</small></td><td>council</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td>✓</td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>council__c2-todo__trial-3</small></td><td>council</td><td>c2-todo</td><td style='background:#333' class=cell>—</td><td>None</td><td>✓</td><td><small>grading</small></td><td style='color:#ff9c9c'>⚠ unscored</td></tr>
+<tr><td class=l><small>occams-machete__c2-todo__trial-1</small></td><td>occams-machete</td><td>c2-todo</td><td style='background:rgb(20,170,60)' class=cell>0.97</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>occams-machete__c2-todo__trial-2</small></td><td>occams-machete</td><td>c2-todo</td><td style='background:rgb(20,170,60)' class=cell>0.97</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>occams-machete__c2-todo__trial-3</small></td><td>occams-machete</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>regular__c2-todo__trial-1</small></td><td>regular</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>regular__c2-todo__trial-2</small></td><td>regular</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+<tr><td class=l><small>regular__c2-todo__trial-3</small></td><td>regular</td><td>c2-todo</td><td style='background:rgb(0,170,60)' class=cell>1.00</td><td>None</td><td></td><td><small>completed</small></td><td style='color:#ff9c9c'></td></tr>
+</table>
+<h2>Read of the results</h2><div class=note>
+Highest overall: <b>council</b> (1.00). 
+The full <b>council</b> (1.00) beat plain <b>occams-machete</b> (0.98) overall. 
+Signal/Noise (conciseness) — council 1.00, occams-machete 1.0, regular 1.0.
+</div>
+<p class=sub>Generated from aggregate.json. Raw trials, transcripts, and per-dimension reasoning live under the run directory.</p>
