@@ -63,6 +63,19 @@ then ships forty files would be a punchline. This one eats its own cooking — t
 two recipes earn their place by adding what plain delegation can't (a recorded
 before/after baseline, and a human approval gate before irreversible edits land).
 
+## Does it actually help? We measured it.
+
+We ran a controlled evaluation — plain Amplifier vs. **+occams-machete** vs. a heavier
+seven-lens *council* review panel — across design and coding tasks in isolated environments,
+graded on restraint, soundness, and conciseness. The finding: on **small or under-specified
+implementation work**, occams-machete reliably keeps a frontier model from over-building
+(baseline **0.83 → 0.99**) — its one clear, repeatable win — while the heavier council never
+paid for itself (it tied at best and lost to its own verbosity, and plain occams-machete
+matched or beat it everywhere). On well-specified design or large, concrete tasks a strong
+model is already disciplined and needs neither. So this bundle deliberately ships **just the
+machete and its lightweight lenses — no always-on council.** Full method, scenarios, and
+numbers: [`evaluation/occams-vs-council/RESULTS.md`](evaluation/occams-vs-council/RESULTS.md).
+
 ## Install
 
 There are two ways to bring the Machete into your workflow.

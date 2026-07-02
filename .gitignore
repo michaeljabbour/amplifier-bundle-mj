@@ -21,3 +21,6 @@ __pycache__/
 
 # Local DTU / amplifier state (reality-check profiles, etc.)
 .amplifier/
+
+# Personal working notes (kept local, not shipped)
+evaluation/MJ-FEEDBACK-AND-PROMPTS.md
