@@ -1,0 +1,466 @@
+{
+  "run": "/Users/michaeljabbour/.amplifier/evaluation/occams-vs-council/code-20260701T231804Z",
+  "n_trials": 9,
+  "variants": [
+    "council",
+    "occams-machete",
+    "regular"
+  ],
+  "scenarios": [
+    "c1-discount"
+  ],
+  "rows": [
+    {
+      "trial": "council__c1-discount__trial-1",
+      "variant": "council",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__c1-discount__trial-2",
+      "variant": "council",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 0.825,
+      "dims": {
+        "D1_restraint": [
+          3.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          4.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          4.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          4.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          3.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "council__c1-discount__trial-3",
+      "variant": "council",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 0.75,
+      "dims": {
+        "D1_restraint": [
+          3.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          2.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          4.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          4.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          2.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": true
+    },
+    {
+      "trial": "occams-machete__c1-discount__trial-1",
+      "variant": "occams-machete",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__c1-discount__trial-2",
+      "variant": "occams-machete",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 0.975,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          4.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "occams-machete__c1-discount__trial-3",
+      "variant": "occams-machete",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c1-discount__trial-1",
+      "variant": "regular",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 0.675,
+      "dims": {
+        "D1_restraint": [
+          2.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          1.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          4.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          3.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          4.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          3.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c1-discount__trial-2",
+      "variant": "regular",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 1.0,
+      "dims": {
+        "D1_restraint": [
+          5.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          5.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          5.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          5.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    },
+    {
+      "trial": "regular__c1-discount__trial-3",
+      "variant": "regular",
+      "scenario": "c1-discount",
+      "state": "completed",
+      "overall": 0.825,
+      "dims": {
+        "D1_restraint": [
+          3.0,
+          5.0
+        ],
+        "D2_premise_interrogation": [
+          2.0,
+          5.0
+        ],
+        "D3_first_principles_soundness": [
+          5.0,
+          5.0
+        ],
+        "D4_failure_and_cost_awareness": [
+          5.0,
+          5.0
+        ],
+        "D5_goal_fidelity": [
+          4.0,
+          5.0
+        ],
+        "D6_actionability": [
+          5.0,
+          5.0
+        ],
+        "D7_decision_clarity": [
+          5.0,
+          5.0
+        ],
+        "D8_signal_to_noise": [
+          4.0,
+          5.0
+        ]
+      },
+      "subject": null,
+      "expected": null,
+      "mismatch": false,
+      "council_review": false
+    }
+  ],
+  "per_variant_scenario": {
+    "council|c1-discount": [
+      0.858,
+      3
+    ],
+    "occams-machete|c1-discount": [
+      0.992,
+      3
+    ],
+    "regular|c1-discount": [
+      0.833,
+      3
+    ]
+  },
+  "per_variant_dimension": {
+    "council|D1_restraint": 0.733,
+    "council|D2_premise_interrogation": 0.733,
+    "council|D3_first_principles_soundness": 1.0,
+    "council|D4_failure_and_cost_awareness": 0.867,
+    "council|D5_goal_fidelity": 1.0,
+    "council|D6_actionability": 1.0,
+    "council|D7_decision_clarity": 0.867,
+    "council|D8_signal_to_noise": 0.667,
+    "occams-machete|D1_restraint": 1.0,
+    "occams-machete|D2_premise_interrogation": 0.933,
+    "occams-machete|D3_first_principles_soundness": 1.0,
+    "occams-machete|D4_failure_and_cost_awareness": 1.0,
+    "occams-machete|D5_goal_fidelity": 1.0,
+    "occams-machete|D6_actionability": 1.0,
+    "occams-machete|D7_decision_clarity": 1.0,
+    "occams-machete|D8_signal_to_noise": 1.0,
+    "regular|D1_restraint": 0.667,
+    "regular|D2_premise_interrogation": 0.533,
+    "regular|D3_first_principles_soundness": 0.933,
+    "regular|D4_failure_and_cost_awareness": 1.0,
+    "regular|D5_goal_fidelity": 0.8,
+    "regular|D6_actionability": 1.0,
+    "regular|D7_decision_clarity": 0.933,
+    "regular|D8_signal_to_noise": 0.8
+  },
+  "per_variant_overall": {
+    "council": 0.858,
+    "occams-machete": 0.992,
+    "regular": 0.833
+  },
+  "mismatches": [],
+  "unscored": []
+}

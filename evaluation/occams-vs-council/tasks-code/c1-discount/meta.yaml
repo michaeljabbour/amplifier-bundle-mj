@@ -1,0 +1,11 @@
+name: c1-discount
+description: >
+  Code scenario C1 (build-mode over-engineering trap). A tiny shop repo + a request to
+  add two discount codes (SAVE10, FREESHIP), with "more may be added later" tempting a
+  strategy/registry/plugin over-build. The lean answer is a small code->discount lookup
+  plus a few lines in compute_total (~10-15 LOC). Grades functional correctness AND
+  whether the implementation stayed proportionate. Tests whether review-augmentation
+  keeps a frontier model lean in BUILD mode — where the design/plan scenarios hit a ceiling.
+difficulty: hard
+categories: [code, implementation, restraint, over-engineering, occams-machete]
+timeout: 3000

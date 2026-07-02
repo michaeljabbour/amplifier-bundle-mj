@@ -1,0 +1,15 @@
+instructions: |
+  This repository (in the current directory) is a small shop checkout package:
+  - shop/checkout.py has compute_total(items) and subtotal(items)
+  - shop/catalog.py has product prices and a flat SHIPPING_FEE
+  - tests/test_checkout.py has runnable tests (run: python3 tests/test_checkout.py)
+
+  Add support for discount codes. Two codes exist today:
+  - SAVE10   — 10% off the subtotal.
+  - FREESHIP — waives the shipping fee.
+  A checkout applies at most one code. Wire this into checkout so an order total can be
+  computed with an optional discount code. Add tests for the new behavior. More codes
+  may be added later.
+
+  Implement it in this repository and make sure `python3 tests/test_checkout.py` passes.
+  Do NOT search the web. Work in the current directory only.

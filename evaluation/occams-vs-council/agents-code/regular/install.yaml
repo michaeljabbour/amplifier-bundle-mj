@@ -1,0 +1,30 @@
+requires:
+  env:
+    - ANTHROPIC_API_KEY
+
+# Variant "regular": stock amplifier-foundation @ main. The baseline / control —
+# no review augmentation. Pins Opus via the opus48 routing matrix so this variant,
+# occams-machete, and council differ ONLY by composed bundle, not by model.
+# (For a cheap pipeline smoke you can swap default_model + matrix to a sonnet/balanced
+# pair; hold it constant across all three variants for a real comparison run.)
+setup_cmds:
+  - export PATH="/root/.local/bin:$PATH"; uv tool install git+https://github.com/microsoft/amplifier
+  - |
+    mkdir -p /root/.amplifier
+    cat > /root/.amplifier/settings.yaml <<EOF
+    config:
+      providers:
+        - module: provider-anthropic
+          source: git+https://github.com/microsoft/amplifier-module-provider-anthropic@main
+          config:
+            api_key: $ANTHROPIC_API_KEY
+            default_model: claude-opus-4-8
+            enable_1m_context: 'true'
+            enable_prompt_caching: 'true'
+            priority: 1
+    routing:
+      matrix: opus48
+    EOF
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add git+https://github.com/microsoft/amplifier-foundation@main --app
+  - export PATH="/root/.local/bin:$PATH"; amplifier --version
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle list | tee /tmp/bundle-list.txt

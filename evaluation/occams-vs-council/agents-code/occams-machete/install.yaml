@@ -1,0 +1,29 @@
+requires:
+  env:
+    - ANTHROPIC_API_KEY
+
+# Variant "occams-machete": foundation + the occams-machete bundle (which itself
+# includes amplifier-foundation, then wires /machete, mj-reviewer, the blade, and
+# the proactive mj-lens / machete-block hooks). Pins Opus via opus48, identical to
+# the other variants, so they differ only by composed bundle.
+setup_cmds:
+  - export PATH="/root/.local/bin:$PATH"; uv tool install git+https://github.com/microsoft/amplifier
+  - |
+    mkdir -p /root/.amplifier
+    cat > /root/.amplifier/settings.yaml <<EOF
+    config:
+      providers:
+        - module: provider-anthropic
+          source: git+https://github.com/microsoft/amplifier-module-provider-anthropic@main
+          config:
+            api_key: $ANTHROPIC_API_KEY
+            default_model: claude-opus-4-8
+            enable_1m_context: 'true'
+            enable_prompt_caching: 'true'
+            priority: 1
+    routing:
+      matrix: opus48
+    EOF
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main --app
+  - export PATH="/root/.local/bin:$PATH"; amplifier --version
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle list | tee /tmp/bundle-list.txt

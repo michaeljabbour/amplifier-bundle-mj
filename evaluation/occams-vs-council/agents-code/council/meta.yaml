@@ -1,0 +1,7 @@
+name: council
+description: >
+  Variant "council": occams-machete + the skills bundle's /council panel. The agent
+  produces a design AND convenes the full review council (7 lenses incl. MJ, via the
+  feat/council-add-mj-lens branch) to critique and refine it. Same model as the other
+  variants (opus48); the difference is the orthogonal multi-lens review on top of the
+  occams-machete capability.

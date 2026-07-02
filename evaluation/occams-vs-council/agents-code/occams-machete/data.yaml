@@ -1,0 +1,15 @@
+# Pull the full session tree + the modified repo (shop/ + tests/) so the grader can
+# inspect the diff and run the tests.
+session_data:
+  base_path: /root/.amplifier/projects/-workspace/sessions/{session_id}
+  files:
+    - transcript.jsonl
+    - metadata.json
+    - events.jsonl
+
+workspace:
+  path: /workspace
+  deliverables:
+    - shop
+    - tests
+    - eval-run.out

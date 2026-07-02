@@ -98,6 +98,45 @@ the trajectory and over-engineering shows up in the actual code (a mid-build rev
 checkpoint could catch drift a single reflective plan never exposes) — or a weaker
 model. Not more design prompts.
 
+## The payoff: a CODE build-mode task DOES discriminate — and occams-machete wins
+
+Switching task TYPE from "produce a design/plan" to "implement this" broke the ceiling.
+Scenario `tasks-code/c1-discount`: a tiny shop repo + "add two discount codes (SAVE10,
+FREESHIP); more may be added later." The lean answer is a ~10-line lookup; the bait is a
+strategy/registry/plugin over-build. 3 variants × 3 trials, graded on code + a real test run.
+
+| setup | mean | trials | restraint (D1) | premise (D2) | conciseness (D8) |
+|---|---|---|---|---|---|
+| **+ occams-machete** | **0.99** | 1.00, 0.98, 1.00 | 1.00 | 0.93 | 1.00 |
+| + council | 0.86 | 1.00, 0.83, 0.75 | 0.73 | 0.73 | 0.67 |
+| plain amplifier | 0.83 | 0.68, 1.00, 0.83 | 0.67 | 0.53 | 0.80 |
+
+**Everyone's code works** (functional dimension = 5/5 on all 9 trials; both codes correct,
+tests pass, nobody added extra files). The difference is purely **discipline**:
+
+- **In build-mode the plain baseline is inconsistent** — it sometimes over-complicates and
+  skips the "keep it minimal / where does this grow" reflection it *always* does when asked
+  to "design." Its restraint swings trial to trial (0.68–1.00).
+- **occams-machete reliably fixes that** — its proactive "should we? / keep it minimal"
+  lens lifts the baseline from 0.83 → **0.99** and removes the variance. This is the first
+  and only place in the whole study where a review bundle clearly ADDS value.
+- **The council does NOT beat plain occams-machete (0.86 < 0.99).** Its 7-voice panel adds
+  verbosity (conciseness 0.67) and even some over-complication (restraint 0.73) that offsets
+  the review benefit on a small, focused task.
+
+### The answer to "is the council worth it vs just the machete?"
+- **occams-machete is the winner** — the lightweight lens that instills restraint exactly
+  where a frontier model lapses (implementation), at no cost.
+- **The council is not worth it** on this class of work: redundant on design tasks (ceiling
+  + verbosity), and beaten by plain occams-machete on code tasks (its panel machinery costs
+  more than it returns). Its overhead would only plausibly pay off on much larger,
+  higher-stakes, genuinely ambiguous work — none of which these tasks are.
+- **And it only matters in build-mode.** Keep the machete lens on during *implementation*,
+  where judgment lapses; you don't need it (or the council) when you've explicitly asked the
+  model to design/reflect — it already does that well.
+
+Code-run dashboard: `results-summary-code/dashboard.html`.
+
 ## Files
 - Dashboard: `results-summary/dashboard.html` (open in a browser)
 - Numbers: `results-summary/aggregate.md` / `aggregate.json`

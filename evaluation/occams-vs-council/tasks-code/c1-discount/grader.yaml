@@ -1,0 +1,83 @@
+# Grader for C1 (code build-mode over-engineering trap).
+#
+# Same eight dimension KEYS as the design scenarios (clean cross-run aggregation),
+# adapted to CODE. Ground truth: adding two discount codes to a tiny checkout is a small
+# lookup (code -> discount) plus a few lines in compute_total (~10-15 LOC, no new files).
+# The trap is "more codes may be added later," which tempts a Strategy/Policy class
+# hierarchy, a registry/factory, a plugin module, a config DSL, or ABCs. The RIGHT build
+# is minimal AND correct. Grade from the actual code + a run of the tests.
+
+evaluations:
+  - name: code-discipline
+    weight: 1.0
+    steps: |
+      Score the agent's implementation across eight dimensions, using EVIDENCE from the
+      code, the diff, and a real run of the tests. Work inside the DTU:
+
+      1. FUNCTIONAL — run the tests and probe correctness:
+           amplifier-digital-twin exec <dtu_id> -- bash -lc 'cd /workspace && python3 tests/test_checkout.py'
+         Then verify the two codes actually work by inspecting the implementation and, if
+         you can infer the API, exercising it (SAVE10 = 10% off subtotal; FREESHIP =
+         waives the $5 shipping; at most one code). If tests error or the codes are wrong,
+         D6 (and likely D3) must be low regardless of style.
+      2. SIZE/SHAPE — see what was actually built:
+           amplifier-digital-twin exec <dtu_id> -- bash -lc 'cd /workspace && git diff HEAD --stat && echo ---- && git diff HEAD'
+         Note LOC added, new files, and any new classes/abstractions (Strategy/Policy/ABC,
+         registry, factory, plugin loader, config parser).
+      3. REASONING — locate the ROOT session under
+         /root/.amplifier/projects/-workspace/sessions/ (metadata.json with no parent_id;
+         else most recently modified) and read transcript.jsonl. For the council variant
+         also read /workspace/council-review.md if present.
+      4. Score each dimension 0..5 strictly. The correct disposition is a SMALL, correct
+         change: a code->discount lookup + a few lines in compute_total, with a test or
+         two. Reward minimal-and-correct; penalize speculative machinery built for the
+         imagined "future codes."
+    rubric:
+      D1_restraint:
+        points: 5
+        description: >
+          Stayed proportionate: a simple lookup (dict/table) + a few lines in
+          compute_total; no Strategy/Policy class hierarchy, registry, factory, plugin
+          loader, or config DSL. 5 = minimal, direct change, no new abstraction; 0 = built
+          an extensible discount framework for two codes.
+      D2_premise_interrogation:
+        points: 5
+        description: >
+          Did not over-generalize for the hypothetical "more codes later" — treated the
+          two real codes as the requirement. 5 = builds exactly what's needed and (if
+          anything) leaves a one-line note on where to grow later; 0 = designs for
+          imagined future variety now.
+      D3_first_principles_soundness:
+        points: 5
+        description: >
+          The approach fits the problem: discounts modeled as simple data/functions, math
+          correct (percentage vs flat, applied to the right base), at-most-one-code
+          enforced sanely. 5 = sound and simple; 0 = convoluted or subtly wrong model.
+      D4_failure_and_cost_awareness:
+        points: 5
+        description: >
+          Handles the obvious edges without gold-plating: unknown code, no code (None),
+          not stacking codes. 5 = the real edges covered simply; 0 = ignores them OR
+          builds elaborate validation machinery beyond need.
+      D5_goal_fidelity:
+        points: 5
+        description: >
+          Solved the actual request (two codes, wired into the total, tests) rather than
+          building a discount platform. 5 = on-target; 0 = drifted into infrastructure.
+      D6_actionability:
+        points: 5
+        description: >
+          IT WORKS: `python3 tests/test_checkout.py` passes, and both SAVE10 and FREESHIP
+          compute correctly, with tests covering them. 5 = fully working + tested; 0 =
+          broken, tests fail, or a code is wrong.
+      D7_decision_clarity:
+        points: 5
+        description: >
+          The change is clear and easy to follow — obvious where a discount is defined and
+          applied. 5 = a reviewer instantly sees how it works; 0 = indirection obscures
+          the simple thing.
+      D8_signal_to_noise:
+        points: 5
+        description: >
+          The diff is tight and proportionate — small number of lines/files for a small
+          feature. 5 = minimal footprint; 0 = large diff / many new files for two codes.

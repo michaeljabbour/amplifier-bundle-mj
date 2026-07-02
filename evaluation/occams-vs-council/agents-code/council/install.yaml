@@ -1,0 +1,32 @@
+requires:
+  env:
+    - ANTHROPIC_API_KEY
+
+# Variant "council": occams-machete + the skills bundle (which ships /council and
+# the six sibling review lenses). Composing occams-machete makes the `mj` lens
+# resolvable; pinning the skills bundle to the feat/council-add-mj-lens branch makes
+# the council roster convene MJ as the 7th lens. Until PR #38 merges this branch is
+# required for the 7-lens panel; after merge, switch to @main.
+# Pins Opus via opus48, identical to the other variants.
+setup_cmds:
+  - export PATH="/root/.local/bin:$PATH"; uv tool install git+https://github.com/microsoft/amplifier
+  - |
+    mkdir -p /root/.amplifier
+    cat > /root/.amplifier/settings.yaml <<EOF
+    config:
+      providers:
+        - module: provider-anthropic
+          source: git+https://github.com/microsoft/amplifier-module-provider-anthropic@main
+          config:
+            api_key: $ANTHROPIC_API_KEY
+            default_model: claude-opus-4-8
+            enable_1m_context: 'true'
+            enable_prompt_caching: 'true'
+            priority: 1
+    routing:
+      matrix: opus48
+    EOF
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main --app
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle add 'git+https://github.com/microsoft/amplifier-bundle-skills@feat/council-add-mj-lens' --app
+  - export PATH="/root/.local/bin:$PATH"; amplifier --version
+  - export PATH="/root/.local/bin:$PATH"; amplifier bundle list | tee /tmp/bundle-list.txt
