@@ -31,7 +31,8 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-BUNDLE_ROOT="$(cd "$HERE/.." && pwd)"
+# This suite lives at evaluation/reduction-ab/, so the repo root is two levels up.
+BUNDLE_ROOT="$(cd "$HERE/../.." && pwd)"
 
 # Evaluation bundle cache: where amplifier_evaluation is installed.
 EVAL_BUNDLE_ROOT="/Users/michaeljabbour/.amplifier/cache/amplifier-bundle-evaluation-bb6fbc97ac7dfcb1"
