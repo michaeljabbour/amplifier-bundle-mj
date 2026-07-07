@@ -53,9 +53,14 @@ from config import (
     ARM_MODEL,           # claude-sonnet-4-5  (ranker = different family from gpt-4.1)
 )
 
-EXTRACTOR_MODEL = "gpt-4.1"
-RANKER_MODEL = ARM_MODEL  # claude-sonnet-4-5
-RUN_DIR = Path(__file__).resolve().parent / "runs" / "20260612_135125"
+EXTRACTOR_MODEL = "gpt-5.5"  # re-run 2026-07-07; was gpt-4.1
+RANKER_MODEL = ARM_MODEL  # follows ARM_MODEL (claude-fable-5) — different family from the gpt-5.5 neutralizer
+import sys as _sys
+
+_default_run = "20260612_135125"
+RUN_DIR = Path(
+    _sys.argv[1] if len(_sys.argv) > 1 else str(Path(__file__).resolve().parent / "runs" / _default_run)
+).resolve()
 OUT_MD = Path(__file__).resolve().parent.parent / "PHASE2-DESIGN-RESULTS.md"
 SCENARIO_ORDER = [f"S{i:02d}" for i in range(1, 13)]
 VALID_DIR = ("ship-as-is", "tweak", "redesign", "kill")

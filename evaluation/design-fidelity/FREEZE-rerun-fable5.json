@@ -1,0 +1,31 @@
+{
+  "study": "design-cognition fidelity benchmark \u2014 MODEL RE-RUN (Fable 5 arms / GPT-5.5 judge)",
+  "frozen_at_utc": "2026-07-07T01:42:10.942809+00:00",
+  "parent_freeze": "a0fd1456cf8dc9811de0b391829d575254beaed189b4994a5449093f640a1843",
+  "what_changed_vs_original_run": {
+    "arm_model": "claude-fable-5 (was claude-sonnet-4-5)",
+    "neutralizer_model": "gpt-5.5 (was gpt-4.1)",
+    "extractor_model": "gpt-5.5 (was gpt-4.1)",
+    "concern_grader_model": "gpt-5.5 (was gpt-4.1)",
+    "ab_ranker_model": "claude-fable-5 (was claude-sonnet-4-5; follows ARM_MODEL, different family from neutralizer)",
+    "sampling_note": "claude-fable-5 rejects the temperature parameter (deprecated) \u2014 arms run at the model's default sampling, whereas the original run used explicit temperature. Recorded as an uncontrolled difference.",
+    "gpt55_note": "gpt-5.5 requires max_completion_tokens (reasoning tokens count against budget; set to max(4x,2000))."
+  },
+  "unchanged": "scenarios (12, hashes below), 6 frozen arm prompts, common task, MJ reference reads (MJ-DESIGN-FORM.md as filled), scoring pipeline + pre-registered analysis. MJ's ground truth is model-independent and reused.",
+  "interpretation_rule": "This is a REPLICATION UNDER NEW MODELS of the frozen design. Same primary (Wilcoxon MACHETE>NATIVE, >=2-scenario margin). Compare against run 20260612_135125 descriptively; differences between runs confound model capability with persona-prompt effects and are exploratory.",
+  "artifact_sha256": {
+    "evaluation/design-fidelity/PRE-REGISTRATION-DRAFT.md": "1509a401299224ef69d1256659d5ec486985acb683fb444ca329fb161d4e744c",
+    "evaluation/design-fidelity/scenarios/scenarios_design.json": "c6096582284256828e831e2aa5a7a3f21582da5cf6159e349ce70fe92bf37f08",
+    "evaluation/design-fidelity/MJ-DESIGN-FORM.md": "218f3921fb863f7b5a696ff7e3ca216fecb8b562b80369a97cbb3a9e373e64e7",
+    "evaluation/design-fidelity/harness/config.py": "5c8049fa8e82d9162e160b80ad45d3631f0af821bdb320817e188366dd04c9e5",
+    "evaluation/design-fidelity/harness/phase2_run.py": "0f6f2a059420d25aba14475e6c70c98a273075a4ef53ca66c73cdfdeae1255f1",
+    "evaluation/design-fidelity/harness/phase2_analyze.py": "e3dc37d9abb6f04779e1a31e221cc0bf01c44c97057a6587e801e24c4f50c4a8",
+    "evaluation/cognition-fidelity/harness/llm.py": "b208b1fccca632ed503c3d890fdc610010a095940e498e557c3ba8a2cb1cdb48",
+    "evaluation/design-fidelity/harness/arms/COE.md": "521def6f57fa77690343fcf69a66fd86629f2eb19636da88a2324858736eb5a3",
+    "evaluation/design-fidelity/harness/arms/COS.md": "5baa54673ea4b310a417b7240b982eff372b6e08855fda401bd153fc69d3bb08",
+    "evaluation/design-fidelity/harness/arms/HOLISTIC.md": "3f4c46b4ee0ce214645aa38ee5f87962b61f1e5c019ca7c6c10ae3f55fcdf48d",
+    "evaluation/design-fidelity/harness/arms/MACHETE.md": "07c305b5acbbb7b2c1460c5d64baf11ab4b10cddc6d9552727014514ec400702",
+    "evaluation/design-fidelity/harness/arms/NATIVE.md": "d940fbebee7940bcd3709e7ea192906dd872e6bbe76f052abb93f44170cc477e",
+    "evaluation/design-fidelity/harness/arms/ROB.md": "a06d68f1016893c6fbec9a4c94c89276a7a712cee3258cd7b800839fb83df364"
+  }
+}

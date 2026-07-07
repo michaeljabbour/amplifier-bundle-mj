@@ -217,3 +217,54 @@ amplifier-expert, foundation-expert, research methodologist, research statistici
 **6. Validate INTERACTIVELY + on FRESH data — never on these 12:** 4–6 real interactive sessions (check the opening frame — does MJ have to say "too heavy, start with X"?), then a fresh hold-out: ~30 new scenarios, tune on 15 / lock 15–20 (touched once), pre-registered, grit-exact primary via paired McNemar (N≈30 powers a realistic 0.25→0.50; non-inferiority guard: concern-match stays ≥0.70; over-correction guard on scenarios where heavy escalation is correct).
 
 **DECISION:** record the confirmatory negative; **do NOT change the lens.** Next step is the cheap grit-referent gate (needs MJ to re-score ~4 scenarios) — it may dissolve the finding into a measurement artifact before any lens change is on the table.
+
+---
+
+## MODEL RE-RUN (2026-07-07) — Fable 5 arms / GPT-5.5 judge · run `20260707_034211`
+
+Per MJ: re-run the frozen benchmark with **claude-fable-5** as the arm model (was
+claude-sonnet-4-5) and **gpt-5.5** as the different-family neutralizer/extractor/grader (was
+gpt-4.1). A/B ranker follows ARM_MODEL (claude-fable-5). Same 12 frozen scenarios, same 6 frozen
+arm prompts, same MJ reference reads (model-independent). Manifest: `FREEZE-rerun-fable5.json`.
+216/216 records, 0 API errors; uniform LLM re-extraction as before.
+
+### Results (vs the original sonnet run)
+
+| metric | sonnet/gpt-4.1 (Jun 12) | **fable-5/gpt-5.5 (Jul 7)** |
+|---|---|---|
+| MACHETE composite | 0.444 — **last of 6** | **0.583 — tied 2nd** (with NATIVE) |
+| best arm | ROB 0.639 | **COS 0.694** |
+| PRIMARY MACHETE−NATIVE | −0.111, p=0.84 | **0.000, p=0.625** (net margin +1) — still NOT supported |
+| MACHETE vs HOLISTIC | −0.167 | **+0.028** |
+| blind A/B mean rank | 4.11 — 6th/6 | **3.25 — 2nd/6** (NATIVE 3.08 best) |
+| grit-exact (MACHETE) | 3/12, escalation 8/12 | **6/12, escalation 5/12** (= NATIVE/COE) |
+| Kendall's W (A/B) | 0.091 | 0.044 (Friedman p=0.76) |
+
+Full composite (fable-5): COS 0.694 · NATIVE 0.583 · MACHETE 0.583 · HOLISTIC 0.556 · ROB 0.528 · COE 0.500.
+
+### Honest interpretation
+1. **The pre-registered primary still fails** — MACHETE does not beat NATIVE (exact tie). Under
+   BOTH model configurations, "the MJ-lens adds measurable design-fidelity over plain Amplifier"
+   is unsupported.
+2. **The "MACHETE is worst" finding did NOT replicate.** Last-of-6 was a *sonnet-specific* result:
+   under Fable 5 MACHETE is tied-2nd on composite, 2nd on blind A/B, and edges HOLISTIC. The
+   headline negative was model-dependent, not a stable property of the lens.
+3. **The grit-over-escalation driver largely dissolved** (3/12 → 6/12 grit-exact; escalation
+   8/12 → 5/12, now equal to NATIVE/COE — no longer distinctive). **The expert gate was vindicated:**
+   had we recalibrated the lens toward stage-down on the sonnet evidence, we would have been
+   fixing a model artifact, likely over-correcting the fable-5 behavior.
+4. **Effects compress under the stronger model.** W=0.04, Friedman p=0.76: at n=12 the six arms
+   are statistically near-indistinguishable on Fable 5 — persona prompts matter *less* as the
+   base model improves. (Descriptive wrinkle: the single-concern COS lens is now the best MJ
+   matcher, 0.694.)
+5. **Guards on reading this:** the model change confounds base-model capability with prompt
+   effects; both runs are underpowered (n=12); cross-run deltas are exploratory. Also, fable-5
+   rejects the `temperature` parameter, so arm sampling ran at model default (recorded in the
+   manifest as an uncontrolled difference). Two stale progress-print strings in
+   `phase2_analyze.py` still say "gpt-4.1"/"claude" — the models actually used are config-driven
+   (gpt-5.5 / claude-fable-5); cosmetic only.
+
+### Standing decision (updated)
+Unchanged, and strengthened: **record the negatives; do NOT change the lens.** The one concrete
+new lesson is methodological — *any* future lens change must be validated across ≥2 base models
+before being believed, because the failure mode itself proved model-dependent.

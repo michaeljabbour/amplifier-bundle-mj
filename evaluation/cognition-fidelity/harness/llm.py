@@ -21,14 +21,25 @@ from config import (
 # Lazy singleton clients
 # ---------------------------------------------------------------------------
 _anthropic_client = None
+_anthropic_fable_client = None
 _openai_client = None
 
 
-def _get_anthropic():
-    global _anthropic_client
-    if _anthropic_client is None:
-        import anthropic  # imported here so module import never needs the SDK
+def _get_anthropic(model: str = ""):
+    """Return the Anthropic client. claude-fable-* models require the
+    data-retention endpoint key (ANTHROPIC_FABLE_API_KEY); others use
+    ANTHROPIC_API_KEY."""
+    global _anthropic_client, _anthropic_fable_client
+    import anthropic  # imported here so module import never needs the SDK
 
+    if model.startswith("claude-fable"):
+        if _anthropic_fable_client is None:
+            key = os.environ.get("ANTHROPIC_FABLE_API_KEY")
+            if not key:
+                raise RuntimeError("ANTHROPIC_FABLE_API_KEY is not set (required for claude-fable-* models).")
+            _anthropic_fable_client = anthropic.Anthropic(api_key=key)
+        return _anthropic_fable_client
+    if _anthropic_client is None:
         key = os.environ.get("ANTHROPIC_API_KEY")
         if not key:
             raise RuntimeError("ANTHROPIC_API_KEY is not set in the environment.")
@@ -98,14 +109,16 @@ def call_anthropic(
     """Single-turn Anthropic completion. Returns the concatenated text blocks."""
 
     def _do() -> str:
-        client = _get_anthropic()
-        resp = client.messages.create(
-            model=model,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            system=system,
-            messages=[{"role": "user", "content": user}],
-        )
+        client = _get_anthropic(model)
+        kwargs: dict = {
+            "model": model,
+            "max_tokens": max_tokens,
+            "system": system,
+            "messages": [{"role": "user", "content": user}],
+        }
+        if not model.startswith("claude-fable"):
+            kwargs["temperature"] = temperature  # fable models reject temperature (deprecated)
+        resp = client.messages.create(**kwargs)
         parts = [
             getattr(block, "text", "")
             for block in resp.content
@@ -128,15 +141,21 @@ def call_openai(
 
     def _do() -> str:
         client = _get_openai()
-        resp = client.chat.completions.create(
-            model=model,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            messages=[
+        kwargs: dict = {
+            "model": model,
+            "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-        )
+        }
+        if model.startswith("gpt-5"):
+            # gpt-5.x rejects max_tokens and fixed temperature; reasoning tokens
+            # count against the completion budget, so give generous headroom.
+            kwargs["max_completion_tokens"] = max(max_tokens * 4, 2000)
+        else:
+            kwargs["temperature"] = temperature
+            kwargs["max_tokens"] = max_tokens
+        resp = client.chat.completions.create(**kwargs)
         content = resp.choices[0].message.content
         return (content or "").strip()
 
