@@ -37,31 +37,39 @@ and *act*:
 amplifier-bundle-occams-machete/
 ├── bundle.md                      # bundle root (thin router → foundation + behavior)
 ├── README.md                      # you are here
+├── PRINCIPLES.md                  # the repo's own discipline, written down
 ├── behaviors/
-│   └── occams-machete.yaml        # wires the agent, skill, and /machete mode
+│   └── occams-machete.yaml        # wires the agents, skill, /machete mode, and recipes
 ├── skills/
 │   └── occams-machete/
 │       └── SKILL.md               # the persona: judgment + voice + discipline
 ├── agents/
 │   ├── occams-machete.md          # the executioner: actually performs the cuts
-│   └── mj-reviewer.md             # the MJ lens: "what would MJ think about this?"
+│   ├── mj-reviewer.md             # the MJ lens: "what would MJ think about this?"
+│   └── crusty-old-engineer.md     # the reliability guard: BLOCKERS vs RISKS, go/no-go
 ├── modes/
 │   └── machete.md                 # /machete — reduction-only working posture
 ├── recipes/
 │   ├── reduce-target.yaml         # baseline → cut → verify (single target)
-│   └── panel-then-cut.yaml        # multi-lens review → APPROVAL GATE → cut
+│   ├── panel-then-cut.yaml        # multi-lens review → APPROVAL GATE → cut
+│   └── preflight-guard.yaml       # advisory reliability check before you ship
 ├── modules/
 │   └── hooks-inline-blocks/       # renders ★ insight / ✂ machete / 🔪 MJ-lens callout blocks
 ├── context/
-│   └── machete-awareness.md       # thin routing for the root session
+│   ├── machete-awareness.md       # thin routing for the root session (always-on)
+│   ├── mj-lens-awareness.md       # thin routing for the MJ lens (always-on)
+│   └── mj-profile.md              # evidence-graded MJ profile (loaded on demand)
+├── evaluation/                    # controlled studies backing this README's claims
 ├── bundle.dot                     # composition diagram (v3 convention)
-└── bundle.png                     # rendered diagram
+├── bundle.png                     # rendered diagram
+└── LICENSE                        # MIT
 ```
 
 Yes, that's deliberately small. A bundle that preaches ruthless simplicity and
 then ships forty files would be a punchline. This one eats its own cooking — the
-two recipes earn their place by adding what plain delegation can't (a recorded
-before/after baseline, and a human approval gate before irreversible edits land).
+three recipes earn their place by adding what plain delegation can't (a recorded
+before/after baseline, a human approval gate before irreversible edits land, and
+a pre-ship reliability check).
 
 ## Does it actually help? We measured it.
 
@@ -195,7 +203,7 @@ To re-validate after changes, run `validate-bundle-repo`, consult
 This bundle is MJ's machete — so it also carries **MJ's lens**. Ask *"what would MJ
 think about this?"* (about an idea, design, plan, argument, or diff) and the
 `mj-reviewer` agent answers the way MJ actually reviews — built from evidence mined
-across **305 of his own sessions and 17 published essays**, graded by confidence, and honest about what's
+across **305 of his own sessions and 36 published essays**, graded by confidence, and honest about what's
 corroborated vs. self-reported (it won't fabricate corroboration — MJ would catch it).
 
 The lens and the blade work on **different axes**, which is why both exist:
