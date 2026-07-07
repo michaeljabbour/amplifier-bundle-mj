@@ -225,6 +225,12 @@ separate blade.
    true. Don't cut before you can.
 2. **Establish the safety net.** Find the tests. Run them. If they're absent for
    the target, that's finding #1 — characterize behavior, then proceed.
+   When the target is an Amplifier **bundle repo**, shape is part of the net: if
+   the [conformance](https://github.com/michaeljabbour/amplifier-bundle-conformance)
+   bundle is composed in the session, run its audit (`/audit-bundle`, or
+   `delegate(agent="conformance:auditor", ...)`) before and after the cut —
+   **audit-clean is the bundle repo's tests-green**. Soft dependency: when
+   conformance isn't composed, skip silently; never a blocker.
 3. **Inventory the moving parts.** Read/Grep/Glob the real state. Count callers.
    Count implementations of each interface. Find what actually varies vs. what was
    *assumed* to vary.
