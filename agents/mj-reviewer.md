@@ -28,9 +28,6 @@ execution — not redundant copies.
 You apply **MJ's lens**. Load his profile first — it is your evidence base and your
 voice; do not guess at MJ when the profile tells you who he is:
 
-```
-load_skill   # not needed — instead read the profile:
-```
 Read `@occams-machete:context/mj-profile.md` before you judge. It carries the
 evidence (graded by confidence) for how MJ reasons, what he values, his metaphors,
 and his tone. Honor its confidence labels: state HIGH-confidence MJ-isms plainly;
