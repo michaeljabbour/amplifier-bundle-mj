@@ -1,0 +1,4 @@
+{"campaign": "fewshot_dev", "entry": "aa_check", "stage": "aa_1", "family": "V3FS", "config_id": "K11_full", "F_p90_abs_diff": 0.3000000000000001, "mean_diff": 0.0, "gate_pass": false, "gate_threshold": 0.08}
+{"campaign": "fewshot_dev", "entry": "aa_check", "stage": "aa_2", "family": "V3FS", "config_id": "K11_compact", "F_p90_abs_diff": 0.6333333333333335, "mean_diff": -0.02777777777777778, "gate_pass": false, "gate_threshold": 0.08, "note": "re-A/A after Step-1 breach dropped the full-read format"}
+{"campaign": "fewshot_dev", "entry": "aa_check_decision", "decision": "stop_no_sweep_possible", "surviving_configs": []}
+{"campaign": "fewshot_dev", "entry": "dev_gate", "decision": "outcome_4_no_sweep_possible", "reason": "A/A stability breach on both K11_full and K11_compact V3FS configs"}

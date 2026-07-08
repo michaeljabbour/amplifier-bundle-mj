@@ -1,8 +1,9 @@
 # Few-shot fidelity campaign — CHARTER / PRE-REGISTRATION v2 (validated; awaiting MJ sign-off)
 
-**Status: DRAFT v2 — adversarially validated 2026-07-08 (5 defects corrected, see ADOPTED
-AMENDMENTS at bottom, which SUPERSEDE conflicting text above). Nothing built or run until MJ
-signs off.**
+**Status: SIGNED OFF by MJ 2026-07-08 (all 5 decisions confirmed: exemplars = his 12 reads
+verbatim in the artifact; ~21 lock reads only if the dev gate clears; pre-committed artifact rule
+accepted; honest MDE accepted; fine-tuning out of scope). Adversarially validated (5 defects
+corrected — see ADOPTED AMENDMENTS at bottom, which SUPERSEDE conflicting text above). FROZEN.**
 
 ## Why this campaign
 The hill-climb closed with a decisive result: on claude-fable-5, **prompt-wording mutation is an
