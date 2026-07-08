@@ -106,14 +106,13 @@ bundle. Remove it later with:
 amplifier bundle remove occams-machete-behavior
 ```
 
-### Use it as a standalone root bundle
+### Why the behavior bundle (and not the root bundle)
 
-If you'd rather run the Machete on its own:
-
-```bash
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main
-amplifier bundle use occams-machete
-```
+Install the **behavior** (above), not the repo root. The behavior layers the Machete onto
+whatever app bundle you already run; installing the root bundle would *replace* your root and
+drag in this repo's development scaffolding (evaluation harnesses, docs) as your primary
+environment. The root `bundle.md` exists as the composition target for development and CI —
+the behavior at `behaviors/occams-machete.yaml` is the consumable.
 
 ## Usage
 
