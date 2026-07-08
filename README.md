@@ -214,10 +214,11 @@ The lens and the blade work on **different axes**, which is why both exist:
 
 Direction vs. execution — not two copies of the same thing.
 
-MJ's judgment is carried as **nine named principles**, all in **plain language,
+MJ's judgment is carried as **ten named principles**, all in **plain language,
 no jargon** — Proportion · Stage down · Design for deletion · Bricks first ·
 Hostile read · Evidence earns the verdict · Buildable now · No unrequested
-ceremony · Simple-and-complete beats elegant-and-incomplete — each with a
+ceremony · Simple-and-complete beats elegant-and-incomplete · Felt problem
+first — each with a
 **pattern**, an **antipattern**, and a **provenance tag** back to the evidence.
 The answer works one load-bearing question — *what's the right call, how heavy is
 it really, and what's the smallest reversible first move?* — through an
