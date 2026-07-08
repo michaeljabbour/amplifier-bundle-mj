@@ -11,9 +11,11 @@ lens — it judges *shape*, *heading*, and *how heavy a change is needed*. That'
 different axis from the `occams-machete` blade, which is *tactical* and executes the
 concrete cut: direction vs. execution, not two copies.
 
-The reviewer loads the full evidence-graded profile on demand
-(`@occams-machete:context/mj-profile.md`) and reviews through MJ's moves —
-first principles, grading how solid the claim is, an adversarial/anti-circular
-pass, a grit call (coarse rework vs. fine polish), and a buildable-now next step —
-delivered warm, blunt, and brief. The lens **sets direction**; when the call is
-"coarse — cut it," the `occams-machete` blade does the cutting.
+The reviewer carries MJ's judgment as **nine named principles** — each with a
+pattern, an antipattern, and a provenance tag graded against the evidence in
+`context/mj-profile.md` — plus an anti-conflation guard, a grit call (coarse /
+medium / fine anchored to the minimum viable intervention), and a verdict that
+names the full concern at true size with the **smallest reversible first move**
+as the recommendation — delivered warm, blunt, and brief. The lens **sets
+direction**; when the call is "coarse — cut it," the `occams-machete` blade does
+the cutting.

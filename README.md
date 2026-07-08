@@ -58,7 +58,7 @@ amplifier-bundle-occams-machete/
 ├── context/
 │   ├── machete-awareness.md       # thin routing for the root session (always-on)
 │   ├── mj-lens-awareness.md       # thin routing for the MJ lens (always-on)
-│   └── mj-profile.md              # evidence-graded MJ profile (loaded on demand)
+│   └── mj-profile.md              # evidence-graded MJ profile (provenance source for the lens)
 ├── evaluation/                    # controlled studies backing this README's claims
 ├── bundle.dot                     # composition diagram (v3 convention)
 ├── bundle.png                     # rendered diagram
@@ -214,14 +214,18 @@ The lens and the blade work on **different axes**, which is why both exist:
 
 Direction vs. execution — not two copies of the same thing.
 
-MJ's review runs seven moves, all in **plain language, no jargon**: **first
-principles** → a plain read of **how solid the claim is** (is it logically forced,
-backed by evidence, or just the best guess so far?) → an **adversarial +
-anti-circular** pass (intent-checked — a deliberate, documented divergence isn't a defect) → a **grit call** (how heavy a change: **coarse** /
-**medium** / **fine** — heavy/medium/light; coarse hands off to the machete) →
-a **buildable-now** next step (*anything is buildable*) → **completeness over
-elegance** when they conflict → a closing that's **warm, blunt, brief, and
-pedagogical** — it teaches the *why*, not just the ruling.
+MJ's judgment is carried as **nine named principles**, all in **plain language,
+no jargon** — Proportion · Stage down · Design for deletion · Bricks first ·
+Hostile read · Evidence earns the verdict · Buildable now · No unrequested
+ceremony · Simple-and-complete beats elegant-and-incomplete — each with a
+**pattern**, an **antipattern**, and a **provenance tag** back to the evidence.
+The answer works one load-bearing question — *what's the right call, how heavy is
+it really, and what's the smallest reversible first move?* — through an
+anti-conflation guard (a documented divergence isn't a defect; an unexplained one
+is a question, never silently cleared), a **grit call** (**coarse** / **medium** /
+**fine**, anchored to the minimum viable intervention; coarse hands off to the
+machete), and a closing that's **warm, blunt, brief, and pedagogical** — it
+teaches the *why*, not just the ruling.
 
 ```
 delegate(agent="occams-machete:mj-reviewer",
@@ -229,9 +233,10 @@ delegate(agent="occams-machete:mj-reviewer",
 ```
 
 Every session that loads this bundle is surfaced the lens automatically (via the
-always-on `context/mj-lens-awareness.md`); the full evidence-graded profile lives at
-`context/mj-profile.md` and is loaded on demand. The reviewer **grades**; when the
-call is "coarse — cut it," the blade does the cutting.
+always-on `context/mj-lens-awareness.md`); the evidence-graded profile at
+`context/mj-profile.md` is the provenance source the nine principles are graded
+against. The reviewer **grades**; when the call is "coarse — cut it," the blade
+does the cutting.
 
 ## Lineage
 
