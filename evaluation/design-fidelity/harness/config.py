@@ -46,9 +46,9 @@ RUNS_DIR: Path = HARNESS_DIR / "runs"
 # ---------------------------------------------------------------------------
 # Models (same provider/model as the cognition harness)
 # ---------------------------------------------------------------------------
-ARM_MODEL: str = "claude-sonnet-4-5"  # Anthropic — all six arms
-NEUTRALIZER_MODEL: str = "gpt-4.1"  # OpenAI — voice neutralization (different family)
-GRADER_MODEL: str = "gpt-4.1"  # OpenAI — concern semantic-match grader (Stage 2)
+ARM_MODEL: str = "claude-fable-5"  # Anthropic — all six arms (re-run 2026-07-07; was claude-sonnet-4-5)
+NEUTRALIZER_MODEL: str = "gpt-5.5"  # OpenAI — voice neutralization (different family; was gpt-4.1)
+GRADER_MODEL: str = "gpt-5.5"  # OpenAI — concern semantic-match grader (Stage 2; was gpt-4.1)
 
 # ---------------------------------------------------------------------------
 # Sampling
