@@ -5,15 +5,27 @@ config-driven event (default `prompt:submit`, NOT the kernel-discarded
 `session:start`), config-driven `ephemeral`, the per-(session_id, block-name)
 fire-once guard, per-block enable/disable and unknown-`use` handling, the
 cleanup callable returned by `mount()`, and fail-open behavior on exception.
+
+Also enforces the ALWAYS-ON WORD BUDGET (test 12). These three constants are
+injected into every session on every turn, so their size is a real cost, not a
+style preference. The budget used to live in a code comment and silently rotted
+within a single changeset. It lives here now, because comments don't run.
 """
 
 from __future__ import annotations
 
+import pathlib
 from typing import Any
 
 import pytest
 
-from amplifier_module_hooks_inline_blocks import _fired, mount
+from amplifier_module_hooks_inline_blocks import (
+    INSIGHT_BLOCK_INSTRUCTIONS,
+    MACHETE_BLOCK_INSTRUCTIONS,
+    MJ_LENS_INSTRUCTIONS,
+    _fired,
+    mount,
+)
 
 
 class MockHookRegistry:
@@ -238,3 +250,120 @@ async def test_handler_fail_open_returns_continue_on_exception(monkeypatch):
 
     result = await _fire(coordinator, "hooks-insight-blocks")
     assert result.action == "continue"
+
+
+# ---------------------------------------------------------------------------
+# 12. Always-on word budget. These three constants are injected into EVERY
+#     session on EVERY turn, so their size is a running cost paid by every
+#     user, forever. A previous version of this budget lived in a code comment
+#     and went stale inside a single changeset — two exemplar fixes added 36
+#     words and nothing objected. Comments don't run; this does.
+#
+#     If you are here because this test failed: that is the test working. You
+#     added words to an always-on prompt. Either cut something else out, or
+#     raise the ceiling deliberately and say why in the commit message.
+# ---------------------------------------------------------------------------
+WORD_CEILINGS = {
+    "INSIGHT_BLOCK_INSTRUCTIONS": 165,
+    "MACHETE_BLOCK_INSTRUCTIONS": 165,
+    "MJ_LENS_INSTRUCTIONS": 275,
+}
+TOTAL_CEILING = 600  # was 1084 before the 2026-08 voice pass
+
+
+@pytest.mark.parametrize("name,ceiling", sorted(WORD_CEILINGS.items()))
+def test_block_stays_within_word_budget(name: str, ceiling: int):
+    text = {
+        "INSIGHT_BLOCK_INSTRUCTIONS": INSIGHT_BLOCK_INSTRUCTIONS,
+        "MACHETE_BLOCK_INSTRUCTIONS": MACHETE_BLOCK_INSTRUCTIONS,
+        "MJ_LENS_INSTRUCTIONS": MJ_LENS_INSTRUCTIONS,
+    }[name]
+    actual = len(text.split())
+    assert actual <= ceiling, (
+        f"{name} is {actual} words, over its {ceiling}-word always-on ceiling. "
+        f"This text is injected every turn of every session. Cut something, or "
+        f"raise the ceiling on purpose."
+    )
+
+
+def test_total_always_on_budget():
+    total = sum(
+        len(t.split())
+        for t in (
+            INSIGHT_BLOCK_INSTRUCTIONS,
+            MACHETE_BLOCK_INSTRUCTIONS,
+            MJ_LENS_INSTRUCTIONS,
+        )
+    )
+    assert total <= TOTAL_CEILING, (
+        f"Combined always-on instructions are {total} words, over the "
+        f"{TOTAL_CEILING}-word ceiling."
+    )
+
+
+# ---------------------------------------------------------------------------
+# 13. No fixed-slot templates. The MJ Lens block used to mandate six bullet
+#     headings (**Bricks**, **Grit**, **Subtraction**, ...). Six slots meant six
+#     slots got filled every time whether or not there was anything to say,
+#     which set a length floor AND pushed the bundle's insider vocabulary
+#     straight into user-facing output. Specify the reasoning MOVE, not the
+#     headings. This guards against the template growing back.
+# ---------------------------------------------------------------------------
+RETIRED_SLOT_LABELS = [
+    "**Bricks**",
+    "**Grit**",
+    "**Subtraction**",
+    "**Buildable now**",
+    "**Adversarial / circular**",
+    "**How solid is it?**",
+    # Removed 2026-08-12 from the mj-reviewer "Grit & verdict" section. The
+    # sandpaper scale is calibration, not wording — printing it as a label is
+    # the same regression in a different costume. Extend this list in the SAME
+    # commit that removes a label, or the guard silently protects history
+    # instead of the present.
+    "**Coarse**",
+    "**Medium**",
+    "**Fine**",
+]
+
+
+@pytest.mark.parametrize("label", RETIRED_SLOT_LABELS)
+def test_mj_lens_has_no_fixed_slot_headings(label: str):
+    assert label not in MJ_LENS_INSTRUCTIONS, (
+        f"{label} is back in the MJ Lens block as a bold heading. That is the "
+        f"six-slot template this pass removed: required headings get filled "
+        f"whether or not they have content. Keep the six as things to have "
+        f"thought about, not labels to print."
+    )
+
+
+# ---------------------------------------------------------------------------
+# 14. The no-slot rule also covers the two MARKDOWN surfaces that reach a model.
+#     `agents/mj-reviewer.md` produces delegated output, and
+#     `context/mj-profile.md` is @mentioned into that same agent's context — so
+#     a bold label reintroduced in either one regrows the template just as
+#     effectively as one in the hook block above. Test 13 guarded only the
+#     lowest-blast-radius surface; this guards the other two.
+#
+#     Skips cleanly when the module is installed standalone (no repo tree).
+# ---------------------------------------------------------------------------
+_REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
+GUARDED_MARKDOWN = [
+    "agents/mj-reviewer.md",
+    "context/mj-profile.md",
+]
+
+
+@pytest.mark.parametrize("rel_path", GUARDED_MARKDOWN)
+def test_markdown_surfaces_have_no_fixed_slot_headings(rel_path: str):
+    path = _REPO_ROOT / rel_path
+    if not path.is_file():
+        pytest.skip(f"{rel_path} not present (module installed standalone)")
+    text = path.read_text(encoding="utf-8")
+    offenders = [label for label in RETIRED_SLOT_LABELS if label in text]
+    assert not offenders, (
+        f"{rel_path} reintroduces retired slot label(s) {offenders} as bold "
+        f"headings. These are reasoning moves, not labels to print — bolding "
+        f"them is how the six-slot template grows back, and this file reaches "
+        f"the model. Write them as plain sentences."
+    )

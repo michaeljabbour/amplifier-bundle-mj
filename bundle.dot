@@ -1,85 +1,84 @@
-// occams-machete: a review "lens" bundle for Amplifier. It adds three
-// advisory reviewers — a blunt reliability engineer, an architectural
-// judgment lens (MJ), and a decisive code/prose reducer that actually
-// trims bloat — plus the context and inline-callout wiring they need.
+// Occam's Machete — an Amplifier bundle repo that adds "make it smaller" skills:
+// three specialist reviewers (one that cuts, two that critique), a display module for
+// inline advice callouts, and always-on guidance about when to use them.
 digraph occams_machete {
     rankdir=LR
     fontname="Helvetica"
     fontsize=12
-    label="occams-machete v0.1.0 — Code & Prose Reduction Review Lenses\nThree advisory reviewers that trim bloat and pressure-test decisions"
+    label="Occam's Machete v0.1.0 — Simplicity Toolkit\nAn add-on package that helps Amplifier cut bloat from code, designs, and writing"
     labelloc=t
     labeljust=c
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="bddd5aec8089b3b6765ca88861abbab7c69f58828d248e2b50b8d746131efc44"
+    source_hash="e6015b377ec177d511a456fd0519ecaa5c23f3aa4dccc183f8e80223bc25aeb3"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
 
-    root_occams_machete [label="occams-machete v0.1.0\nThe bundle you install\n0 tools · 0 agents\n~660 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
+    root_occams_machete [label="Occam's Machete v0.1.0 — cut bloat, keep what works\n0 tools · 0 agents\n~660 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
     subgraph cluster_behaviors {
-        label="Behaviors — reusable capability package"
+        label="Behaviors — the working skillsets this package turns on"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        beh_occams_machete_behavior [label="Reviewer Toolkit\nBundles the reviewers, tools & context together\n5 tools · 2 ctx\n~2562 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+        beh_occams_machete_behavior [label="Reduction & Review Skillset\n5 tools · 2 ctx\n~2423 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
     }
 
     subgraph cluster_agents {
-        label="Agents — the review lenses you can call on"
+        label="Agents — specialist reviewers you can call on"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        agt_crusty_old_engineer [label="Crusty Old Engineer\nBlunt reliability lens: what will this cost later?\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_mj_reviewer [label="MJ Reviewer\nArchitectural judgment: is the shape right?\n~196 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_occams_machete [label="Occam's Machete\nDecisive reducer: cuts the bloat, safely\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_crusty_old_engineer [label="Crusty Old Engineer\nAsks what a choice will cost you later\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_mj_reviewer [label="MJ Reviewer\nJudges the shape of an idea or plan\n~118 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_occams_machete [label="The Machete\nActually removes the excess, safely\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
     }
 
     subgraph cluster_modules {
-        label="Modules — supporting code"
+        label="Modules — small bits of code that add a feature"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        mod_hooks_inline_blocks [label="Inline Callout Hooks\nRenders the reviewers' colored inline notes", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_inline_blocks [label="Inline Advice Callouts\nhooks-inline-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
     }
 
     subgraph cluster_context {
-        label="Context Files — reference notes the reviewers load"
+        label="Context Files — always-on guidance text"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        ctx_machete_awareness_md [label="How the Machete works\nmachete-awareness.md\n~503 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
-        ctx_mj_lens_awareness_md [label="How the MJ Lens works\nmj-lens-awareness.md\n~283 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_machete_awareness_md [label="When to suggest cutting\nmachete-awareness.md\n~491 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_mj_lens_awareness_md [label="When to apply the review lens\nmj-lens-awareness.md\n~234 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
     }
 
     subgraph cluster_legend {
-        label="Legend"
+        label="Legend — what each color means"
         style="filled"
         fillcolor="white"
         color="#cccccc"
         fontsize=9
 
-        leg_root [label="root bundle", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
-        leg_behavior [label="behavior", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
-        leg_agent [label="agent", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
-        leg_module [label="module", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
-        leg_provider [label="provider", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
-        leg_context [label="context", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
-        leg_standalone [label="standalone", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
+        leg_root [label="main package", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
+        leg_behavior [label="behavior (skillset)", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
+        leg_agent [label="agent (specialist)", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
+        leg_module [label="module (code)", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
+        leg_provider [label="provider (AI access)", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
+        leg_context [label="context (guidance text)", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_standalone [label="standalone piece", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
         leg_experiment [label="experiment", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
-        leg_ext_cost [label="ext+cost", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
-        leg_ext_muted [label="ext+no-cost", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
+        leg_ext_cost [label="outside package (adds cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
+        leg_ext_muted [label="outside package (no cost)", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
     }
 
     disclaimer [label="Token estimates: ~4 chars/token\nSolid border = local (counted)\nDashed + red = external, hidden cost (not counted)\nDashed + muted = external, no cost\nExcludes: sub-session costs, runtime-dynamic", shape=note, fillcolor="#eceff1", style="filled", fontsize=9]
 
-    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="amplifier-foundation\nShared Amplifier base it builds on\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
+    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="Amplifier Foundation\nShared base toolkit this package builds on\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
 
     root_occams_machete -> ext_githttps___github_com_microsoft_amplifier_foundation_main [style=dashed]
     root_occams_machete -> beh_occams_machete_behavior [label="composes"]

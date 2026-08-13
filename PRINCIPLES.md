@@ -4,7 +4,10 @@
 > start work here and at each phase change. It encodes MJ's operating philosophy as
 > *working rules*, not a treatise. The full evidence base lives in
 > [`context/mj-profile.md`](context/mj-profile.md); this is the short, load-bearing
-> form. If a rule below ever fights the profile, the profile wins.
+> form. **On what MJ thinks** — his reasoning, values, register — the profile wins if
+> a rule here fights it. **On output shape** it has no authority at all: the profile
+> is evidence, never a template, and its vocabulary ("bricks", "grit") is thinking,
+> not wording. Answer shapes are defined by the agents that produce them.
 
 This bundle is a **reducer**. The way we work has to embody the thing we ship —
 otherwise the lens is a hypocrite. Eight rules, in MJ's own register.
@@ -64,10 +67,20 @@ real work. The honest default on an unexamined smell is a question, not a shrug.
   never breaks a session. Mirror the consolidated `hooks-inline-blocks` contract
   (event/ephemeral are config-driven; `prompt:submit`, not `session:start`, is
   required for an injection to actually reach the model — see the module docstring).
-- **Always-on tokens are a budget.** Context injected every session
-  (`mj-lens-awareness`, `machete-awareness`, the hook blocks) must earn its place.
-  Heavy artifacts (the persona skill, `mj-profile.md`) are context sinks — loaded **on
-  demand** by their agents, not always-on. Don't double-load.
+- **Always-on tokens are a budget — and it is enforced.** Context injected every
+  session (`mj-lens-awareness`, `machete-awareness`, the hook blocks) must earn its
+  place. The three hook blocks have **per-block word ceilings asserted in
+  `modules/hooks-inline-blocks/tests/`** — grow one and the suite fails. Raise a
+  ceiling only deliberately, and say why in the commit. Heavy artifacts are context
+  sinks, loaded **on demand** by their agents via `@mention` (the persona SKILL by
+  `occams-machete`, `mj-profile.md` by `mj-reviewer`), never always-on. Don't
+  double-load.
+- **Reasoning is not vocabulary.** The lens's internal apparatus — the ten
+  principles, the profile's metaphors ("bricks", "grit") — governs *how* an agent
+  thinks, never *how it words the answer*. Never turn them into required output
+  headings: slots get filled whether or not they have content, which sets a length
+  floor and pushes insider terms into user-facing text. Specify the reasoning move,
+  not the heading.
 - **Verify before you claim done.** Run the module tests (`uv run pytest` in the
   module dir) and `python_check`. Evidence before assertions — see rule 4.
 - **Use the reviewers.** This bundle is one lens among many. Before shipping a non-trivial

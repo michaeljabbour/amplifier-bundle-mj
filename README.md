@@ -214,19 +214,18 @@ The lens and the blade work on **different axes**, which is why both exist:
 
 Direction vs. execution — not two copies of the same thing.
 
-MJ's judgment is carried as **ten named principles**, all in **plain language,
-no jargon** — Proportion · Stage down · Design for deletion · Bricks first ·
-Hostile read · Evidence earns the verdict · Buildable now · No unrequested
-ceremony · Simple-and-complete beats elegant-and-incomplete · Felt problem
-first — each with a
-**pattern**, an **antipattern**, and a **provenance tag** back to the evidence.
-The answer works one load-bearing question — *what's the right call, how heavy is
-it really, and what's the smallest reversible first move?* — through an
-anti-conflation guard (a documented divergence isn't a defect; an unexplained one
-is a question, never silently cleared), a **grit call** (**coarse** / **medium** /
-**fine**, anchored to the minimum viable intervention; coarse hands off to the
-machete), and a closing that's **warm, blunt, brief, and pedagogical** — it
-teaches the *why*, not just the ruling.
+Underneath, MJ's judgment is spelled out as **ten principles** — Proportion ·
+Stage down · Design for deletion · Bricks first · Hostile read · Evidence earns
+the verdict · Buildable now · No unrequested ceremony · Simple-and-complete beats
+elegant-and-incomplete · Felt problem first — each with the behavior it wants, the
+failure it guards against, and a pointer to the evidence behind it.
+
+Those are the reviewer's **reasoning**, not its vocabulary. What you actually get
+back is four or five plain sentences: the one problem that matters, the strongest
+argument against its own call, how heavy a change is really warranted, and the
+smallest step you could take first and undo if it turns out wrong — grounded in
+specifics from your actual code, and teaching the *why*, not just the ruling.
+There is no template and no headings to fill; it says only what earned the space.
 
 ```
 delegate(agent="occams-machete:mj-reviewer",
@@ -235,9 +234,11 @@ delegate(agent="occams-machete:mj-reviewer",
 
 Every session that loads this bundle is surfaced the lens automatically (via the
 always-on `context/mj-lens-awareness.md`); the evidence-graded profile at
-`context/mj-profile.md` is the provenance source the nine principles are graded
-against. The reviewer **grades**; when the call is "coarse — cut it," the blade
-does the cutting.
+`context/mj-profile.md` is the provenance source the ten principles are graded
+against, and the `mj-reviewer` agent loads it directly by `@mention` so its calls
+inherit MJ's actual reasoning. The profile is **evidence, not a template** — its
+vocabulary is the reviewer's thinking, never its wording. The reviewer **sets
+direction**; when the call is "rework it," the blade does the cutting.
 
 ## Lineage
 
