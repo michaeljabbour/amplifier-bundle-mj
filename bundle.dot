@@ -1,86 +1,81 @@
-// This repository packages "MJ" — an opinionated review voice for Amplifier.
-// It gives an AI assistant three things: a reviewer that pressure-tests ideas,
-// a veteran engineer that names long-term costs, and a blade that safely trims
-// bloated code and prose — plus the always-on habits and notes that drive them.
-
 digraph mj {
     rankdir=LR
     fontname="Helvetica"
     fontsize=12
-    label="MJ — Review Lens & Code Trimmer (mj v0.2.0)\nAn add-on that gives an AI assistant a sharp reviewer's judgment and a safe way to cut bloat"
+    label="mj v0.2.0 — bundle repo"
     labelloc=t
     labeljust=c
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="dfbe9bab5dbd45947f76f39cf5c6145db856be17fc50b47e31523c6c0058c8b0"
+    source_hash="9b387a467f15a965536b2d72268324c78f9d055d09d1cd9bc049106815b4e841"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
 
-    root_mj [label="The MJ Package — review lens + code trimmer (mj v0.2.0)\n0 tools · 0 agents\n~669 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
+    root_mj [label="mj v0.2.0\n0 tools · 0 agents\n~891 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
     subgraph cluster_behaviors {
-        label="Always-On Habits — how the assistant behaves by default"
+        label="Behaviors"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        beh_mj_behavior [label="MJ's Voice — reviews, insights, trim suggestions\n5 tools · 2 ctx\n~2381 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+        beh_mj_behavior [label="mj-behavior\n5 tools · 2 ctx\n~2624 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
     }
 
     subgraph cluster_agents {
-        label="Specialists — experts the assistant can call in"
+        label="Agents"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        agt_crusty_old_engineer [label="Veteran Engineer — asks what a choice\nwill cost you later\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_mj_reviewer [label="Design Reviewer — checks whether an idea\nactually holds up\n~118 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_occams_machete [label="Safe Trimmer — removes bloat without\nbreaking what works\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_crusty_old_engineer [label="crusty-old-engineer\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_mj_reviewer [label="mj-reviewer\n~118 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_occams_machete [label="occams-machete\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
     }
 
     subgraph cluster_modules {
-        label="Building Blocks — small reusable pieces"
+        label="Modules"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        mod_hooks_inline_blocks [label="Callout Formatter — draws the\nhighlighted notes in replies", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_inline_blocks [label="hooks-inline-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
     }
 
     subgraph cluster_context {
-        label="Reference Notes — written guidance the assistant reads"
+        label="Context Files"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        ctx_machete_awareness_md [label="When to suggest cutting things\nmachete-awareness.md\n~485 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
-        ctx_mj_lens_awareness_md [label="How to run a review the MJ way\nmj-lens-awareness.md\n~231 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_machete_awareness_md [label="machete-awareness.md\n~485 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_mj_lens_awareness_md [label="mj-lens-awareness.md\n~398 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
     }
 
     subgraph cluster_legend {
-        label="Legend — what each color means"
+        label="Legend"
         style="filled"
         fillcolor="white"
         color="#cccccc"
         fontsize=9
 
-        leg_root [label="root bundle (this repo)", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
-        leg_behavior [label="behavior (always-on habit)", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
-        leg_agent [label="agent (specialist)", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
-        leg_module [label="module (building block)", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
-        leg_provider [label="provider (model source)", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
-        leg_context [label="context (reference notes)", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
-        leg_standalone [label="standalone (works alone)", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
-        leg_experiment [label="experiment (in progress)", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_root [label="root bundle", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
+        leg_behavior [label="behavior", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
+        leg_agent [label="agent", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
+        leg_module [label="module", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
+        leg_provider [label="provider", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
+        leg_context [label="context", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_standalone [label="standalone", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
+        leg_experiment [label="experiment", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
         leg_ext_cost [label="ext+cost", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
         leg_ext_muted [label="ext+no-cost", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
     }
 
     disclaimer [label="Token estimates: ~4 chars/token\nSolid border = local (counted)\nDashed + red = external, hidden cost (not counted)\nDashed + muted = external, no cost\nExcludes: sub-session costs, runtime-dynamic", shape=note, fillcolor="#eceff1", style="filled", fontsize=9]
 
-    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="Amplifier Foundation — the shared core\nthis package builds on\namplifier-foundation\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
+    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="amplifier-foundation\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
 
     root_mj -> ext_githttps___github_com_microsoft_amplifier_foundation_main [style=dashed]
     root_mj -> beh_mj_behavior [label="composes"]

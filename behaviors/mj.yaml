@@ -1,12 +1,14 @@
 bundle:
   name: mj-behavior
-  version: 0.2.0
+  version: 0.3.0
   description: |
     Wires MJ's review bench onto a host bundle: three agents (the Occam's Machete
     executioner, the mj-reviewer direction lens, and the crusty-old-engineer
-    reliability guard), the Machete persona skill (via tool-skills), the /machete
-    reduction mode (via the modes system: hooks-mode + tool-mode), and the
-    inline insight / machete / MJ-lens callout blocks.
+    reliability guard), two skills (occams-machete and mj-lens, via tool-skills),
+    two modes (/machete for reduction, /mj for review — via hooks-mode +
+    tool-mode), and the inline insight / machete / MJ-lens callout blocks.
+    Modes and skills are DIRECTORY-discovered: adding modes/<name>.md or
+    skills/<name>/SKILL.md needs no new config here.
 
 # Mount the modes system so /machete registers and switches at runtime.
 includes:

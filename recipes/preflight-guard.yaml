@@ -2,6 +2,19 @@
 # CHANGELOG
 # =============================================================================
 #
+# v1.2.0 (2026-08-13):
+#   - FIX: target_path / diff_base were pasted straight into the bash command
+#     text, so a path or git ref containing a backtick or $( ) would execute,
+#     and one containing a quote would silently truncate the surface. They now
+#     travel via step-level `env:`, which the engine passes to the subprocess
+#     environment instead of to bash's parser. Found by direction-check.yaml's
+#     own first live run, which flagged that its v1.0.1 fix had not been
+#     carried next door.
+#   - Added an `=== END SURFACE ===` sentinel, READ by the guard prompt, so a
+#     step output the executor coerced to JSON (or a checkpoint trim on
+#     resume) is refused rather than silently reviewed. Note it does NOT
+#     detect the `head -c` bound, which runs earlier and still prints it.
+#
 # v1.1.0 (2026-08-13):
 #   - Namespace rename: the delegate target is now `mj:crusty-old-engineer`.
 #     The bundle was renamed occams-machete -> mj. Bumped because the old
@@ -25,7 +38,7 @@ description: >-
   (it'll cost you — graded), ending in a GO / GO-eyes-open / NO-GO verdict. The
   guard runs the actual checks (tests, type/lint, validators, greps) rather than
   judging from a summary. Advisory only: it modifies no files.
-version: "1.1.0"
+version: "1.2.0"
 author: "MJ's bench"
 tags: ["review", "guard", "preflight", "failure-modes", "anti-patterns", "occams-machete"]
 
@@ -54,27 +67,33 @@ steps:
   # ---------------------------------------------------------------------------
   - id: "gather-surface"
     type: "bash"
+    # target_path / diff_base travel through the environment, never through the
+    # command text: a path or ref containing a backtick or $( ) is data here,
+    # not a program. (Ported from direction-check.yaml v1.0.1.)
+    env:
+      TGT: "{{target_path}}"
+      BASE: "{{diff_base}}"
     command: |
-      echo "=== TARGET: {{target_path}} ==="
-      echo
-      if git -C "{{target_path}}" rev-parse --git-dir >/dev/null 2>&1; then
-        REPO="{{target_path}}"
+      printf '=== TARGET: %s ===\n\n' "$TGT"
+      if git -C "$TGT" rev-parse --git-dir >/dev/null 2>&1; then
+        REPO="$TGT"
       elif git rev-parse --git-dir >/dev/null 2>&1; then
         REPO="."
       else
         REPO=""
       fi
       if [ -n "$REPO" ]; then
-        echo "=== CHANGED FILES (vs {{diff_base}}, plus working tree) ==="
+        printf '=== CHANGED FILES (vs %s, plus working tree) ===\n' "$BASE"
         git -C "$REPO" status --short 2>/dev/null
-        git -C "$REPO" diff --name-status "{{diff_base}}" 2>/dev/null
+        git -C "$REPO" diff --name-status "$BASE" 2>/dev/null
         echo
-        echo "=== DIFF (vs {{diff_base}}, plus working tree) ==="
+        printf '=== DIFF (vs %s, plus working tree) ===\n' "$BASE"
         # Bounded so a huge diff can't blow the context; the guard reads files for depth.
-        { git -C "$REPO" diff "{{diff_base}}" 2>/dev/null; git -C "$REPO" diff 2>/dev/null; } | head -c 60000
+        { git -C "$REPO" diff "$BASE" 2>/dev/null; git -C "$REPO" diff 2>/dev/null; } | head -c 60000
       else
-        echo "(not a git repo — the guard will review {{target_path}} by reading it directly)"
+        printf '(not a git repo — the guard will review %s by reading it directly)\n' "$TGT"
       fi
+      printf '\n=== END SURFACE ===\n'
     output: "surface"
     output_exit_code: "surface_exit_code"
     on_error: "continue"
@@ -93,6 +112,12 @@ steps:
       You are guarding this change before it ships. Catch the two things the
       direction and reduction lenses skip: OBVIOUS FAILURES (it breaks) and
       ENGINEERING ANTI-PATTERNS (it'll cost later).
+
+      INTEGRITY CHECK FIRST: the surface below must end with the line
+      `=== END SURFACE ===`. If it does not, it did not reach you intact --
+      say exactly that, treat it as your first BLOCKER, and do NOT grade the
+      change from a fragment. A GO issued on truncated evidence is the one
+      failure this recipe cannot catch for you.
 
       Target under review: {{target_path}}
 

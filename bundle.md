@@ -27,10 +27,23 @@ precisely because they can disagree.
 | **The MJ lens** — `delegate(agent="mj:mj-reviewer")` | *Is this pointed the right way, and how heavy a change does it really need?* | You want direction or a gut-check before committing. It sets heading; it doesn't cut. |
 | **The Crusty Old Engineer** — `delegate(agent="mj:crusty-old-engineer")` | *What breaks, and what will it cost later?* | Before a PR, or before trusting an "it's fixed" claim. Returns blockers vs risks and a go/no-go. |
 
-Two more surfaces carry the Machete specifically: the **persona skill** (judgment
-and voice — ask the agent for a *plan-only* pass to get the verdict without the
-diff) and **`/machete` mode**, a sustained reduction posture where subtraction is
-the default and new files are treated as suspects.
+Each of the first two lenses also has a **mode** (a sustained working posture)
+and a **skill** (the discipline, loadable inline):
+
+| | Mode | Skill |
+|---|---|---|
+| Machete | `/machete` — subtraction is the default, new files are suspects, irreversible strokes get friction | `occams-machete` — judgment and voice; ask for a *plan-only* pass to get the verdict without the diff |
+| MJ lens | `/mj` — review posture with **every mutating tool blocked**, so a review can't drift into editing | `mj-lens` — the review discipline applied to **this conversation** (the agent forks a clean session and can't see it) |
+
+**Recipes** add what plain delegation can't: an approval gate, a recorded
+baseline, or a durable decision record.
+
+| Recipe | What it adds |
+|---|---|
+| `direction-check` | Pressure-test a direction *before* committing. Gate, then writes the call + its counter-argument + your ruling to a decision record. |
+| `reduce-target` | Single-target reduction that refuses to cut from a red baseline. |
+| `panel-then-cut` | Two independent lenses (guard, then blade), a human gate, then the cut. |
+| `preflight-guard` | The reliability guard over a changeset before you ship. |
 
 ## Why a bench and not a council
 

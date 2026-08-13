@@ -56,19 +56,23 @@ amplifier-bundle-mj/
 ├── README.md                      # you are here
 ├── PRINCIPLES.md                  # the repo's own discipline, written down
 ├── behaviors/
-│   └── mj.yaml                    # wires the agents, skill, /machete mode, and recipes
+│   └── mj.yaml                    # wires the agents, skills, modes, and recipes
 ├── skills/
-│   └── occams-machete/
-│       └── SKILL.md               # the persona: judgment + voice + discipline
+│   ├── occams-machete/
+│   │   └── SKILL.md               # the blade: judgment + voice + reduction discipline
+│   └── mj-lens/
+│       └── SKILL.md               # the review lens, applied INLINE to this conversation
 ├── agents/
 │   ├── occams-machete.md          # the executioner: actually performs the cuts
 │   ├── mj-reviewer.md             # the MJ lens: "what would MJ think about this?"
 │   └── crusty-old-engineer.md     # the reliability guard: BLOCKERS vs RISKS, go/no-go
 ├── modes/
-│   └── machete.md                 # /machete — reduction-only working posture
+│   ├── machete.md                 # /machete — reduction posture, writes get friction
+│   └── mj.md                      # /mj — review posture, mutation is BLOCKED
 ├── recipes/
+│   ├── direction-check.yaml       # review a direction → APPROVAL GATE → decision record
 │   ├── reduce-target.yaml         # baseline → cut → verify (single target)
-│   ├── panel-then-cut.yaml        # multi-lens review → APPROVAL GATE → cut
+│   ├── panel-then-cut.yaml        # two-lens review → APPROVAL GATE → cut
 │   └── preflight-guard.yaml       # advisory reliability check before you ship
 ├── modules/
 │   └── hooks-inline-blocks/       # renders ★ insight / ✂ machete / 🔪 MJ-lens callout blocks

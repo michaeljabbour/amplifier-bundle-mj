@@ -1,0 +1,261 @@
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+#
+# v1.0.1 (2026-08-13):
+#   - CRITICAL FIX: the recipe could not execute at all. `{{_approval_message}}`
+#     is injected by the engine after an approval, but the STATIC validator only
+#     accepts names from `context:` plus {recipe, session, step} — and execution
+#     runs that validator first and hard-returns on failure. Declaring
+#     `_approval_message: ""` in `context:` satisfies the validator; the engine
+#     still overwrites it with the real ruling at resume time.
+#   - CRITICAL FIX: shell injection / silent corruption in both bash steps.
+#     Template values were interpolated straight into `bash -c`, so a backtick or
+#     `$( )` in the question executed, and a quote silently ate the rest of the
+#     text. Since this recipe's whole subject matter is engineering questions —
+#     "should we drop the `git diff` step?" — that was a near-certain hit, and
+#     `on_error: continue` hid it. All template values now travel via `env:`,
+#     which the engine passes to the subprocess environment instead of pasting
+#     into the shell program. The heredoc is gone with them.
+#   - Dropped the mandated `CALL:` verdict token: nothing consumed it, and a
+#     required output element with no machine reader is the unrequested ceremony
+#     PRINCIPLES.md warns about. The approver reads the prose.
+#   - Reworded the review prompt from a four-bullet list back to prose. Four
+#     bullets are four slots; the model maps 1:1 and returns four paragraphs.
+#
+# v1.0.0 (2026-08-13):
+#   - NEW FEATURE: Initial direction-check recipe.
+#     * WHY IT EXISTS: mj-reviewer was the only agent on the bench with zero
+#       recipe surface. Both existing pipelines are reduction-shaped — they
+#       assume the decision to cut has already been made. Nothing supported the
+#       decision that comes BEFORE that one.
+#     * WHAT PLAIN DELEGATION CAN'T GIVE YOU: a durable decision record. The
+#       call, the strongest argument against it, and the human's ruling are
+#       written to disk together, so the direction can be cited later instead of
+#       re-litigated from memory.
+#     * SCOPE: one lens, not a council. The bundle's own evaluation
+#       (evaluation/occams-vs-council/) found the heavier multi-lens council
+#       never paid for itself. This convenes mj-reviewer and stops.
+#
+# =============================================================================
+
+name: "direction-check"
+description: >-
+  Pressure-test a direction BEFORE committing to it. The MJ lens names the one
+  problem that matters, argues the strongest case against its own call, sizes
+  the change honestly, and recommends the smallest reversible first move. Then a
+  HUMAN APPROVAL GATE, then the decision — call plus counter-argument plus your
+  ruling — is appended to a durable decision record. Advisory throughout: this
+  recipe edits nothing except the record it is asked to write.
+version: "1.0.1"
+author: "MJ's bench"
+tags: ["review", "direction", "decision", "approval-gate", "mj-lens"]
+
+# Requirements:
+#   - mj bundle loaded (provides mj:mj-reviewer)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=mj:recipes/direction-check.yaml \
+#     context='{"question": "Should we split the auth module before adding SSO?"}'
+#
+#   question:     Required. The decision you are about to make, in one sentence.
+#                 Backticks, quotes, and $( ) are safe here — see v1.0.1 above.
+#   target_path:  Optional. File/dir the decision concerns (default: the repo/cwd).
+#   record_path:  Optional. Where to append the decision record. Defaults to
+#                 project-context/PROVENANCE.md — the decision log in the
+#                 project-context convention, whose documented purpose is exactly
+#                 this ("decision log with context, alternatives, rationale").
+#                 Set to "" to skip writing a record entirely.
+#
+#   Then, after the review pauses at the approval gate:
+#   amplifier tool invoke recipes operation=approvals
+#   amplifier tool invoke recipes operation=approve \
+#     session_id=<session_id> stage_name=decide message="proceed, but smaller"
+
+context:
+  question: ""                                  # Required: the decision, in one sentence
+  target_path: "."                              # What the decision concerns
+  record_path: "project-context/PROVENANCE.md"  # "" disables the record
+  # Declared for the STATIC validator only. The engine overwrites this with the
+  # approver's message on resume; without the declaration the recipe fails
+  # validation and never starts.
+  _approval_message: ""
+
+stages:
+  # ===========================================================================
+  # STAGE: decide — review the direction, then a human rules on it.
+  # ===========================================================================
+  - name: "decide"
+    steps:
+      # -----------------------------------------------------------------------
+      # Step 1 — Gather the surface. Cheap and deterministic, so the lens judges
+      # the actual state of things rather than a description of it. Never fails
+      # the recipe: a non-repo target is still reviewable by path.
+      #
+      # Template values arrive via `env:` and are referenced as shell variables.
+      # They are NEVER pasted into the command text — that is what keeps a
+      # backtick in the question from executing.
+      # -----------------------------------------------------------------------
+      - id: "gather-surface"
+        type: "bash"
+        env:
+          Q: "{{question}}"
+          TGT: "{{target_path}}"
+        command: |
+          printf '=== QUESTION ===\n%s\n\n' "$Q"
+          printf '=== TARGET: %s ===\n' "$TGT"
+          if git -C "$TGT" rev-parse --git-dir >/dev/null 2>&1; then
+            REPO="$TGT"
+          elif git rev-parse --git-dir >/dev/null 2>&1; then
+            REPO="."
+          else
+            REPO=""
+          fi
+          if [ -n "$REPO" ]; then
+            echo
+            echo "=== RECENT HISTORY (what this area has been doing) ==="
+            git -C "$REPO" log --oneline -15 2>/dev/null
+            echo
+            echo "=== UNCOMMITTED STATE ==="
+            git -C "$REPO" status --short 2>/dev/null | head -40
+            echo
+            echo "=== WORKING DIFF (bounded) ==="
+            git -C "$REPO" diff 2>/dev/null | head -c 40000
+          else
+            printf '(not a git repo — the lens will read %s directly)\n' "$TGT"
+          fi
+          # Sentinel. The executor coerces step output that merely CONTAINS a
+          # parseable bracket token into JSON (executor.py `_extract_json_
+          # aggressively`), silently discarding the rest at exit 0 — this
+          # recipe's own first run lost an 18KB surface to a `foo[1]` in a diff.
+          # The lens is told to refuse when this line is missing, which converts
+          # a silent context wipe into a visible one.
+          printf '\n=== END SURFACE ===\n'
+        output: "surface"
+        on_error: "continue"
+        timeout: 120
+
+      # -----------------------------------------------------------------------
+      # Step 2 — The lens. Direction only: it judges shape and heading and names
+      # the smallest first move. It does not cut and does not implement.
+      # -----------------------------------------------------------------------
+      - id: "direction-review"
+        agent: "mj:mj-reviewer"
+        prompt: |
+          ADVISORY ONLY. Do NOT modify, create, or delete any file.
+
+          A decision is about to be made. Pressure-test it before it is.
+
+          THE QUESTION:
+          {{question}}
+
+          What the decision concerns: {{target_path}}
+
+          Current state of that target:
+          ---
+          {{surface}}
+          ---
+
+          INTEGRITY CHECK, before anything else: that block must end with the
+          line `=== END SURFACE ===`. If it does not, the surface did not reach
+          you intact — say exactly that, name it as the finding, and do NOT
+          review from the fragment. A confident call on truncated evidence is
+          the one failure this recipe cannot detect for you.
+
+          Read what you need to read, then give the call in your usual shape:
+          four or five sentences of prose, no headings.
+
+          Name the one problem that actually matters, at its true size, keeping
+          what you observed separate from what you concluded. Give the strongest
+          case against your own call and say whether it survives — where the
+          evidence isn't there, say so plainly rather than convicting or
+          acquitting. Say how heavy a change is really warranted, and why. Then
+          give the direction, with the smallest step that could be taken first
+          and undone if it turns out wrong.
+
+          Ground it in specifics from the actual target — the file, the call
+          path, the constraint that decides it. A verdict with nothing concrete
+          in it reads as an opinion.
+
+          If you genuinely lack the signal to make the call, say that and name
+          what evidence would settle it. A graded "I don't know" is a useful
+          result here; this recipe would rather record an open question than a
+          manufactured verdict.
+        output: "direction_call"
+        timeout: 3600
+
+    # -------------------------------------------------------------------------
+    # APPROVAL GATE — the human rules. The lens advises; it does not decide.
+    # -------------------------------------------------------------------------
+    approval:
+      required: true
+      prompt: |
+        ===========================================================
+        DIRECTION REVIEW COMPLETE — your ruling
+        ===========================================================
+
+        QUESTION:
+        {{question}}
+
+        TARGET: {{target_path}}
+
+        -----------------------------------------------------------
+        THE LENS SAYS:
+        -----------------------------------------------------------
+        {{direction_call}}
+        -----------------------------------------------------------
+
+        This is advice, not a decision. You decide.
+
+        APPROVE to record this direction. Approve WITH A MESSAGE and that
+        message is recorded as your ruling — e.g. "proceed, but ship the
+        smaller version first".
+
+        DENY if the review missed something or asked the wrong question.
+        Nothing is recorded on a deny.
+
+        Record destination: {{record_path}}
+        (empty means no record will be written)
+      timeout: 0
+      default: "deny"
+
+  # ===========================================================================
+  # STAGE: record — write the decision down so it can be cited, not re-argued.
+  # ===========================================================================
+  - name: "record"
+    steps:
+      - id: "write-record"
+        type: "bash"
+        # Every value the model or the human produced travels through the
+        # environment, never through the command text. This is the whole
+        # injection fix: `bash -c` never parses any of it.
+        env:
+          RECORD: "{{record_path}}"
+          Q: "{{question}}"
+          TGT: "{{target_path}}"
+          RULING: "{{_approval_message}}"
+          LENS: "{{direction_call}}"
+        command: |
+          set -u
+          if [ -z "$RECORD" ]; then
+            echo "(record_path empty — decision not written to disk)"
+            exit 0
+          fi
+          mkdir -p "$(dirname "$RECORD")" 2>/dev/null || true
+          if [ ! -f "$RECORD" ]; then
+            printf '# Decision record\n\nDirections decided with `mj:recipes/direction-check.yaml`.\nEach entry keeps the call, the argument against it, and the human ruling\ntogether — so a settled direction can be cited instead of re-argued.\n' > "$RECORD"
+          fi
+          {
+            printf '\n---\n\n## %s\n\n' "$(date -u '+%Y-%m-%d %H:%M UTC')"
+            printf '**Question:** %s\n\n' "$Q"
+            printf '**Target:** `%s`\n\n' "$TGT"
+            printf '**Human ruling:** %s\n\n' "${RULING:-(approved without a message)}"
+            printf '**The lens said:**\n\n'
+            printf '%s\n' "$LENS"
+          } >> "$RECORD"
+          printf 'Decision recorded -> %s\n\n' "$RECORD"
+          tail -n 25 "$RECORD"
+        output: "record_result"
+        on_error: "continue"
+        timeout: 120

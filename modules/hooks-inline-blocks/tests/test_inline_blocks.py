@@ -15,6 +15,7 @@ within a single changeset. It lives here now, because comments don't run.
 from __future__ import annotations
 
 import pathlib
+import re
 from typing import Any
 
 import pytest
@@ -366,4 +367,50 @@ def test_markdown_surfaces_have_no_fixed_slot_headings(rel_path: str):
         f"headings. These are reasoning moves, not labels to print — bolding "
         f"them is how the six-slot template grows back, and this file reaches "
         f"the model. Write them as plain sentences."
+    )
+
+
+# ---------------------------------------------------------------------------
+# 15. Principle parity between the mj-reviewer AGENT and the mj-lens SKILL.
+#
+#     MJ's review judgment is stated twice on purpose: the agent runs in a
+#     FORKED sub-session (can't see the current conversation), the skill loads
+#     INLINE (can). Two consumers, two contexts, one body of judgment.
+#
+#     The cost of that duplication is drift, and it is not hypothetical — the
+#     principle set has already changed once (commit 2ef7608 added P10). There
+#     is no @mention expansion in skill bodies, so the two files genuinely
+#     cannot share a single source today. This test is the cheap substitute:
+#     add or remove a principle in one file and the suite goes red until the
+#     other follows.
+#
+#     Skips cleanly when the module is installed standalone (no repo tree).
+# ---------------------------------------------------------------------------
+_AGENT_PRINCIPLES = _REPO_ROOT / "agents" / "mj-reviewer.md"
+_SKILL_PRINCIPLES = _REPO_ROOT / "skills" / "mj-lens" / "SKILL.md"
+
+
+def test_agent_and_skill_state_the_same_number_of_principles():
+    if not (_AGENT_PRINCIPLES.is_file() and _SKILL_PRINCIPLES.is_file()):
+        pytest.skip("repo tree not present (module installed standalone)")
+
+    agent = _AGENT_PRINCIPLES.read_text(encoding="utf-8")
+    skill = _SKILL_PRINCIPLES.read_text(encoding="utf-8")
+
+    # Agent states them as bold **P1 — ...** headings.
+    agent_ids = set(re.findall(r"\*\*(P\d+)\s*—", agent))
+    # Skill states them as a numbered list under "The judgment behind it".
+    skill_body = skill.split("## The judgment behind it", 1)
+    assert len(skill_body) == 2, (
+        "skills/mj-lens/SKILL.md no longer has a '## The judgment behind it' "
+        "section — if the principles moved, update this test with them."
+    )
+    skill_nums = set(re.findall(r"^(\d+)\.\s+\*\*", skill_body[1], re.MULTILINE))
+
+    assert len(agent_ids) == len(skill_nums), (
+        f"Principle drift: agents/mj-reviewer.md states {len(agent_ids)} "
+        f"principles {sorted(agent_ids)}, skills/mj-lens/SKILL.md states "
+        f"{len(skill_nums)}. These are two renderings of one body of judgment "
+        f"(forked agent vs inline skill). Add or remove in both, or this "
+        f"bundle ships two versions of MJ that disagree."
     )

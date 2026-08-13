@@ -15,3 +15,15 @@ The reviewer names the call, argues the strongest case against it, says how big 
 change is actually warranted, and recommends the smallest step you could take first
 and undo if it turns out wrong. Warm, blunt, brief. It sets direction; when the
 answer is "cut it," `occams-machete` does the cutting.
+
+Three ways in, and the difference is load-bearing:
+
+| To judge | Use |
+|---|---|
+| An artifact you can name (file, diff, doc) | `delegate(agent="mj:mj-reviewer")` — forks a clean session |
+| **This conversation** — the plan being built right now | `load_skill(skill_name="mj-lens")` — inline, sees the current context |
+| A stretch of work, in review posture | `/mj` mode — blocks every mutating tool, so you can't drift into editing |
+
+The agent cannot see this conversation; the skill can. Choose on that.
+Deciding something worth citing later? `mj:recipes/direction-check.yaml` adds an
+approval gate and records the call, its counter-argument, and your ruling.
