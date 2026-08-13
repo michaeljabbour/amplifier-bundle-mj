@@ -24,3 +24,4 @@ __pycache__/
 
 # Personal working notes (kept local, not shipped)
 evaluation/MJ-FEEDBACK-AND-PROMPTS.md
+.mj-rename-verification.png
