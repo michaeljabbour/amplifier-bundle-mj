@@ -1,10 +1,12 @@
 bundle:
-  name: occams-machete-behavior
-  version: 0.1.0
+  name: mj-behavior
+  version: 0.2.0
   description: |
-    Wires the Occam's Machete capability onto a host bundle: the executioner
-    agent, the persona skill (via tool-skills), and the /machete reduction mode
-    (via the modes system: hooks-mode + tool-mode).
+    Wires MJ's review bench onto a host bundle: three agents (the Occam's Machete
+    executioner, the mj-reviewer direction lens, and the crusty-old-engineer
+    reliability guard), the Machete persona skill (via tool-skills), the /machete
+    reduction mode (via the modes system: hooks-mode + tool-mode), and the
+    inline insight / machete / MJ-lens callout blocks.
 
 # Mount the modes system so /machete registers and switches at runtime.
 includes:
@@ -15,9 +17,9 @@ hooks:
     source: git+https://github.com/microsoft/amplifier-bundle-modes@main#subdirectory=modules/hooks-mode
     config:
       search_paths:
-        # The @occams-machete: prefix is resolved by hooks-mode itself (its own
+        # The @mj: prefix is resolved by hooks-mode itself (its own
         # @mention resolution), not by the bundle loader.
-        - "@occams-machete:modes"
+        - "@mj:modes"
   # Surfaces the insight (★) / machete (✂) / MJ-lens (🔪) inline blocks. Consolidates
   # the three formerly-separate hooks-insight-blocks / hooks-machete-blocks /
   # hooks-mj-lens modules into one parametrized brick (see the module docstring for
@@ -59,16 +61,16 @@ tools:
     # directory-discovery. config.skills uses a git SELF-REFERENCE — the only source
     # form tool-skills resolves independent of runtime cwd. A bundle-local relative
     # `skills:` path resolves against the RUNTIME cwd (DTU-verified, breaks), and an
-    # @mention (@occams-machete:skills) silently fails at mount: tool-skills'
+    # @mention (@mj:skills) silently fails at mount: tool-skills'
     # _resolve_skill_sources() only routes git+/https:// through the mention/clone path
     # and treats everything else as a literal Path(...).resolve() (source-verified).
     # Caveat: the self-reference fetches from remote HEAD, so local-only edits to
     # skills/ require a push + `amplifier update` before they're visible.
-    # (The @mention @occams-machete:skills/... delivery in the agent and /machete mode
+    # (The @mention @mj:skills/... delivery in the agent and /machete mode
     # still stands — that's runtime injection, a separate channel from this discovery.)
     config:
       skills:
-        - "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=skills"
+        - "git+https://github.com/michaeljabbour/amplifier-bundle-mj@main#subdirectory=skills"
   # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
   - module: tool-recipes
     source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
@@ -81,16 +83,16 @@ tools:
 # "will it break, and what will it cost?").
 agents:
   include:
-    - occams-machete:occams-machete
-    - occams-machete:mj-reviewer
-    - occams-machete:crusty-old-engineer
+    - mj:occams-machete
+    - mj:mj-reviewer
+    - mj:crusty-old-engineer
 
 # Lightweight awareness only — always-on routing. The heavy artifacts (the persona
 # SKILL, the MJ profile) are context sinks loaded on demand by their agents.
 context:
   include:
-    - occams-machete:context/machete-awareness.md
-    - occams-machete:context/mj-lens-awareness.md
+    - mj:context/machete-awareness.md
+    - mj:context/mj-lens-awareness.md
     # NOTE: modes-instructions.md is NOT listed here on purpose — the modes
     # behavior we include above already contributes it via its own
     # context.include. Listing it again double-loads ~420 always-on tokens.

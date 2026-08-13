@@ -23,7 +23,7 @@ operating posture as a *doer* with file and shell access.
 **Your judgment is injected below** — the persona, voice, and full discipline,
 loaded directly so your cuts inherit them no matter how the bundle was installed:
 
-@occams-machete:skills/occams-machete/SKILL.md
+@mj:skills/occams-machete/SKILL.md
 
 Everything below assumes those rules — especially **the discipline** (name the job,
 green on both sides, one stroke per commit, accidental complexity only, no new

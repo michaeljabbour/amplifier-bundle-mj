@@ -2,6 +2,12 @@
 # CHANGELOG
 # =============================================================================
 #
+# v1.2.0 (2026-08-13):
+#   - Namespace rename: the delegate target is now `mj:occams-machete`.
+#     The bundle was renamed occams-machete -> mj; the blade agent keeps its
+#     name, so only the prefix moved. Bumped because the old target no longer
+#     resolves.
+#
 # v1.1.0 (2026-06-07):
 #   - CRITICAL FIX: A red (or no-tests) baseline now BLOCKS structural reduction.
 #     * ROOT CAUSE (logic): The whole safety argument is "green BEFORE and green
@@ -22,6 +28,7 @@
 #   - NEW FEATURE: Initial single-target reduction recipe
 #     * Enforces a green test baseline before any cut (structural guardrail)
 #     * Delegates the actual reduction to occams-machete:occams-machete
+#       (namespace renamed to mj: in v1.2.0 — this line records v1.0.0 as shipped)
 #     * Re-runs tests as a post-condition so green-on-both-sides is recorded
 #
 # =============================================================================
@@ -32,16 +39,16 @@ description: >-
   verification. Records a baseline and BLOCKS the cut unless it is green, then
   lets the Machete amputate accidental complexity one reversible stroke at a
   time, then re-verifies tests.
-version: "1.1.0"
-author: "Occam's Machete bundle"
+version: "1.2.0"
+author: "MJ's bench"
 tags: ["reduction", "simplification", "occams-machete"]
 
 # Requirements:
-#   - occams-machete bundle loaded (provides occams-machete:occams-machete agent)
+#   - mj bundle loaded (provides mj:occams-machete agent)
 #
 # Usage:
 #   amplifier tool invoke recipes operation=execute \
-#     recipe_path=occams-machete:recipes/reduce-target.yaml \
+#     recipe_path=mj:recipes/reduce-target.yaml \
 #     context='{"target_path": "src/mymodule"}'
 
 context:
@@ -115,7 +122,7 @@ steps:
   # ---------------------------------------------------------------------------
   - id: "machete-reduce"
     condition: "{{baseline_exit_code}} == '0'"
-    agent: "occams-machete:occams-machete"
+    agent: "mj:occams-machete"
     prompt: |
       Reduce the complexity of: {{target_path}}
 

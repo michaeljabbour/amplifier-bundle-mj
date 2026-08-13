@@ -1,13 +1,30 @@
-# amplifier-bundle-occams-machete
+# amplifier-bundle-mj
 
 > *Entia non sunt multiplicanda praeter necessitatem.*
 > Entities should not be multiplied beyond necessity.
 > — William of Ockham, who would have loved `git rm`.
 
-A grumpy-craftsman Amplifier bundle whose entire job is to make things **smaller,
+**MJ's review bench** — three grumpy-craftsman lenses that judge work on
+different axes, and one of them cuts.
+
+| Lens | The question it owns |
+|---|---|
+| **Occam's Machete** (`mj:occams-machete`) | *What comes out?* — reduces code and prose, one reversible stroke at a time, tests green on both sides |
+| **The MJ lens** (`mj:mj-reviewer`) | *Is this pointed the right way, and how heavy a change does it really need?* |
+| **The Crusty Old Engineer** (`mj:crusty-old-engineer`) | *What breaks, and what will it cost later?* |
+
+The bundle's original job — and still the blade's — is making things **smaller,
 leaner, and more elegant**: reduce code, refactor toward simplicity, and stop
-**thought diarrhea** — the rambling, hedging, gold-plated sprawl that piles up
-when smart people keep typing past the point they were done.
+**thought diarrhea**, the rambling, hedging, gold-plated sprawl that piles up
+when smart people keep typing past the point they were done. The other two lenses
+answer the questions a blade shouldn't: *should we be cutting here at all*, and
+*what will this cost us at 3 a.m.*
+
+> **Renamed 2026-08.** This repo was `amplifier-bundle-occams-machete`; the
+> bundle namespace was `occams-machete:`. Both are now `mj`. The blade keeps its
+> name — `mj:occams-machete` — because Occam's Machete describes the blade, not
+> the bench. Update your install with the command below; the old GitHub URL
+> redirects, but the namespace prefix in any saved `delegate()` calls does not.
 
 Most simplicity tools only *advise* — they hand you a verdict and a risk
 assessment, then leave the actual work to you:
@@ -34,12 +51,12 @@ and *act*:
 ## What's inside
 
 ```
-amplifier-bundle-occams-machete/
+amplifier-bundle-mj/
 ├── bundle.md                      # bundle root (thin router → foundation + behavior)
 ├── README.md                      # you are here
 ├── PRINCIPLES.md                  # the repo's own discipline, written down
 ├── behaviors/
-│   └── occams-machete.yaml        # wires the agents, skill, /machete mode, and recipes
+│   └── mj.yaml                    # wires the agents, skill, /machete mode, and recipes
 ├── skills/
 │   └── occams-machete/
 │       └── SKILL.md               # the persona: judgment + voice + discipline
@@ -95,15 +112,15 @@ the persona skill, the `/machete` mode, and the MJ lens — composes onto **ever
 whatever primary bundle you run:
 
 ```bash
-amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-occams-machete@main#subdirectory=behaviors/occams-machete.yaml" --app
+amplifier bundle add "git+https://github.com/michaeljabbour/amplifier-bundle-mj@main#subdirectory=behaviors/mj.yaml" --app
 ```
 
-`--app` makes it always-on across your sessions; the `#subdirectory=behaviors/occams-machete.yaml`
+`--app` makes it always-on across your sessions; the `#subdirectory=behaviors/mj.yaml`
 fragment layers just the behavior on top of your existing app instead of replacing your root
 bundle. Remove it later with:
 
 ```bash
-amplifier bundle remove occams-machete-behavior
+amplifier bundle remove mj-behavior
 ```
 
 ### Why the behavior bundle (and not the root bundle)
@@ -112,7 +129,7 @@ Install the **behavior** (above), not the repo root. The behavior layers the Mac
 whatever app bundle you already run; installing the root bundle would *replace* your root and
 drag in this repo's development scaffolding (evaluation harnesses, docs) as your primary
 environment. The root `bundle.md` exists as the composition target for development and CI —
-the behavior at `behaviors/occams-machete.yaml` is the consumable.
+the behavior at `behaviors/mj.yaml` is the consumable.
 
 ## Usage
 
@@ -123,7 +140,7 @@ persona's judgment is injected into both — there is no separate skill to load.
 **Make the cut (delegate to the executioner):**
 ```
 delegate(
-  agent="occams-machete:occams-machete",
+  agent="mj:occams-machete",
   instruction="Reduce src/router.py — it has a six-stage middleware pipeline and a one-implementation handler registry. Preserve behavior, keep tests green.",
   context_depth="recent",
 )
@@ -142,17 +159,19 @@ that phrase true rather than marketing.
 **Run a guarded reduction pass (recipes):**
 ```
 # single target: records a green baseline, cuts, re-verifies
-execute recipe occams-machete:recipes/reduce-target.yaml with target_path=src/router.py
+execute recipe mj:recipes/reduce-target.yaml with target_path=src/router.py
 
-# the panel: three-lens review → human approval gate → cut → verify
-execute recipe occams-machete:recipes/panel-then-cut.yaml with target_path=src/router.py
+# the panel: two-lens review → human approval gate → cut → verify
+execute recipe mj:recipes/panel-then-cut.yaml with target_path=src/router.py
 ```
 The agent already runs its own inventory → cut → verify loop, so reach for a
 recipe only when you want what plain delegation can't give you: a recorded
 before/after baseline, or a **human approval gate** before irreversible edits
-land. `panel-then-cut` wires a multi-lens advisory review into one auditable
-pipeline — "why does it exist?", "what will it cost?", then the Machete's blade,
-with you holding the gate in between.
+land. `panel-then-cut` wires two *independent* advisory lenses into one auditable
+pipeline — the Crusty Old Engineer's "what would removing this break, and what
+will it cost?", then the Machete turning those findings into an ordered,
+proof-backed cut plan — with you holding the gate in between. The agent that
+proposes the cut is never the agent that grades its risk.
 
 ## The pipeline, made real
 
@@ -188,7 +207,7 @@ tests green`. Numbers, not adjectives.
 written, and the bundle has been converted to the Amplifier-native thin-bundle
 pattern:
 
-- `bundle.md` is a thin router: `includes:` foundation + `behaviors/occams-machete.yaml`.
+- `bundle.md` is a thin router: `includes:` foundation + `behaviors/mj.yaml`.
 - The behavior wires the agent (`agents.include`), the persona skill
   (`tool-skills` with a `source:`), and the `/machete` mode (the modes system:
   the modes behavior + `hooks-mode` `search_paths` + `tool-mode`).
@@ -228,7 +247,7 @@ specifics from your actual code, and teaching the *why*, not just the ruling.
 There is no template and no headings to fill; it says only what earned the space.
 
 ```
-delegate(agent="occams-machete:mj-reviewer",
+delegate(agent="mj:mj-reviewer",
          instruction="What would MJ think about <idea/design/plan/diff>?")
 ```
 

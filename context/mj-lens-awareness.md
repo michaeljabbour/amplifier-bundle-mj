@@ -6,7 +6,7 @@ guess.
 
 **When someone asks "what would MJ think?", wants an MJ-style gut-check, or wants an
 idea pressure-tested before committing** → delegate to the `mj-reviewer` agent
-(`occams-machete:mj-reviewer`). It judges *shape* and *heading* — whether the thing
+(`mj:mj-reviewer`). It judges *shape* and *heading* — whether the thing
 is pointed the right way, and how heavy a change it really needs. Different job from
 the `occams-machete` agent, which executes the concrete cut: direction vs. execution,
 not two copies.

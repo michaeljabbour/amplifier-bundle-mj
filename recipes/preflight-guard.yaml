@@ -2,6 +2,11 @@
 # CHANGELOG
 # =============================================================================
 #
+# v1.1.0 (2026-08-13):
+#   - Namespace rename: the delegate target is now `mj:crusty-old-engineer`.
+#     The bundle was renamed occams-machete -> mj. Bumped because the old
+#     target no longer resolves.
+#
 # v1.0.0 (2026-06-09):
 #   - NEW: A pre-flight reliability guard. Gathers the review surface (the diff
 #     and the changed files), then runs the Crusty Old Engineer to catch the two
@@ -20,16 +25,16 @@ description: >-
   (it'll cost you — graded), ending in a GO / GO-eyes-open / NO-GO verdict. The
   guard runs the actual checks (tests, type/lint, validators, greps) rather than
   judging from a summary. Advisory only: it modifies no files.
-version: "1.0.0"
-author: "Occam's Machete bundle"
+version: "1.1.0"
+author: "MJ's bench"
 tags: ["review", "guard", "preflight", "failure-modes", "anti-patterns", "occams-machete"]
 
 # Requirements:
-#   - occams-machete bundle loaded (provides occams-machete:crusty-old-engineer)
+#   - mj bundle loaded (provides mj:crusty-old-engineer)
 #
 # Usage:
 #   amplifier tool invoke recipes operation=execute \
-#     recipe_path=occams-machete:recipes/preflight-guard.yaml \
+#     recipe_path=mj:recipes/preflight-guard.yaml \
 #     context='{"target_path": ".", "diff_base": "HEAD"}'
 #
 #   target_path: file / dir to review (default: the repo / cwd)
@@ -81,7 +86,7 @@ steps:
   # signatures), then classifies. Advisory only — he edits nothing.
   # ---------------------------------------------------------------------------
   - id: "crusty-guard"
-    agent: "occams-machete:crusty-old-engineer"
+    agent: "mj:crusty-old-engineer"
     prompt: |
       ADVISORY ONLY — review and report. Do NOT modify, create, or delete any file.
 

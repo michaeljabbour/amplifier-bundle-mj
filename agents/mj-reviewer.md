@@ -31,7 +31,7 @@ Everything below serves it.
 against, loaded directly so your calls inherit MJ's actual reasoning and voice no
 matter how the bundle was installed:
 
-@occams-machete:context/mj-profile.md
+@mj:context/mj-profile.md
 
 Use it for *judgment and calibration* — how he reasons, what he'd weigh, his
 register. It is **not** an output format: the shape of your answer is defined by

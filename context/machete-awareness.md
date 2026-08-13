@@ -5,7 +5,7 @@ A code-and-prose **reducer** that *cuts*, where most simplicity tools only advis
 ## Three ways in
 - **Agent** — the cut actually made (files edited, tests run, diff, and a tally of
   what came out):
-  `delegate(agent="occams-machete:occams-machete", instruction="...")`
+  `delegate(agent="mj:occams-machete", instruction="...")`
 - **Mode** — a sustained pass biased toward removing rather than adding: `/machete`
 - **Skill** — the verdict and plan in the Machete's voice, no diff yet; carried by
   the agent and `/machete` (ask for a *plan-only* pass).
@@ -21,7 +21,7 @@ Two recipes add an approval gate or a recorded before/after baseline to a cut:
 
 ## Guard before you ship
 The **Crusty Old Engineer**
-(`delegate(agent="occams-machete:crusty-old-engineer")`) is the reliability guard.
+(`delegate(agent="mj:crusty-old-engineer")`) is the reliability guard.
 It catches what will break — broken contracts, stale references, code that fails at
 load time, errors swallowed in silence — and reports what's actually broken, what
 will cost you later, and a ship / don't-ship call. Reach for it, or the

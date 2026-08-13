@@ -2,6 +2,34 @@
 # CHANGELOG
 # =============================================================================
 #
+# v2.0.0 (2026-08-13):
+#   - CRITICAL FIX: the panel now convenes real independent agents.
+#     * ROOT CAUSE: all three "lenses" were prompt sections sent to ONE agent —
+#       mj:occams-machete, the blade — which was asked to role-play Cranky Old
+#       Sam and the Crusty Old Engineer "if available". So the agent that wants
+#       to cut was also grading whether cutting was risky. That is the circular
+#       reasoning this bundle's own discipline forbids: independence collapse,
+#       not a lens panel. `preflight-guard.yaml` already delegated to the real
+#       crusty-old-engineer agent correctly; this recipe simply predated it.
+#     * FIX: Stage A is now TWO steps. `risk-review` delegates to the real
+#       mj:crusty-old-engineer agent, which returns its own BLOCKERS/RISKS/
+#       SAFE-TO-CUT contract. `panel-review` then delegates to the blade, which
+#       receives those findings as evidence it did not produce, and must honor
+#       them: a BLOCKER never enters the plan (disagreement is escalated to the
+#       human at the approval gate, not resolved by cutting), and a RISK enters
+#       only with the extra proof that answers it.
+#     * REMOVED: the Cranky Old Sam role-play. "Does this earn its existence?"
+#       is already the blade's own discipline, encoded in its skill.
+#     * SCOPE: mj-reviewer is deliberately NOT convened. Direction was decided
+#       when the human chose to run a reduction pipeline; adding it here is the
+#       unrequested ceremony the bundle's own principles warn about.
+#     * UNCHANGED (logic): both baseline gates, the approval gate, and Stage B's
+#       cut-and-verify flow. Stage B's delegate TARGET did move with the rename
+#       below, but its behavior is untouched.
+#   - Namespace rename: the bundle became `mj`, so every delegate target in this
+#     recipe is now `mj:<agent>`. The blade agent keeps the name occams-machete;
+#     only the prefix moved. The old targets no longer resolve.
+#
 # v1.1.0 (2026-06-07):
 #   - CRITICAL FIX: The post-approval EXECUTE stage now BLOCKS on a red baseline.
 #     * ROOT CAUSE (logic): The safety argument is "green BEFORE and green AFTER
@@ -33,22 +61,23 @@
 
 name: "panel-then-cut"
 description: >-
-  Flagship panel pipeline: a three-lens advisory review (Cranky Old Sam's
-  "why exist?", the Crusty Old Engineer's "what will removal cost?", and the
-  Machete's "what comes out, in what safe order, with what proof"), then a
-  HUMAN APPROVAL GATE, then the cut. No irreversible edit lands until a human
+  Flagship panel pipeline. Two INDEPENDENT agents review in order: the Crusty
+  Old Engineer asks "what would removing this break, and what will it cost?",
+  then the Machete turns those findings into an ordered, proof-backed cut plan.
+  Then a HUMAN APPROVAL GATE, then the cut. The agent that proposes the cut is
+  never the agent that grades its risk. No irreversible edit lands until a human
   has seen and approved the plan AND the baseline is green.
-version: "1.1.0"
-author: "Occam's Machete bundle"
+version: "2.0.0"
+author: "MJ's bench"
 tags: ["reduction", "simplification", "occams-machete", "panel", "approval-gate"]
 
 # Requirements:
-#   - occams-machete bundle loaded (provides occams-machete:occams-machete agent)
-#   - Optional: cranky-old-sam and crusty-old-engineer skills (deepen lenses 1 & 2)
+#   - mj bundle loaded (provides the mj:occams-machete and
+#     mj:crusty-old-engineer agents — both are delegated to by this recipe)
 #
 # Usage:
 #   amplifier tool invoke recipes operation=execute \
-#     recipe_path=occams-machete:recipes/panel-then-cut.yaml \
+#     recipe_path=mj:recipes/panel-then-cut.yaml \
 #     context='{"target_path": "src/mymodule"}'
 #
 #   # Then, after Stage A pauses at the approval gate:
@@ -89,9 +118,51 @@ stages:
         on_error: "continue"
         timeout: 1800
 
-      # The three-lens advisory panel. Edits NOTHING.
+      # LENS 1 — the reliability guard, as a REAL independent agent.
+      # It must not be the same agent that proposes the cut: an agent grading
+      # the risk of its own proposal is the circular reasoning this bundle's
+      # own discipline forbids. Edits NOTHING.
+      - id: "risk-review"
+        agent: "mj:crusty-old-engineer"
+        prompt: |
+          ADVISORY ONLY. Do NOT modify, create, or delete any file.
+
+          Target under review for REDUCTION: {{target_path}}
+          Safety-net test command: {{test_command}}
+
+          Baseline (exit code {{baseline_exit_code}} — non-zero means the safety
+          net is RED or found no tests; if so, say so plainly: from a red
+          baseline no cut can be proven behavior-preserving):
+          ---
+          {{baseline_tests}}
+          ---
+
+          Someone is about to remove code from this target. Your job is the
+          question the blade skips: **what would removal break, and what would
+          it cost later?**
+
+          Hunt specifically:
+            - Dynamic references a call-graph misses — getattr/setattr,
+              importlib/__import__, entry points, plugin registries, string-keyed
+              dispatch, template and config references.
+            - Out-of-repo or public-surface consumers who may depend on
+              observable behavior (Hyrum's Law), including anything exported.
+            - Test-coverage gaps that would let a bad cut pass unnoticed —
+              name the specific paths where the safety net is thin.
+            - Anything whose apparent deadness is load-bearing (a fence with a
+              reason you can find in git history, comments, or docs).
+
+          OUTPUT — your usual contract, nothing else:
+            BLOCKERS (removing this breaks something — with the evidence)
+            RISKS (removing this costs you later — graded by likelihood × blast radius)
+            SAFE-TO-CUT (candidates you found no removal hazard for, with what you checked)
+        output: "risk_findings"
+        timeout: 3600
+
+      # LENS 2 — the blade turns the guard's findings into an ordered plan.
+      # It proposes; it does not grade its own proposal's risk. Edits NOTHING.
       - id: "panel-review"
-        agent: "occams-machete:occams-machete"
+        agent: "mj:occams-machete"
         prompt: |
           ADVISORY ONLY. Do NOT modify, create, or delete any file in this
           stage. Produce a plan, not a cut.
@@ -106,37 +177,37 @@ stages:
           {{baseline_tests}}
           ---
 
-          If the skills `cranky-old-sam` and `crusty-old-engineer` are
-          available, load them via load_skill to deepen lenses 1 and 2.
-          Otherwise use the panel framing the occams-machete skill already
-          encodes.
+          The reliability guard has already reviewed this target independently.
+          Its findings are evidence you did not produce and must not overrule
+          silently:
+          ---
+          {{risk_findings}}
+          ---
 
-          Apply THREE LENSES to {{target_path}}:
+          Your question is the one it skipped: **what comes out, in what safe
+          order, with what proof for each?**
 
-            LENS 1 — Cranky Old Sam: "Why does this exist at all?"
-              Name what fails to earn its existence: dead code, speculative
-              generality, abstractions with one caller, layers that only
-              forward, configuration nobody flips.
+          Name what fails to earn its existence — dead code, speculative
+          generality, abstractions with one caller, layers that only forward,
+          configuration nobody flips — then turn it into an ORDERED,
+          PROOF-BACKED cut plan: smallest and safest first, each stroke
+          individually reversible, each with the specific evidence that makes it
+          safe and the test signal that will confirm it.
 
-            LENS 2 — The Crusty Old Engineer: "What will removing it cost?"
-              For each candidate, weigh the risk of removal: dynamic references
-              (reflection, getattr, importlib, registries, entry points),
-              public-symbol / out-of-repo consumers (Hyrum's Law — someone may
-              depend on observable behavior), and test-coverage gaps that would
-              let a bad cut pass unnoticed.
-
-            LENS 3 — The Machete: "What comes out, in what safe order, with
-            what proof for each?"
-              Turn the above into an ORDERED, PROOF-BACKED cut plan: smallest
-              and safest first, each stroke individually reversible, each with
-              the specific evidence that makes it safe and the test signal that
-              will confirm it.
+          Honor the guard's findings explicitly:
+            - Anything it called a BLOCKER does not enter the plan. If you
+              believe it is wrong, say so and leave the stroke out anyway —
+              that disagreement is for the human at the approval gate, not for
+              you to resolve by cutting.
+            - Anything it called a RISK enters the plan only with the extra
+              proof that answers it, stated per stroke.
 
           OUTPUT (and nothing else — edit no files):
             1. Complexity inventory (what's accidental, why)
             2. Ordered, proof-backed cut plan (stroke 1..N, each with its proof)
             3. Test-coverage status (where the safety net is strong vs thin)
-            4. Confidence level (and what would raise it)
+            4. Anything the guard flagged that you deliberately excluded, and why
+            5. Confidence level (and what would raise it)
         output: "cut_plan"
         timeout: 3600
 
@@ -239,7 +310,7 @@ stages:
       # The approved cut — runs ONLY when the FRESH execute-time baseline is green.
       - id: "execute-cuts"
         condition: "{{execute_baseline_exit_code}} == '0'"
-        agent: "occams-machete:occams-machete"
+        agent: "mj:occams-machete"
         prompt: |
           The cut plan below was reviewed and APPROVED by a human, and the
           safety net was re-verified GREEN at execution time (execute-time
