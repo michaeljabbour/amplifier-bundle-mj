@@ -1,6 +1,6 @@
 bundle:
   name: mj-behavior
-  version: 0.3.0
+  version: 0.4.0
   description: |
     Wires MJ's review bench onto a host bundle: three agents (the Occam's Machete
     executioner, the mj-reviewer direction lens, and the crusty-old-engineer
@@ -59,20 +59,28 @@ tools:
     # kernel now passes when forking a sub-session, so pinning it there fails module
     # load with "got an unexpected keyword argument 'is_forked_session'".
     source: git+https://github.com/microsoft/amplifier-bundle-skills@main#subdirectory=modules/tool-skills
-    # Expose THIS bundle's own skills/ dir (occams-machete) for load_skill
-    # directory-discovery. config.skills uses a git SELF-REFERENCE — the only source
-    # form tool-skills resolves independent of runtime cwd. A bundle-local relative
-    # `skills:` path resolves against the RUNTIME cwd (DTU-verified, breaks), and an
-    # @mention (@mj:skills) silently fails at mount: tool-skills'
-    # _resolve_skill_sources() only routes git+/https:// through the mention/clone path
-    # and treats everything else as a literal Path(...).resolve() (source-verified).
-    # Caveat: the self-reference fetches from remote HEAD, so local-only edits to
-    # skills/ require a push + `amplifier update` before they're visible.
-    # (The @mention @mj:skills/... delivery in the agent and /machete mode
-    # still stands — that's runtime injection, a separate channel from this discovery.)
+    # Expose THIS bundle's own skills/ dir for load_skill directory-discovery.
+    #
+    # This was a git SELF-REFERENCE to remote HEAD, because an @mention used to
+    # fail silently at mount: the mention_resolver capability is registered by the
+    # app layer AFTER modules mount, so there was nothing to resolve against. That
+    # is no longer true — tool-skills now stashes @-sources as pending and resolves
+    # them one-shot at the first provider:request
+    # (`SkillsTool.resolve_pending_mention_sources()`, source-verified).
+    #
+    # Why the change matters: the self-reference created a SECOND, independently
+    # cached copy of this repo under ~/.amplifier/cache/skills/, keyed by URL and
+    # with no TTL or revalidation. `amplifier bundle update` refreshed the bundle
+    # cache and left that one stale, so a newly-shipped skill stayed invisible until
+    # someone manually deleted the cache dir — which is exactly what happened when
+    # mj-lens was added. The @mention resolves against the bundle cache the loader
+    # already maintains: one copy, one refresh path, no push-then-wait.
+    #
+    # A bundle-local RELATIVE path is still wrong here — it resolves against the
+    # runtime cwd (DTU-verified, breaks). The @mention is the correct form.
     config:
       skills:
-        - "git+https://github.com/michaeljabbour/amplifier-bundle-mj@main#subdirectory=skills"
+        - "@mj:skills"
   # Lets the bundle's own reduction recipes (recipes/*.yaml) be executed.
   - module: tool-recipes
     source: git+https://github.com/microsoft/amplifier-bundle-recipes@main#subdirectory=modules/tool-recipes
