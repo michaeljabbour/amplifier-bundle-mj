@@ -4,7 +4,7 @@
 > Entities should not be multiplied beyond necessity.
 > — William of Ockham, who would have loved `git rm`.
 
-**MJ's review bench** — three grumpy-craftsman lenses that judge work on
+**MJ's review bench** — four grumpy-craftsman lenses that judge work on
 different axes, and one of them cuts.
 
 | Lens | The question it owns |
@@ -12,6 +12,7 @@ different axes, and one of them cuts.
 | **Occam's Machete** (`mj:occams-machete`) | *What comes out?* — reduces code and prose, one reversible stroke at a time, tests green on both sides |
 | **The MJ lens** (`mj:mj-reviewer`) | *Is this pointed the right way, and how heavy a change does it really need?* |
 | **The Crusty Old Engineer** (`mj:crusty-old-engineer`) | *What breaks, and what will it cost later?* |
+| **The Goal-Keeper** (`mj:goal-keeper`) | *Is this actually what was asked for?* |
 
 The bundle's original job — and still the blade's — is making things **smaller,
 leaner, and more elegant**: reduce code, refactor toward simplicity, and stop
@@ -65,11 +66,13 @@ amplifier-bundle-mj/
 ├── agents/
 │   ├── occams-machete.md          # the executioner: actually performs the cuts
 │   ├── mj-reviewer.md             # the MJ lens: "what would MJ think about this?"
-│   └── crusty-old-engineer.md     # the reliability guard: BLOCKERS vs RISKS, go/no-go
+│   ├── crusty-old-engineer.md     # the reliability guard: BLOCKERS vs RISKS, go/no-go
+│   └── goal-keeper.md             # the conformance lens: is this what was ASKED for?
 ├── modes/
 │   ├── machete.md                 # /machete — reduction posture, writes get friction
 │   └── mj.md                      # /mj — review posture, mutation is BLOCKED
 ├── recipes/
+│   ├── did-we-do-it.yaml          # the ask, item by item, vs what shipped → GATE
 │   ├── direction-check.yaml       # review a direction → APPROVAL GATE → decision record
 │   ├── reduce-target.yaml         # baseline → cut → verify (single target)
 │   ├── panel-then-cut.yaml        # two-lens review → APPROVAL GATE → cut
@@ -79,6 +82,7 @@ amplifier-bundle-mj/
 ├── context/
 │   ├── machete-awareness.md       # thin routing for the root session (always-on)
 │   ├── mj-lens-awareness.md       # thin routing for the MJ lens (always-on)
+│   ├── bench.md                   # the lens map: which lens owns which question (on demand)
 │   └── mj-profile.md              # evidence-graded MJ profile (provenance source for the lens)
 ├── evaluation/                    # controlled studies backing this README's claims
 ├── bundle.dot                     # composition diagram (v3 convention)

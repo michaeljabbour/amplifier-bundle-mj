@@ -414,3 +414,44 @@ def test_agent_and_skill_state_the_same_number_of_principles():
         f"(forked agent vs inline skill). Add or remove in both, or this "
         f"bundle ships two versions of MJ that disagree."
     )
+
+
+# ---------------------------------------------------------------------------
+# 16. Every agent the behavior wires must exist on disk, and every agent on disk
+#     must be wired. A bundle that advertises a lens it cannot mount fails
+#     silently -- delegate() just errors at call time, long after review.
+#
+#     This caught nothing when written; it exists because the bench grew from
+#     three agents to four and the wiring is a second place to forget.
+# ---------------------------------------------------------------------------
+def test_behavior_agent_wiring_matches_agents_on_disk():
+    behavior = _REPO_ROOT / "behaviors" / "mj.yaml"
+    agents_dir = _REPO_ROOT / "agents"
+    if not (behavior.is_file() and agents_dir.is_dir()):
+        pytest.skip("repo tree not present (module installed standalone)")
+
+    # Parsed with regex, not yaml: this module ships with no yaml dependency
+    # (dev extras are pytest + pytest-asyncio only), and adding one so a test can
+    # read a sibling file would be the tail wagging the dog.
+    btext = behavior.read_text(encoding="utf-8")
+    agents_block = btext.split("\nagents:", 1)
+    assert len(agents_block) == 2, "behaviors/mj.yaml has no top-level `agents:` block"
+    block = agents_block[1].split("\ncontext:", 1)[0]
+    wired_names = set(re.findall(r"^\s*-\s*mj:(\S+)\s*$", block, re.MULTILINE))
+
+    on_disk = set()
+    for f in sorted(agents_dir.glob("*.md")):
+        fm = f.read_text(encoding="utf-8").split("---", 2)[1]
+        m = re.search(r"^\s{2}name:\s*(\S+)\s*$", fm, re.MULTILINE)
+        assert m, f"{f.name} frontmatter has no `  name:` under meta:"
+        on_disk.add(m.group(1))
+
+    assert wired_names == on_disk, (
+        f"Agent wiring drift.\n"
+        f"  wired in behaviors/mj.yaml : {sorted(wired_names)}\n"
+        f"  present in agents/         : {sorted(on_disk)}\n"
+        f"  wired but missing on disk  : {sorted(wired_names - on_disk)}\n"
+        f"  on disk but never wired    : {sorted(on_disk - wired_names)}\n"
+        f"An agent that is present but unwired can never be delegated to; one "
+        f"that is wired but absent fails at call time, not at load."
+    )

@@ -1,0 +1,189 @@
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+#
+# v1.0.0 (2026-08-13):
+#   - NEW FEATURE: conformance gate. Runs the goal-keeper lens over a changeset
+#     against the ORIGINAL request, then requires a human to accept the verdict
+#     before "done" is claimed.
+#     * WHY IT EXISTS: the bench had three lenses for whether work is right, safe,
+#       or too big, and none for whether it is ON TARGET. All three will bless
+#       excellent work that answers a question nobody asked. That failure has a
+#       name here -- silent substitution -- and it is invisible to a quality lens
+#       precisely because nothing about the delivered work is wrong.
+#     * WHAT PLAIN DELEGATION CAN'T GIVE YOU: the original ask, captured verbatim
+#       as an input, checked item by item against the actual diff, with a human
+#       ratifying any substitution rather than an advisor deciding it.
+#     * SCOPE: one lens. This does not judge whether the work is good -- that is
+#       mj-reviewer's question, and crusty-old-engineer's.
+#
+# =============================================================================
+
+name: "did-we-do-it"
+description: >-
+  Conformance gate before claiming done. Takes the ORIGINAL request verbatim,
+  diffs what actually shipped, and has the goal-keeper lens check the delivery
+  item by item -- DELIVERED / PARTIAL / SUBSTITUTED / MISSING, with evidence for
+  each. Then a human ratifies or rejects the verdict. Advisory: edits nothing.
+version: "1.0.0"
+author: "MJ's bench"
+tags: ["review", "conformance", "goal", "approval-gate", "done"]
+
+# Requirements:
+#   - mj bundle loaded (provides mj:goal-keeper)
+#
+# Usage:
+#   amplifier tool invoke recipes operation=execute \
+#     recipe_path=mj:recipes/did-we-do-it.yaml \
+#     context='{"ask": "rename the repo to X and add more agents, recipes, context",
+#               "diff_base": "HEAD~3"}'
+#
+#   ask:        Required. The request AS ORIGINALLY WRITTEN. Paste it verbatim --
+#               a restated version is where drift usually entered.
+#   diff_base:  Git ref the work started from (default: HEAD~1).
+#   target_path: Repo to inspect (default: cwd).
+
+context:
+  ask: ""
+  diff_base: "HEAD~1"
+  target_path: "."
+  # Declared for the static validator; the engine overwrites it on approval.
+  _approval_message: ""
+
+stages:
+  - name: "check"
+    steps:
+      # -----------------------------------------------------------------------
+      # Step 1 - what actually shipped. Name-status first (the cheapest honest
+      # answer to "did the artifact land"), then a bounded diff for substance.
+      #
+      # Template values travel via env:, never into the command text, so an ask
+      # containing backticks or $( ) is data rather than a program.
+      # -----------------------------------------------------------------------
+      - id: "gather-delivery"
+        type: "bash"
+        env:
+          ASK: "{{ask}}"
+          BASE: "{{diff_base}}"
+          TGT: "{{target_path}}"
+        command: |
+          printf '=== THE ASK, AS WRITTEN ===\n%s\n\n' "$ASK"
+          if git -C "$TGT" rev-parse --git-dir >/dev/null 2>&1; then
+            REPO="$TGT"
+          elif git rev-parse --git-dir >/dev/null 2>&1; then
+            REPO="."
+          else
+            REPO=""
+          fi
+          if [ -z "$REPO" ]; then
+            printf '(not a git repo - inspect %s by reading it directly)\n' "$TGT"
+          elif ! git -C "$REPO" rev-parse --verify --quiet "$BASE" >/dev/null 2>&1; then
+            # Without this, an unresolvable base yields empty COMMITS/FILES/DIFF at
+            # exit 0, and the lens applies "absence of evidence is MISSING" to what
+            # is actually absence of RETRIEVAL. Say so instead.
+            printf '!!! DIFF BASE %s DOES NOT RESOLVE in this repo.\n' "$BASE"
+            printf '!!! No delivery evidence could be gathered. Do NOT rule MISSING\n'
+            printf '!!! on this - report the unresolved base as the finding.\n'
+          else
+            printf '=== COMMITS SINCE %s ===\n' "$BASE"
+            git -C "$REPO" log --oneline "$BASE"..HEAD 2>/dev/null
+            echo
+            printf '=== FILES CHANGED SINCE %s (A=added M=modified D=deleted R=renamed) ===\n' "$BASE"
+            git -C "$REPO" diff --name-status "$BASE"..HEAD 2>/dev/null
+            echo
+            echo "=== CURRENT TREE (top two levels, so 'it exists' is checkable) ==="
+            git -C "$REPO" ls-files 2>/dev/null | awk -F/ '{if (NF>1) print $1"/"$2; else print $1}' | sort -u | head -60
+            echo
+            printf '=== DIFF SINCE %s (bounded) ===\n' "$BASE"
+            git -C "$REPO" diff "$BASE"..HEAD 2>/dev/null | head -c 50000
+          fi
+          # Sentinel: the executor can coerce a step output that merely CONTAINS
+          # a parseable bracket token into JSON and silently discard the rest.
+          # The lens is told to refuse when this line is missing.
+          printf '\n=== END DELIVERY ===\n'
+        output: "delivery"
+        on_error: "continue"
+        timeout: 300
+
+      # -----------------------------------------------------------------------
+      # Step 2 - the conformance lens. Judges ON TARGET, not good.
+      # -----------------------------------------------------------------------
+      - id: "conformance-review"
+        agent: "mj:goal-keeper"
+        prompt: |
+          ADVISORY ONLY. Do NOT modify, create, or delete any file.
+
+          INTEGRITY CHECK FIRST: the delivery record below must end with the line
+          `=== END DELIVERY ===`. If it does not, it did not reach you intact --
+          say exactly that and do NOT rule on a fragment. A "delivered" verdict
+          on truncated evidence is the one error this recipe cannot catch.
+
+          ---
+          {{delivery}}
+          ---
+
+          If that record says the diff base does not resolve, or you are told the
+          target is not a git repo, then no delivery evidence was gathered: report
+          that as the finding and rule on nothing. Where the target is not a repo,
+          inspect {{target_path}} by reading it before ruling.
+
+          Break the ask into the smallest checkable items the requester would
+          recognize -- if they named three kinds of thing, that is three items,
+          not one. Then rule on each: DELIVERED (with the file path or diff line
+          that proves it), PARTIAL (what landed, what didn't), SUBSTITUTED (what
+          was built instead, and whether the requester ratified it), MISSING, or
+          N/A (with a reason that isn't convenience).
+
+          Hold your own rules: quality is not conformance; an advisor's refusal
+          is not the requester's decision; absence of evidence is MISSING, not
+          DELIVERED; and an open-ended clause like "whatever else helps" is still
+          an item, judged by whether anything was actually offered against it.
+
+          Lead with the count -- how many items landed out of how many asked --
+          before any credit for what did land. Name the biggest gap first.
+        output: "conformance_verdict"
+        timeout: 3600
+
+    approval:
+      required: true
+      prompt: |
+        ===========================================================
+        CONFORMANCE CHECK -- ratify before anyone claims done
+        ===========================================================
+
+        THE ASK:
+        {{ask}}
+
+        -----------------------------------------------------------
+        THE GOAL-KEEPER SAYS:
+        -----------------------------------------------------------
+        {{conformance_verdict}}
+        -----------------------------------------------------------
+
+        You are the only one who can ratify a substitution. An advisor deciding
+        against something you asked for is not the same as you agreeing to it.
+
+        APPROVE to accept this verdict (approve with a message to record what you
+        accept -- e.g. "the missing item is fine, ship it").
+
+        DENY if items are still outstanding. Nothing is recorded on a deny, and
+        "done" has not been earned.
+      timeout: 0
+      default: "deny"
+
+  - name: "record"
+    steps:
+      - id: "state-outcome"
+        type: "bash"
+        env:
+          ASK: "{{ask}}"
+          VERDICT: "{{conformance_verdict}}"
+          RULING: "{{_approval_message}}"
+        command: |
+          printf '=== CONFORMANCE RATIFIED ===\n\n'
+          printf 'Ask:\n%s\n\n' "$ASK"
+          printf 'Your ruling: %s\n\n' "${RULING:-(accepted without a message)}"
+          printf 'Verdict:\n%s\n' "$VERDICT"
+        output: "outcome"
+        on_error: "continue"
+        timeout: 60

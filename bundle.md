@@ -1,16 +1,17 @@
 ---
 bundle:
   name: mj
-  version: 0.2.0
+  version: 0.3.0
   description: >-
-    MJ's review bench — three lenses that judge work on different axes, and one
+    MJ's review bench — four lenses that judge work on different axes, and one
     of them cuts. Occam's Machete removes complexity (tactical); the MJ lens sets
     direction ("what would MJ think?"); the Crusty Old Engineer catches what
-    breaks before you ship. Plus a persona skill and a /machete reduction mode.
+    breaks before you ship; the goal-keeper checks it is what was actually asked
+    for. Plus two skills and two modes (/machete, /mj).
 
 # Thin bundle: inherit foundation (filesystem, bash, grep, LSP, etc.), then add
-# our unique capability via the behavior. The behavior wires the three agents,
-# the skill, and the /machete mode (modes system: hooks-mode + tool-mode).
+# our unique capability via the behavior. The behavior wires the four agents,
+# both skills, and both modes (/machete, /mj — via hooks-mode + tool-mode).
 includes:
   - bundle: git+https://github.com/microsoft/amplifier-foundation@main
   - bundle: mj:behaviors/mj
@@ -18,7 +19,7 @@ includes:
 
 # MJ's bench
 
-Three lenses. Each owns one question the others skip, and they are useful
+Four lenses. Each owns one question the others skip, and they are useful
 precisely because they can disagree.
 
 | Lens | The question it owns | Reach for it when |
@@ -26,6 +27,7 @@ precisely because they can disagree.
 | **Occam's Machete** — `delegate(agent="mj:occams-machete")` | *What comes out?* | You want the cut **made**, not recommended. Reads, reduces, runs the tests, returns a body count. |
 | **The MJ lens** — `delegate(agent="mj:mj-reviewer")` | *Is this pointed the right way, and how heavy a change does it really need?* | You want direction or a gut-check before committing. It sets heading; it doesn't cut. |
 | **The Crusty Old Engineer** — `delegate(agent="mj:crusty-old-engineer")` | *What breaks, and what will it cost later?* | Before a PR, or before trusting an "it's fixed" claim. Returns blockers vs risks and a go/no-go. |
+| **The Goal-Keeper** — `delegate(agent="mj:goal-keeper")` | *Is this actually what was asked for?* | Before claiming done. The other three will all bless excellent work that answers a question nobody asked. |
 
 Each of the first two lenses also has a **mode** (a sustained working posture)
 and a **skill** (the discipline, loadable inline):
@@ -40,6 +42,7 @@ baseline, or a durable decision record.
 
 | Recipe | What it adds |
 |---|---|
+| `did-we-do-it` | Conformance gate before claiming done: the ask, item by item, against what actually shipped. |
 | `direction-check` | Pressure-test a direction *before* committing. Gate, then writes the call + its counter-argument + your ruling to a decision record. |
 | `reduce-target` | Single-target reduction that refuses to cut from a red baseline. |
 | `panel-then-cut` | Two independent lenses (guard, then blade), a human gate, then the cut. |

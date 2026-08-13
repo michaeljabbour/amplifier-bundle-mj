@@ -1,10 +1,11 @@
 bundle:
   name: mj-behavior
-  version: 0.4.0
+  version: 0.5.0
   description: |
-    Wires MJ's review bench onto a host bundle: three agents (the Occam's Machete
-    executioner, the mj-reviewer direction lens, and the crusty-old-engineer
-    reliability guard), two skills (occams-machete and mj-lens, via tool-skills),
+    Wires MJ's review bench onto a host bundle: four agents (the Occam's Machete
+    executioner, the mj-reviewer direction lens, the crusty-old-engineer
+    reliability guard, and the goal-keeper conformance lens), two skills
+    (occams-machete and mj-lens, via tool-skills),
     two modes (/machete for reduction, /mj for review — via hooks-mode +
     tool-mode), and the inline insight / machete / MJ-lens callout blocks.
     Modes and skills are DIRECTORY-discovered: adding modes/<name>.md or
@@ -88,14 +89,16 @@ tools:
       session_dir: ~/.amplifier/projects/{project}/recipe-sessions
       auto_cleanup_days: 7
 
-# The panel: the executioner (the blade), the MJ-lens reviewer ("what would MJ
-# think?" — direction), and the Crusty Old Engineer (the reliability guard —
-# "will it break, and what will it cost?").
+# The bench, one question each: the executioner (the blade — what comes out), the
+# MJ-lens reviewer ("what would MJ think?" — is it pointed the right way), the
+# Crusty Old Engineer (will it break, what will it cost), and the goal-keeper
+# (is this what was actually asked for). Only the blade edits files.
 agents:
   include:
     - mj:occams-machete
     - mj:mj-reviewer
     - mj:crusty-old-engineer
+    - mj:goal-keeper
 
 # Lightweight awareness only — always-on routing. The heavy artifacts (the persona
 # SKILL, the MJ profile) are context sinks loaded on demand by their agents.

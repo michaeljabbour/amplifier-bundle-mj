@@ -1,87 +1,93 @@
+// MJ's Review Bench — a set of four expert "reviewers" you can call on while you work.
+// Three of them read your work and give an opinion; one of them actually makes the change.
+// This diagram shows what lives in this repository and how the pieces connect.
+
 digraph mj {
     rankdir=LR
     fontname="Helvetica"
     fontsize=12
-    label="mj v0.2.0 — bundle repo"
+    label="MJ's Review Bench — mj v0.3.0\nFour expert lenses that judge your work on different questions — and one that does the cutting"
     labelloc=t
     labeljust=c
     nodesep=0.6
     ranksep=0.7
     bgcolor="white"
-    source_hash="9b387a467f15a965536b2d72268324c78f9d055d09d1cd9bc049106815b4e841"
+    source_hash="eae3fe77ed5beb44c2e0300ebc72028db753c69c9750bce6816dd8e7ac728aff"
 
     node [fontname="Helvetica", fontsize=11, style="filled,rounded"]
     edge [fontname="Helvetica", fontsize=9]
 
-    root_mj [label="mj v0.2.0\n0 tools · 0 agents\n~891 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
+    root_mj [label="MJ's Review Bench — the front door\nmj v0.3.0\n0 tools · 0 agents\n~986 tok aggregate", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", penwidth=2]
 
     subgraph cluster_behaviors {
-        label="Behaviors"
+        label="Behaviors — the capability this repo adds"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        beh_mj_behavior [label="mj-behavior\n5 tools · 2 ctx\n~2624 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
+        beh_mj_behavior [label="Bench Setup — plugs the four reviewers,\ntheir working modes and skills into a project\n5 tools · 2 ctx\n~2961 tok", shape=box, fillcolor="#e0f2f1", style="filled,rounded"]
     }
 
     subgraph cluster_agents {
-        label="Agents"
+        label="Agents — the four reviewers you can call on"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        agt_crusty_old_engineer [label="crusty-old-engineer\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_mj_reviewer [label="mj-reviewer\n~118 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
-        agt_occams_machete [label="occams-machete\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_crusty_old_engineer [label="The Crusty Old Engineer — what will break,\nand what will it cost you later?\n~201 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_goal_keeper [label="The Goal-Keeper — is this actually\nwhat was asked for?\n~117 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_mj_reviewer [label="The MJ Lens — is this pointed the right way,\nand how big a change does it really need?\n~118 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
+        agt_occams_machete [label="Occam's Machete — removes the excess for real,\none safe, undoable step at a time\n~113 tok desc", shape=box, fillcolor="#c8e6c9", style="filled,rounded"]
     }
 
     subgraph cluster_modules {
-        label="Modules"
+        label="Modules — small pieces of plumbing"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        mod_hooks_inline_blocks [label="hooks-inline-blocks", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
+        mod_hooks_inline_blocks [label="Inline Reminders\nDrops short prompts into the chat\nat the moments they are useful", shape=box, fillcolor="#bbdefb", style="filled,rounded"]
     }
 
     subgraph cluster_context {
-        label="Context Files"
+        label="Context Files — always-on background notes"
         style="filled"
         fillcolor="#f9f9f9"
         color="#999999"
 
-        ctx_machete_awareness_md [label="machete-awareness.md\n~485 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
-        ctx_mj_lens_awareness_md [label="mj-lens-awareness.md\n~398 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_machete_awareness_md [label="When to reach for the blade\nmachete-awareness.md\n~485 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
+        ctx_mj_lens_awareness_md [label="When to ask what MJ would think\nmj-lens-awareness.md\n~524 tok", shape=box, fillcolor="#e1bee7", style="filled,rounded"]
     }
 
     subgraph cluster_legend {
-        label="Legend"
+        label="Legend — what the colors mean"
         style="filled"
         fillcolor="white"
         color="#cccccc"
         fontsize=9
 
-        leg_root [label="root bundle", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
-        leg_behavior [label="behavior", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
-        leg_agent [label="agent", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
-        leg_module [label="module", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
-        leg_provider [label="provider", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
-        leg_context [label="context", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
-        leg_standalone [label="standalone", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
-        leg_experiment [label="experiment", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
-        leg_ext_cost [label="ext+cost", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
-        leg_ext_muted [label="ext+no-cost", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
+        leg_root [label="root bundle\n(this repository)", shape=box, fillcolor="#80cbc4", style="filled,rounded,bold", fontsize=9]
+        leg_behavior [label="behavior\n(a capability pack)", shape=box, fillcolor="#e0f2f1", style="filled,rounded", fontsize=9]
+        leg_agent [label="agent\n(a reviewer you call)", shape=box, fillcolor="#c8e6c9", style="filled,rounded", fontsize=9]
+        leg_module [label="module\n(plumbing)", shape=box, fillcolor="#bbdefb", style="filled,rounded", fontsize=9]
+        leg_provider [label="provider\n(the AI service used)", shape=box, fillcolor="#e0e0e0", style="filled,rounded", fontsize=9]
+        leg_context [label="context\n(background notes)", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_standalone [label="standalone\n(works on its own)", shape=box, fillcolor="#80cbc4", style="filled,rounded", fontsize=9]
+        leg_experiment [label="experiment\n(a trial, not shipped)", shape=box, fillcolor="#e1bee7", style="filled,rounded", fontsize=9]
+        leg_ext_cost [label="ext+cost\n(borrowed, adds cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2, fontsize=9]
+        leg_ext_muted [label="ext+no-cost\n(borrowed, free)", shape=box, fillcolor="#f5f5f5", style="dashed", fontsize=9]
     }
 
-    disclaimer [label="Token estimates: ~4 chars/token\nSolid border = local (counted)\nDashed + red = external, hidden cost (not counted)\nDashed + muted = external, no cost\nExcludes: sub-session costs, runtime-dynamic", shape=note, fillcolor="#eceff1", style="filled", fontsize=9]
+    disclaimer [label="How to read the numbers\nToken estimates: ~4 chars/token\nSolid border = local (counted)\nDashed + red = external, hidden cost (not counted)\nDashed + muted = external, no cost\nExcludes: sub-session costs, runtime-dynamic", shape=note, fillcolor="#eceff1", style="filled", fontsize=9]
 
-    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="amplifier-foundation\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
+    ext_githttps___github_com_microsoft_amplifier_foundation_main [label="Shared Amplifier toolkit\nborrowed from Microsoft\namplifier-foundation\n(external, cost)", shape=box, fillcolor="#80cbc4", style="dashed", color="red", penwidth=2]
 
     root_mj -> ext_githttps___github_com_microsoft_amplifier_foundation_main [style=dashed]
     root_mj -> beh_mj_behavior [label="composes"]
     beh_mj_behavior -> agt_occams_machete [label="owns"]
     beh_mj_behavior -> agt_mj_reviewer [label="owns"]
     beh_mj_behavior -> agt_crusty_old_engineer [label="owns"]
+    beh_mj_behavior -> agt_goal_keeper [label="owns"]
     beh_mj_behavior -> mod_hooks_inline_blocks [label="uses", penwidth=0.8]
     beh_mj_behavior -> ctx_machete_awareness_md [style=dotted, color=purple]
     beh_mj_behavior -> ctx_mj_lens_awareness_md [style=dotted, color=purple]

@@ -27,3 +27,13 @@ Three ways in, and the difference is load-bearing:
 The agent cannot see this conversation; the skill can. Choose on that.
 Deciding something worth citing later? `mj:recipes/direction-check.yaml` adds an
 approval gate and records the call, its counter-argument, and your ruling.
+
+**A different question, a different lens.** `mj:mj-reviewer` judges whether work
+is *pointed the right way*. It will bless excellent work that answers a question
+nobody asked. Before claiming done — or when a request has been through enough
+turns to drift — use `mj:goal-keeper`, which judges only *was this what was asked
+for*, treats an advisor's refusal as an unratified substitution, and calls
+absence of evidence MISSING rather than DELIVERED. **Paste the request verbatim
+into its instruction** (or pass `context_depth`) — it forks, so it cannot see the
+conversation the ask was made in, and it will refuse rather than guess. The full
+lens map is `mj:context/bench.md` (on demand).
